@@ -3,310 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREDIKT AI - AI Football Market Analysis</title>
+    <title>PREDIKT AI - Patterns Don't Lie</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://checkout.flutterwave.com/v3.js"></script>
     <style>
+        :root { --primary: #4f46e5; --primary-dark: #3730a3; --accent: #10b981; --bg: #f8fafc; --text: #1e293b; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', Arial, sans-serif; color: #1e293b; line-height: 1.6; background: #f8fafc; }
-        header { background: linear-gradient(135deg, #4f46e5 0%, #2d20a0 100%); color: white; padding: 3rem 1rem; text-align: center; }
-        header h1 { font-size: 3rem; margin: 0.5rem 0; font-weight: 800; }
-        header .founder { font-size: 1rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
-        .tagline { font-style: italic; font-size: 1.2rem; opacity: 0.8; margin-bottom: 1rem; }
-        
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        body { font-family: 'Outfit', sans-serif; color: var(--text); line-height: 1.6; background: var(--bg); scroll-behavior: smooth; }
+        header { background: linear-gradient(135deg, #4f46e5 0%, #2d20a0 100%); color: white; padding: 4rem 1rem; text-align: center; }
+        header h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -1px; }
+        .tagline { font-style: italic; font-size: 1.4rem; opacity: 0.9; font-weight: 300; }
+        .founder-tag { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; margin-bottom: 1rem; display: block; }
         nav { background: white; padding: 1rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
-        nav a { color: #4f46e5; text-decoration: none; margin: 0 1rem; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; }
-        
-        h2 { font-size: 2.5rem; color: #1e1b4b; margin-bottom: 2rem; text-align: center; font-weight: 800; }
-        .section { padding: 5rem 1rem; }
+        nav a { color: var(--primary); text-decoration: none; margin: 0 1rem; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+        .section { padding: 6rem 1rem; }
         .section.alt { background: #f1f5f9; }
-
-        /* Dashboard Section */
-        .dashboard-box { background: white; padding: 3rem; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); max-width: 800px; margin: -4rem auto 4rem; position: relative; z-index: 10; border-top: 6px solid #4f46e5; }
-        .dashboard-box h3 { font-size: 1.8rem; color: #1e1b4b; margin-bottom: 1rem; text-align: center; }
-        .unlock-form { display: flex; gap: 10px; margin-top: 1.5rem; }
-        .unlock-form input { flex: 1; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; font-family: inherit; }
-        .unlock-form button { background: #4f46e5; color: white; padding: 1rem 2rem; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; }
-
-        /* Prediction Cards */
-        .prediction-card { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-left: 6px solid #4f46e5; }
-        .match-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; }
-        .match-info h4 { font-size: 1.4rem; color: #1e1b4b; font-weight: 800; }
-        .match-info p { color: #64748b; font-weight: 600; font-size: 0.9rem; }
-        .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .market-item { background: #f8fafc; padding: 1rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+        h2 { font-size: 2.5rem; color: #1e1b4b; margin-bottom: 3rem; text-align: center; font-weight: 800; }
+        .dashboard-card { background: white; padding: 3.5rem 2rem; border-radius: 32px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); max-width: 800px; margin: -5rem auto 5rem; position: relative; z-index: 10; border-top: 8px solid var(--primary); text-align: center; }
+        .dashboard-card h3 { font-size: 2rem; margin-bottom: 1rem; color: #1e1b4b; }
+        .unlock-form { display: flex; gap: 12px; margin-top: 2rem; flex-wrap: wrap; justify-content: center; }
+        .unlock-form input { flex: 1; min-width: 280px; padding: 1.2rem; border: 2px solid #e2e8f0; border-radius: 16px; font-size: 1rem; font-family: inherit; }
+        .btn { background: var(--primary); color: white; padding: 1.2rem 2.5rem; border: none; border-radius: 16px; font-weight: 800; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; font-size: 1rem; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4); }
+        .btn-accent { background: var(--accent); }
+        .prediction-card { background: white; border-radius: 24px; padding: 2.5rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 8px solid var(--primary); }
+        .match-info h4 { font-size: 1.6rem; color: #1e1b4b; font-weight: 800; }
+        .match-meta { color: #64748b; font-weight: 600; font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+        .market-item { background: #f8fafc; padding: 1.2rem; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f1f5f9; }
         .market-name { font-weight: 700; color: #334155; }
-        .market-conf { color: #4f46e5; font-weight: 800; }
-
-        /* 1xBet Recommendation */
-        .recommendation-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 1rem; border-radius: 12px; margin-top: 1.5rem; font-size: 0.9rem; color: #1e40af; line-height: 1.5; }
+        .market-conf { color: var(--primary); font-weight: 800; font-size: 1.1rem; }
+        .recommendation-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 1.2rem; border-radius: 16px; margin-top: 2rem; font-size: 0.95rem; color: #1e40af; line-height: 1.6; text-align: left; }
         .recommendation-box a { color: #2563eb; font-weight: 800; text-decoration: underline; }
-
-        /* Stats & UI */
-        .btn { background: #4f46e5; color: white; padding: 1rem 2rem; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3); }
-        .btn-green { background: #10b981; }
-        .badge { padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
-        .badge-hidden { background: #eef2ff; color: #4f46e5; }
-        .badge-familiar { background: #ecfdf5; color: #10b981; }
-
-        /* Forms */
-        .signup-form { max-width: 500px; margin: 0 auto; background: white; padding: 3rem; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 1.5rem; }
-        label { display: block; font-weight: 700; margin-bottom: 0.5rem; color: #1e1b4b; }
-        input { width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; }
-        
-        footer { background: #0f172a; color: white; padding: 4rem 1rem; text-align: center; }
-        footer a { color: #818cf8; text-decoration: none; font-weight: 700; }
+        .story-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; align-items: center; }
+        .achievement-box { background: white; padding: 2.5rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; }
+        .stat-big { font-size: 3.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; }
+        .market-type-card { background: white; padding: 3rem; border-radius: 24px; margin-bottom: 2rem; border-top: 6px solid var(--primary); }
+        .market-type-card.familiar { border-top-color: var(--accent); }
+        .win-rate-tag { display: inline-block; padding: 6px 16px; border-radius: 99px; font-weight: 800; font-size: 0.85rem; margin-bottom: 1rem; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }
+        .price-card { background: white; padding: 4rem 2rem; border-radius: 32px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 2px solid transparent; }
+        .price-card.featured { border-color: var(--primary); transform: scale(1.05); z-index: 5; }
+        .price-val { font-size: 3.5rem; font-weight: 800; color: var(--primary); margin: 1.5rem 0; }
+        .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .faq-item { background: white; padding: 2rem; border-radius: 20px; border-left: 4px solid var(--primary); }
+        footer { background: #0f172a; color: white; padding: 5rem 1rem; text-align: center; }
+        .footer-links { margin: 2.5rem 0; }
+        .footer-links a { color: #818cf8; text-decoration: none; margin: 0 1rem; font-weight: 700; }
+        @media (max-width: 768px) { header h1 { font-size: 2.5rem; } .dashboard-card { padding: 2.5rem 1.5rem; } .price-card.featured { transform: none; } }
     </style>
 </head>
 <body>
-
     <header>
-        <p class="founder">Built by Gideon Sylvester</p>
-        <h1>🎯 PREDIKT AI</h1>
-        <p class="tagline">"Patterns don't lie"</p>
-        <p>⭐ 80-90% High Probability AI Analysis</p>
+        <div class="container">
+            <span class="founder-tag">Gideon Sylvester Presents</span>
+            <h1>PREDIKT AI</h1>
+            <p class="tagline">"Patterns don't lie"</p>
+        </div>
     </header>
-
     <nav>
         <a href="#dashboard">Dashboard</a>
-        <a href="#results">Results</a>
+        <a href="#story">Our Story</a>
+        <a href="#markets">Markets</a>
         <a href="#pricing">Pricing</a>
-        <a href="#contact">Support</a>
+        <a href="#faq">FAQ</a>
     </nav>
-
-    <!-- Member Dashboard -->
     <section id="dashboard" class="section" style="padding-top: 0;">
         <div class="container">
-            <div class="dashboard-box">
-                <h3>🔓 Unlock Today's Picks</h3>
-                <p style="text-align: center; color: #64748b;">Enter your registered email to access today's AI analysis.</p>
+            <div class="dashboard-card">
+                <h3>🔓 Insights Hub</h3>
+                <p style="color: #64748b;">Enter your registered email to unlock today's AI-analyzed picks.</p>
                 <form class="unlock-form" id="unlockForm">
                     <input type="email" id="unlockEmail" placeholder="your@email.com" required>
-                    <button type="submit" id="unlockBtn">Unlock Picks</button>
+                    <button type="submit" class="btn" id="unlockBtn">Unlock Analysis</button>
                 </form>
-                <div id="unlockMessage" style="margin-top: 1rem; text-align: center; font-weight: 700;"></div>
-                
-                <div id="picksContainer" style="margin-top: 2rem; display: none;">
-                    <!-- Today's picks will appear here -->
-                </div>
+                <div id="unlockMsg" style="margin-top: 1.5rem; font-weight: 700;"></div>
+                <div id="picksArea" style="margin-top: 3rem; display: none; text-align: left;"></div>
             </div>
         </div>
     </section>
-
-    <!-- Yesterday's Results -->
     <section id="results" class="section alt">
         <div class="container">
             <h2>Yesterday's Proof</h2>
-            <p style="text-align: center; color: #64748b; margin-bottom: 3rem;">We don't hide our losses. We celebrate our consistency.</p>
-            <div id="resultsLoading" style="text-align: center; font-weight: 700; color: #4f46e5;">Loading results...</div>
-            <div id="resultsContainer"></div>
+            <p style="text-align: center; color: #64748b; margin-top: -2rem; margin-bottom: 4rem;">Transparency is our core value. Here is how we performed yesterday.</p>
+            <div id="resLoading" style="text-align: center; font-weight: 800; color: var(--primary);">Analyzing yesterday's data...</div>
+            <div id="resGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;"></div>
         </div>
     </section>
-
-    <!-- Pricing -->
+    <section id="story" class="section">
+        <div class="container">
+            <div class="story-grid">
+                <div>
+                    <h2>Why I Built PrediktAI</h2>
+                    <p style="margin-bottom: 1.5rem; font-size: 1.1rem;">PrediktAI was built to transform how people approach football predictions by replacing emotion with structured analysis. Instead of chasing odds, users get a system designed to identify the most reliable opportunities each day. It’s not about luck — it’s about better decisions.</p>
+                    <p style="font-size: 1.1rem;">What makes us different is our focus on decision-making. Instead of flooding you with risky picks, we filter each fixture down to the top 3 highest-probability markets. We reduce mistakes, not chase unrealistic wins.</p>
+                </div>
+                <div class="achievement-box">
+                    <div class="stat-big">85-90%</div>
+                    <p style="font-weight: 800; color: #1e1b4b; text-transform: uppercase; letter-spacing: 1px;">Accuracy Rate</p>
+                    <p style="color: #64748b; margin-top: 1rem;">Demonstrated accuracy on selected low-risk markets across tested fixtures. We filter out the noise.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="markets" class="section alt">
+        <div class="container">
+            <h2>Our Market Strategy</h2>
+            <div class="market-type-card">
+                <span class="win-rate-tag" style="background: #eef2ff; color: var(--primary);">80% - 90% WIN RATE</span>
+                <h3>🎯 Hidden Markets</h3>
+                <p style="margin: 1rem 0; color: #64748b;">Hidden markets are overlooked betting opportunities that offer higher stability compared to mainstream options. While most bettors chase high-risk, popular outcomes, PrediktAI focuses on low-visibility markets where patterns are more predictable and less influenced by public bias.</p>
+                <p><strong>Top Examples:</strong> Over 17.5 Fouls, Over 3.5 Saves, No Injury Time Goal.</p>
+            </div>
+            <div class="market-type-card familiar">
+                <span class="win-rate-tag" style="background: #ecfdf5; color: var(--accent);">50% - 65% WIN RATE</span>
+                <h3>📌 Familiar Markets</h3>
+                <p style="margin: 1rem 0; color: #64748b;">Familiar markets are the common betting options most people use (Match Winner, Over 2.5, BTTS). These are popular because they are easy to understand, but they are also highly competitive and influenced by public opinion, making them less reliable for consistent returns.</p>
+                <p><strong>Top Examples:</strong> Home Win, Over 1.5 Goals, Both Teams to Score.</p>
+            </div>
+        </div>
+    </section>
     <section id="pricing" class="section">
         <div class="container">
-            <h2>Simple Plans</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
-                <!-- Trial -->
-                <div style="background: white; padding: 3rem; border-radius: 24px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                    <h4 style="font-size: 1.5rem; color: #1e1b4b;">Free Trial</h4>
-                    <div style="font-size: 3rem; font-weight: 800; color: #4f46e5; margin: 1rem 0;">7 Days</div>
-                    <ul style="list-style: none; text-align: left; margin: 2rem 0; color: #64748b;">
-                        <li style="margin-bottom: 0.5rem;">✅ Full Dashboard Access</li>
-                        <li style="margin-bottom: 0.5rem;">✅ Hidden & Familiar Markets</li>
-                        <li style="margin-bottom: 0.5rem;">✅ 8:00 AM Daily Delivery</li>
-                    </ul>
-                    <a href="#signup" class="btn" style="width: 100%;">Start Free Trial</a>
+            <h2>Start Your Journey</h2>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h3>Free Trial</h3>
+                    <div class="price-val">7 Days</div>
+                    <p style="color: #64748b; margin-bottom: 2rem;">Test our system completely free for 7 days. No credit card required.</p>
+                    <a href="#signup" class="btn" style="width: 100%;">Activate Trial</a>
                 </div>
-                <!-- Paid -->
-                <div style="background: white; padding: 3rem; border-radius: 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.1); border: 3px solid #4f46e5;">
-                    <h4 style="font-size: 1.5rem; color: #1e1b4b;">Premium</h4>
-                    <div style="font-size: 3rem; font-weight: 800; color: #4f46e5; margin: 1rem 0;">₦1,000<span style="font-size: 1rem;">/mo</span></div>
-                    <ul style="list-style: none; text-align: left; margin: 2rem 0; color: #64748b;">
-                        <li style="margin-bottom: 0.5rem;">✅ 30 Days Full Access</li>
-                        <li style="margin-bottom: 0.5rem;">✅ Priority AI Analysis</li>
-                        <li style="margin-bottom: 0.5rem;">✅ Cancel Anytime</li>
-                    </ul>
-                    <button onclick="openPayment()" class="btn btn-green" style="width: 100%;">Upgrade to Premium</button>
+                <div class="price-card featured">
+                    <h3>Premium Access</h3>
+                    <div class="price-val">₦1,000<span style="font-size: 1rem;">/mo</span></div>
+                    <p style="color: #64748b; margin-bottom: 2rem;">Full 30-day access to the Insights Hub and daily AI analysis reports.</p>
+                    <button onclick="openPayment()" class="btn btn-accent" style="width: 100%;">Get Premium Now</button>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Signup -->
     <section id="signup" class="section alt">
         <div class="container">
-            <h2>Join PREDIKT AI</h2>
-            <div class="signup-form">
+            <div style="max-width: 500px; margin: 0 auto; background: white; padding: 3.5rem; border-radius: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
+                <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">Join PrediktAI</h2>
+                <p style="text-align: center; color: #64748b; margin-bottom: 2.5rem;">Your first prediction arrives at 8:00 AM GMT+1</p>
                 <form id="signupForm">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="name" placeholder="Gideon Sylvester" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="email" placeholder="name@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" id="phone" placeholder="+234..." required>
-                    </div>
+                    <div style="margin-bottom: 1.5rem;"><label>Full Name</label><input type="text" id="name" placeholder="Gideon Sylvester" required style="width:100%; padding:1rem; border:2px solid #e2e8f0; border-radius:12px;"></div>
+                    <div style="margin-bottom: 1.5rem;"><label>Email Address</label><input type="email" id="email" placeholder="name@example.com" required style="width:100%; padding:1rem; border:2px solid #e2e8f0; border-radius:12px;"></div>
+                    <div style="margin-bottom: 1.5rem;"><label>Phone Number</label><input type="tel" id="phone" placeholder="+234..." required style="width:100%; padding:1rem; border:2px solid #e2e8f0; border-radius:12px;"></div>
                     <button type="submit" class="btn" style="width: 100%;">Activate 7-Day Trial</button>
                 </form>
-                <div id="signupMessage" style="margin-top: 1.5rem; text-align: center; font-weight: 700;"></div>
+                <div id="signupMsg" style="margin-top: 1.5rem; text-align: center; font-weight: 700;"></div>
             </div>
         </div>
     </section>
-
+    <section id="faq" class="section">
+        <div class="container">
+            <h2>Common Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item"><h4>What are hidden markets?</h4><p>Statistical betting options most people don't know about. Unlike traditional markets, hidden markets analyze specific in-game events like Fouls, Saves, or Cards. This gives you an edge because fewer people analyze them.</p></div>
+                <div class="faq-item"><h4>Where do I place these bets?</h4><p>You can use any sportsbook. However, we recommend 1xBet because they offer the full range of these hidden markets. Most other platforms don't have the full range we analyze.</p></div>
+                <div class="faq-item"><h4>Can I cancel anytime?</h4><p>Yes, no questions asked. If you cancel during your trial, you simply stop receiving reports. If you're on paid subscription, you keep access until your billing period ends.</p></div>
+                <div class="faq-item"><h4>How many matches per day?</h4><p>We analyze 6-24 matches per day across 7+ global leagues (EPL, La Liga, Serie A, Bundesliga, UCL, etc.). Each match receives detailed AI analysis.</p></div>
+            </div>
+        </div>
+    </section>
     <footer>
         <div class="container">
-            <p style="font-weight: 800; font-size: 1.5rem; margin-bottom: 1rem;">PREDIKT AI</p>
-            <p style="margin-bottom: 2rem;">Abuja, Nigeria • Patterns don't lie.</p>
-            <div style="margin-bottom: 2rem;">
-                <a href="https://t.me/PrediktAI" target="_blank">Telegram</a> | 
-                <a href="mailto:prediktaisystems@gmail.com">Support</a> | 
-                <a href="https://reffpa.com/L?tag=d_4237102m_1599c_&site=4237102&ad=1599&r=registration" target="_blank">1xBet</a>
-            </div>
-            <p style="font-size: 0.8rem; opacity: 0.6;">⚠️ Responsible gambling only. 18+</p>
+            <p style="font-weight: 800; font-size: 1.8rem; margin-bottom: 0.5rem;">PREDIKT AI</p>
+            <p style="opacity: 0.7;">"Patterns don't lie"</p>
+            <div class="footer-links"><a href="https://t.me/PrediktAI" target="_blank">Telegram</a> | <a href="mailto:prediktaisystems@gmail.com">Support</a> | <a href="https://reffpa.com/L?tag=d_4237102m_1599c_&site=4237102&ad=1599&r=registration" target="_blank">1xBet</a></div>
+            <p style="font-size: 0.85rem; opacity: 0.5; max-width: 600px; margin: 0 auto;">⚠️ Gambling involves risk. PrediktAI is a tool for smarter decision-making, not a guarantee of wealth. Please bet responsibly. 18+ only.</p>
         </div>
     </footer>
-
     <script>
-        // --- CONFIGURATION ---
-        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbxjEcNqj5yd9XKIaltiIVpFPAu2KucZGoc9gxrdBTZablxEzLYzjWJOGl5lPj-kIh10/exec'; // <--- PASTE YOUR URL HERE
-        const ONEXBET_LINK = "https://reffpa.com/L?tag=d_4237102m_1599c_&site=4237102&ad=1599&r=registration";
-
-        // --- DASHBOARD: UNLOCK PICKS ---
+        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbz5hIRPD5g0AU7_NIt_jtDmRraUd8Ub8K5-pfAkeRwUatQk8lKpIXOe100bs8iGNfjK/exec';
+        const ONEXBET = "https://reffpa.com/L?tag=d_4237102m_1599c_&site=4237102&ad=1599&r=registration";
         document.getElementById('unlockForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('unlockEmail').value;
             const btn = document.getElementById('unlockBtn');
-            const msg = document.getElementById('unlockMessage');
-            const container = document.getElementById('picksContainer');
-
-            btn.innerText = 'Checking...';
-            msg.innerText = '';
-            container.style.display = 'none';
-
+            const msg = document.getElementById('unlockMsg');
+            const picks = document.getElementById('picksArea');
+            btn.innerText = 'Verifying...'; msg.innerText = ''; picks.style.display = 'none';
             try {
                 const res = await fetch(`${APPS_SCRIPT}?action=unlockPicks&email=${encodeURIComponent(email)}`);
                 const result = await res.json();
-
                 if (result.status === 'success') {
-                    msg.style.color = '#10b981';
-                    msg.innerText = `Welcome back, ${result.userName}! Today's picks are unlocked.`;
-                    renderPicks(result.data);
-                    container.style.display = 'block';
-                } else {
-                    msg.style.color = '#ef4444';
-                    msg.innerText = 'No active subscription found for this email.';
-                }
-            } catch (err) {
-                msg.innerText = 'Error connecting to server.';
-            } finally {
-                btn.innerText = 'Unlock Picks';
-            }
+                    msg.style.color = '#10b981'; msg.innerText = `Welcome back, ${result.userName}! Your insights are ready.`;
+                    renderPicks(result.data); picks.style.display = 'block';
+                } else { msg.style.color = '#ef4444'; msg.innerText = 'No active access found for this email.'; }
+            } catch (err) { msg.innerText = 'Connection error.'; }
+            finally { btn.innerText = 'Unlock Analysis'; }
         });
-
         function renderPicks(data) {
-            const container = document.getElementById('picksContainer');
-            container.innerHTML = '<h4 style="margin-bottom:1.5rem; color:#1e1b4b;">📅 Today\'s AI Analysis</h4>';
-            
+            const area = document.getElementById('picksArea');
+            area.innerHTML = '<h3 style="margin-bottom:2rem; text-align:left;">📅 Today\'s AI Analysis</h3>';
             data.forEach(row => {
                 const card = document.createElement('div');
                 card.className = 'prediction-card';
                 card.innerHTML = `
-                    <div class="match-header">
-                        <div class="match-info">
-                            <span class="badge ${row[2] === 'HIDDEN' ? 'badge-hidden' : 'badge-familiar'}">${row[2]} MARKETS</span>
-                            <h4>${row[1]}</h4>
-                            <p>${row[10]} • Kick-off: ${row[9]}</p>
-                        </div>
-                    </div>
-                    <div class="market-grid">
-                        <div class="market-item"><span class="market-name">${row[3]}</span><span class="market-conf">${row[4]}</span></div>
-                        <div class="market-item"><span class="market-name">${row[5]}</span><span class="market-conf">${row[6]}</span></div>
-                        <div class="market-item"><span class="market-name">${row[7]}</span><span class="market-conf">${row[8]}</span></div>
-                    </div>
-                    <div class="recommendation-box">
-                        💡 <strong>Recommendation:</strong> We recommend <a href="${ONEXBET_LINK}" target="_blank">1xBet</a> because they offer the full range of these hidden markets. However, you are free to choose any sportsbook you prefer.
-                    </div>
+                    <div class="match-info"><span style="font-size:0.75rem; font-weight:800; color:var(--primary); text-transform:uppercase;">${row[2]} MARKET</span><h4>${row[1]}</h4><p class="match-meta">${row[10]} • Kick-off: ${row[9]}</p></div>
+                    <div class="market-grid"><div class="market-item"><span class="market-name">${row[3]}</span><span class="market-conf">${row[4]}</span></div><div class="market-item"><span class="market-name">${row[5]}</span><span class="market-conf">${row[6]}</span></div><div class="market-item"><span class="market-name">${row[7]}</span><span class="market-conf">${row[8]}</span></div></div>
+                    <div class="recommendation-box">💡 <strong>Recommendation:</strong> We recommend <a href="${ONEXBET}" target="_blank">1xBet</a> because they offer the full range of these hidden markets. However, you are free to choose any sportsbook you prefer.</div>
                 `;
-                container.appendChild(card);
+                area.appendChild(card);
             });
         }
-
-        // --- RESULTS: YESTERDAY'S PROOF ---
         async function loadResults() {
             try {
                 const res = await fetch(`${APPS_SCRIPT}?action=getResults`);
                 const data = await res.json();
-                const container = document.getElementById('resultsContainer');
-                document.getElementById('resultsLoading').style.display = 'none';
-
-                if (data.length === 0) {
-                    container.innerHTML = '<p style="text-align:center;">No results posted for yesterday yet.</p>';
-                    return;
-                }
-
+                const grid = document.getElementById('resGrid');
+                document.getElementById('resLoading').style.display = 'none';
+                if (data.length === 0) { grid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">No results posted yet.</p>'; return; }
                 data.forEach(row => {
-                    const item = document.createElement('div');
-                    item.style.cssText = "background:white; padding:1.5rem; border-radius:12px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 10px rgba(0,0,0,0.03);";
-                    const outcomeColor = row.outcome.toUpperCase() === 'WIN' ? '#10b981' : '#ef4444';
-                    item.innerHTML = `
-                        <div>
-                            <div style="font-weight:800; color:#1e1b4b;">${row.match}</div>
-                            <div style="font-size:0.8rem; color:#64748b;">${row.competition} • ${row.market}</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div style="font-weight:800; color:#4f46e5;">${row.confidence}</div>
-                            <div style="font-weight:800; color:${outcomeColor}; font-size:0.8rem;">${row.outcome.toUpperCase()}</div>
-                        </div>
-                    `;
-                    container.appendChild(item);
+                    const card = document.createElement('div');
+                    card.style.cssText = "background:white; padding:1.5rem; border-radius:20px; box-shadow:0 4px 15px rgba(0,0,0,0.03); display:flex; justify-content:space-between; align-items:center;";
+                    const color = row.outcome.toUpperCase() === 'WIN' ? '#10b981' : '#ef4444';
+                    card.innerHTML = `<div><div style="font-weight:800; color:#1e1b4b;">${row.match}</div><div style="font-size:0.8rem; color:#64748b;">${row.market}</div></div><div style="text-align:right;"><div style="font-weight:800; color:var(--primary);">${row.confidence}</div><div style="font-weight:800; color:${color}; font-size:0.8rem;">${row.outcome.toUpperCase()}</div></div>`;
+                    grid.appendChild(card);
                 });
-            } catch (err) {
-                document.getElementById('resultsLoading').innerText = 'Error loading results.';
-            }
+            } catch (err) { document.getElementById('resLoading').innerText = 'Error loading proof.'; }
         }
-
-        // --- SIGNUP FORM ---
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const msg = document.getElementById('signupMessage');
-            const formData = new URLSearchParams();
-            formData.append('name', document.getElementById('name').value);
-            formData.append('email', document.getElementById('email').value);
-            formData.append('phone', document.getElementById('phone').value);
-
-            msg.innerText = 'Processing...';
-            
+            const msg = document.getElementById('signupMsg');
+            const data = new URLSearchParams();
+            data.append('name', document.getElementById('name').value);
+            data.append('email', document.getElementById('email').value);
+            data.append('phone', document.getElementById('phone').value);
+            msg.innerText = 'Activating...';
             try {
-                // Using no-cors for Google Apps Script POST
-                await fetch(APPS_SCRIPT, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: formData
-                });
-                msg.style.color = '#10b981';
-                msg.innerText = '✅ Success! Check your email. Your trial is active.';
+                await fetch(APPS_SCRIPT, { method: 'POST', mode: 'no-cors', body: data });
+                msg.style.color = '#10b981'; msg.innerText = '✅ Success! Your 7-day trial is active. Check your email.';
                 document.getElementById('signupForm').reset();
-            } catch (err) {
-                msg.style.color = '#ef4444';
-                msg.innerText = 'Error submitting. Please try again.';
-            }
+            } catch (err) { msg.innerText = 'Error. Please try again.'; }
         });
-
-        // --- PAYMENT MODAL ---
         function openPayment() {
-            alert("To upgrade to Premium (₦1,000/mo), please complete payment via Flutterwave. Once paid, your account will be updated automatically.\n\nRedirecting to payment...");
-            window.open("https://flutterwave.com/pay/sa6prtlc9lk8", "_blank");
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK-5606228e397e23bfb6a0b38bb21eef9b-X",
+                tx_ref: "PREDIKT_" + Date.now(),
+                amount: 1000,
+                currency: "NGN",
+                payment_options: "card, account, transfer, ussd",
+                customer: { email: prompt("Enter your email for activation:"), name: "PREDIKT AI User" },
+                customizations: { title: "PREDIKT AI Premium", description: "30-Day Full Access", logo: "https://prediktaisystems-byte.github.io/prediktai-website/" },
+                callback: function (data) { alert("Payment Successful! Your account will be updated within minutes."); }
+            });
         }
-
         window.onload = loadResults;
     </script>
 </body>
