@@ -20,24 +20,42 @@
         .btn-login { background: #4f46e5; color: white; }
         .btn-logout { background: #ef4444; color: white; }
         h2 { font-size: 2.2rem; color: #1e1b4b; margin-bottom: 2rem; text-align: center; }
+        
+        /* Updated Hero Design */
         .hero { background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%); padding: 5rem 1rem; text-align: center; }
         .hero h2 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 1.5rem; }
         .highlight { color: #4f46e5; }
-        .hero-sub { font-size: 1.25rem; font-weight: 500; color: #334155; margin: 0 auto 3rem; max-width: 850px; }
+        .hero-sub { font-size: 1.25rem; font-weight: 500; color: #334155; margin: 0 auto 3rem; max-width: 850px; text-align: center; }
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 3rem 0; }
         .stat-box { background: white; padding: 2.5rem 1.5rem; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.3s; }
         .stat-box:hover { transform: translateY(-5px); }
         .stat-number { font-size: 2.8rem; font-weight: 800; color: #4f46e5; margin-bottom: 0.5rem; }
         .stat-box p { color: #64748b; font-weight: 500; }
+        
         .btn { background: linear-gradient(135deg, #4f46e5 0%, #2d20a0 100%); color: white; padding: 1rem 2.5rem; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2); }
         .btn-green { background: #10b981; }
         
+        /* Results Picker Styles */
+        .date-picker-container { position: relative; }
+        .date-picker-btn { background: white; border: 2px solid #e2e8f0; padding: 0.8rem 1.5rem; border-radius: 12px; font-family: 'Outfit'; font-weight: 700; color: #1e1b4b; cursor: pointer; display: flex; align-items: center; min-height: 44px; transition: all 0.2s; }
+        .date-picker-btn:hover { border-color: #4f46e5; color: #4f46e5; }
+        .date-picker-dropdown { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); width: 280px; z-index: 1000; overflow: hidden; border: 1px solid #f1f5f9; }
+        .date-picker-dropdown.show { display: block; animation: fadeInDown 0.2s ease-out; }
+        .date-item { padding: 1rem 1.5rem; cursor: pointer; border-bottom: 1px solid #f1f5f9; transition: all 0.2s; display: flex; flex-direction: column; text-align: left; }
+        .date-item:last-child { border-bottom: none; }
+        .date-item:hover { background: #f8fafc; }
+        .date-item.active { background: #f0f4ff; border-left: 4px solid #4f46e5; }
+        .date-item .date-main { font-weight: 700; color: #1e1b4b; font-size: 1rem; }
+        .date-item .date-sub { font-size: 0.8rem; color: #64748b; font-weight: 500; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
         .discovery-section { background: #4f46e5; color: white; padding: 4rem 1rem; border-radius: 20px; text-align: center; margin: 2rem auto; max-width: 1000px; box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3); }
         .discovery-section h2 { color: white; font-size: 2.5rem; margin-bottom: 1rem; }
         .discovery-section h3 { font-size: 1.4rem; font-weight: 400; margin-bottom: 2rem; opacity: 0.9; }
         .discovery-section p { font-size: 1.1rem; max-width: 800px; margin: 0 auto 2.5rem; line-height: 1.8; }
 
+        /* Market Types Info Grid */
         .markets-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; text-align: left; margin-top: 3rem; }
         .market-info-box h3 { font-size: 1.6rem; color: #1e1b4b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
         .market-info-box .rate { font-size: 1.2rem; font-weight: 700; color: #4f46e5; margin-bottom: 1rem; }
@@ -76,7 +94,6 @@
         .modal-content { background: white; margin: 5% auto; padding: 2rem; border-radius: 12px; width: 90%; max-width: 600px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
         .close { color: #aaa; float: right; font-size: 2rem; font-weight: bold; cursor: pointer; }
         
-        /* Footer Updates */
         footer { background: #1e1b4b; color: white; padding: 4rem 1rem 2rem; text-align: center; }
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 600px; margin: 2rem auto; }
         .footer-item { background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; }
@@ -123,10 +140,37 @@
 
     <section id="results" class="section">
         <div class="container">
-            <h2>Latest Prediction Results</h2>
-            <p style="text-align: center; color: #64748b; margin-bottom: 1rem;">Yesterday's verified results</p>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+                <div style="text-align: left;">
+                    <h2 style="text-align: left; margin-bottom: 0.5rem;">Prediction Results</h2>
+                    <p id="selectedDateText" style="color: #64748b; font-weight: 500;">Results for Yesterday</p>
+                </div>
+                <div class="date-picker-container">
+                    <button id="datePickerBtn" class="date-picker-btn" onclick="toggleDatePicker()">
+                        <span id="currentDateLabel">Yesterday</span>
+                        <span style="font-size: 0.8rem; margin-left: 0.5rem;">▼</span>
+                    </button>
+                    <div id="datePickerDropdown" class="date-picker-dropdown"></div>
+                </div>
+            </div>
+
+            <div id="resultsStats" style="background: #f1f5f9; padding: 0.75rem 1.5rem; border-radius: 100px; display: inline-flex; align-items: center; gap: 1rem; margin-bottom: 2rem; font-size: 0.9rem; color: #475569; font-weight: 600;">
+                <span id="matchCount">0 matches analyzed</span>
+                <span style="opacity: 0.3;">|</span>
+                <span id="predictionCount">0 market predictions</span>
+            </div>
+
             <div id="resultsLoading" style="text-align: center; color: #4f46e5; font-weight: 600; padding: 2rem;">Loading...</div>
-            <div id="resultsContainer" style="display: none;"></div>
+            <div id="resultsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;"></div>
+            
+            <div id="noResults" style="display: none; text-align: center; padding: 4rem 2rem; background: #f8fafc; border-radius: 20px; border: 2px dashed #e2e8f0;">
+                <p style="font-size: 1.2rem; color: #64748b; font-weight: 500;">📊 No results found for this date.</p>
+            </div>
+
+            <div id="premiumHistoryCTA" style="display: none; margin-top: 3rem; text-align: center; padding: 2rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%); border-radius: 16px; border: 1px solid #d0dfff;">
+                <p style="color: #1e1b4b; font-weight: 600; margin-bottom: 1rem;">Want to see more than 7 days of history?</p>
+                <button onclick="scrollTo('#pricing')" class="btn" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">Upgrade to Premium</button>
+            </div>
         </div>
     </section>
 
@@ -238,10 +282,52 @@
 
     <script>
         const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwoZDtztGN9Tswgk2CKuiU3ehnQHjwSd4hbQePFnz2Xy_f558U3uQiGiv9yPdDYxx6G/exec';
-        // IMPORTANT: Replace with your actual Flutterwave Public Key from your dashboard
+        // IMPORTANT: Replace with your actual Flutterwave Public Key
         const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-e897ea2a840804cd9272f0e15519fbdb-X'; 
         
         let loggedInUser = null;
+        let allResults = [];
+        let selectedDate = null;
+        let historyDates = [];
+
+        function initDates() {
+            historyDates = [];
+            for (let i = 1; i <= 7; i++) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                d.setHours(0,0,0,0);
+                historyDates.push({
+                    date: d,
+                    label: i === 1 ? 'Yesterday' : `${i} days ago`,
+                    formatted: d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })
+                });
+            }
+            selectedDate = historyDates[0];
+            renderDatePicker();
+        }
+
+        function toggleDatePicker() {
+            document.getElementById('datePickerDropdown').classList.toggle('show');
+        }
+
+        function renderDatePicker() {
+            const dropdown = document.getElementById('datePickerDropdown');
+            dropdown.innerHTML = historyDates.map((d, index) => `
+                <div class="date-item ${selectedDate.date.getTime() === d.date.getTime() ? 'active' : ''}" onclick="selectDate(${index})">
+                    <span class="date-main">${d.formatted}</span>
+                    <span class="date-sub">${d.label}</span>
+                </div>
+            `).join('');
+            document.getElementById('currentDateLabel').textContent = selectedDate.label;
+            document.getElementById('selectedDateText').textContent = `Results for ${selectedDate.formatted}`;
+        }
+
+        function selectDate(index) {
+            selectedDate = historyDates[index];
+            renderDatePicker();
+            toggleDatePicker();
+            renderFilteredResults();
+        }
 
         function checkLogin() {
             const storedUser = localStorage.getItem('prediktUser');
@@ -256,12 +342,15 @@
             const loginBtn = document.getElementById('loginBtn');
             const logoutBtn = document.getElementById('logoutBtn');
             const todaySection = document.getElementById('todayPredictions');
+            const premiumCTA = document.getElementById('premiumHistoryCTA');
             if (loggedInUser) {
                 loginBtn.style.display = 'none'; logoutBtn.style.display = 'block';
                 todaySection.style.display = 'block';
+                premiumCTA.style.display = 'none';
             } else {
                 loginBtn.style.display = 'block'; logoutBtn.style.display = 'none';
                 todaySection.style.display = 'none';
+                premiumCTA.style.display = 'block';
             }
         }
 
@@ -271,38 +360,20 @@
         function scrollTo(id) { document.querySelector(id).scrollIntoView({ behavior: 'smooth' }); }
 
         function makePayment() {
-            if (!loggedInUser) {
-                alert("Please login or signup first to upgrade.");
-                scrollTo("#signup");
-                return;
-            }
-
+            if (!loggedInUser) { alert("Please login or signup first to upgrade."); scrollTo("#signup"); return; }
             FlutterwaveCheckout({
                 public_key: FLUTTERWAVE_PUBLIC_KEY,
                 tx_ref: "PREDIKT_" + Math.floor((Math.random() * 1000000000) + 1),
-                amount: 1000,
-                currency: "NGN",
-                payment_options: "card, banktransfer, ussd",
-                customer: {
-                    email: loggedInUser.email,
-                    phone_number: loggedInUser.phone || "",
-                    name: loggedInUser.name || "Member",
-                },
+                amount: 1000, currency: "NGN", payment_options: "card, banktransfer, ussd",
+                customer: { email: loggedInUser.email, phone_number: loggedInUser.phone || "", name: loggedInUser.name || "Member" },
                 callback: function (data) {
                     if (data.status === "successful") {
-                        fetch(APPS_SCRIPT + '?action=paid&email=' + encodeURIComponent(loggedInUser.email), {
-                            method: 'POST',
-                            mode: 'no-cors'
-                        }).then(() => {
-                            alert("✅ Payment successful! Your account is being upgraded.");
-                            location.reload();
+                        fetch(APPS_SCRIPT + '?action=paid&email=' + encodeURIComponent(loggedInUser.email), { method: 'POST', mode: 'no-cors' }).then(() => {
+                            alert("✅ Payment successful! Your account is being upgraded."); location.reload();
                         });
                     }
                 },
-                customizations: {
-                    title: "PREDIKT AI Premium",
-                    description: "30 Days Premium Access",
-                },
+                customizations: { title: "PREDIKT AI Premium", description: "30 Days Premium Access" },
             });
         }
 
@@ -354,17 +425,47 @@
         async function loadResults() {
             try {
                 const response = await fetch(APPS_SCRIPT + '?action=getResults');
-                const resultsData = await response.json();
-                const container = document.getElementById('resultsContainer');
-                const loading = document.getElementById('resultsLoading');
-                if (!Array.isArray(resultsData) || resultsData.length === 0) {
-                    loading.innerHTML = '📊 No results yet.'; return;
-                }
-                container.innerHTML = '';
-                const matchGroups = groupMatches(resultsData);
-                Object.keys(matchGroups).forEach(k => container.appendChild(createMatchCard(matchGroups[k])));
-                loading.style.display = 'none'; container.style.display = 'block';
-            } catch (e) { document.getElementById('resultsLoading').innerHTML = '❌ Error.'; }
+                allResults = await response.json();
+                renderFilteredResults();
+            } catch (e) { document.getElementById('resultsLoading').innerHTML = '❌ Error loading results.'; }
+        }
+
+        function renderFilteredResults() {
+            const container = document.getElementById('resultsContainer');
+            const loading = document.getElementById('resultsLoading');
+            const noResults = document.getElementById('noResults');
+            const matchCountEl = document.getElementById('matchCount');
+            const predCountEl = document.getElementById('predictionCount');
+
+            if (!Array.isArray(allResults)) return;
+
+            const filtered = allResults.filter(r => {
+                const d = new Date(r.date);
+                d.setHours(0,0,0,0);
+                return d.getTime() === selectedDate.date.getTime();
+            });
+
+            container.innerHTML = '';
+            if (filtered.length === 0) {
+                loading.style.display = 'none'; container.style.display = 'none'; noResults.style.display = 'block';
+                matchCountEl.textContent = '0 matches analyzed'; predCountEl.textContent = '0 market predictions';
+                return;
+            }
+
+            const matchGroups = groupMatches(filtered);
+            let totalMatches = 0;
+            let totalPreds = 0;
+
+            Object.keys(matchGroups).forEach(k => {
+                const group = matchGroups[k];
+                container.appendChild(createMatchCard(group));
+                totalMatches++;
+                totalPreds += (group.hidden.length + group.familiar.length) * 3;
+            });
+
+            matchCountEl.textContent = `${totalMatches} matches analyzed`;
+            predCountEl.textContent = `${totalPreds} market predictions`;
+            loading.style.display = 'none'; noResults.style.display = 'none'; container.style.display = 'grid';
         }
 
         async function loadTodayPredictions() {
@@ -380,7 +481,7 @@
                 container.innerHTML = '';
                 const matchGroups = groupMatches(res.data);
                 Object.keys(matchGroups).forEach(k => container.appendChild(createMatchCard(matchGroups[k])));
-                loading.style.display = 'none'; container.style.display = 'block';
+                loading.style.display = 'none'; container.style.display = 'grid';
             } catch (e) { document.getElementById('todayLoading').innerHTML = '❌ Error.'; }
         }
 
@@ -425,7 +526,15 @@
             return '<span class="result-badge result-pending">PENDING</span>';
         }
 
-        loadResults(); checkLogin();
+        window.onclick = function(event) {
+            if (!event.target.closest('.date-picker-container')) {
+                const dropdown = document.getElementById('datePickerDropdown');
+                if (dropdown && dropdown.classList.contains('show')) dropdown.classList.remove('show');
+            }
+        }
+
+        initDates(); loadResults(); checkLogin();
+        setInterval(loadResults, 30000);
     </script>
 </body>
 </html>
