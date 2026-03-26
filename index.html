@@ -170,7 +170,8 @@
     </div>
 
     <script>
-        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzaxrjQ65QE313x0Pp5p6dOSfTwr9s46zd_Wb9GS9xFwOvXMIMjPSJF7BJnSwarKQKP/exec';
+        // ⚠️ REPLACE THIS WITH YOUR DEPLOYED WEB APP URL
+        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbw00uod7JG71lKfMuAF8v_glZMme7O-EXPCLFzgh7GIU9Q-7th4mOPyjOEhAmCqA4YX/exec';
         let loggedInUser = null;
 
         function checkLogin() {
@@ -231,6 +232,23 @@
             } catch (error) { msg.className = 'message error'; msg.textContent = '❌ Error: ' + error.message; }
         });
 
+        // HELPER: Clean up the weird Google Sheets time format (1899-12-30...)
+        function formatTime(timeStr) {
+            if (!timeStr) return 'N/A';
+            const str = String(timeStr);
+            // Check if it's the weird date string
+            if (str.includes('1899-12-30') || str.includes('T')) {
+                try {
+                    const date = new Date(str);
+                    if (isNaN(date.getTime())) return str;
+                    const h = date.getHours().toString().padStart(2, '0');
+                    const m = date.getMinutes().toString().padStart(2, '0');
+                    return `${h}:${m}`;
+                } catch (e) { return str; }
+            }
+            return str;
+        }
+
         async function loadResults() {
             try {
                 const response = await fetch(APPS_SCRIPT + '?action=getResults');
@@ -278,7 +296,10 @@
 
         function createMatchCard(group) {
             const card = document.createElement('div'); card.className = 'result-card';
-            const headerText = `${group.match} | ${group.competition || 'N/A'} | ${group.kickoff || 'N/A'}`;
+            // Clean up the kickoff time before displaying
+            const cleanTime = formatTime(group.kickoff);
+            const headerText = `${group.match} | ${group.competition || 'N/A'} | ${cleanTime}`;
+            
             let html = `<div class="match-header"><div class="match-title">${headerText}</div></div><div class="markets-grid">`;
             if (group.hidden.length > 0) {
                 html += `<div class="market-section hidden-section"><h4>🎯 Hidden Markets</h4>`;
