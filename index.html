@@ -241,6 +241,18 @@
         function logout() { loggedInUser = null; localStorage.removeItem('prediktUser'); updateUI(); location.reload(); }
         function scrollTo(id) { document.querySelector(id).scrollIntoView({ behavior: 'smooth' }); }
 
+        // --- PAYMENT FUNCTION ---
+        function openPayment() {
+            if (!loggedInUser) {
+                alert("Please login or signup first to upgrade.");
+                scrollTo("#signup");
+                return;
+            }
+            // Opens the Flutterwave pay link with the user's email pre-filled
+            const payUrl = `https://flutterwave.com/pay/sa6prtlc9lk8?customer_email=${encodeURIComponent(loggedInUser.email)}`;
+            window.open(payUrl, '_blank');
+        }
+
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -364,3 +376,4 @@
     </script>
 </body>
 </html>
+
