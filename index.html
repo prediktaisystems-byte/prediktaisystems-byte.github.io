@@ -3,538 +3,345 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREDIKT AI - AI Football Market Analysis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <title>PREDIKT AI - Smart Football Predictions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', Arial, sans-serif; color: #1e293b; line-height: 1.6; background: #f8fafc; }
-        header { background: linear-gradient(135deg, #4f46e5 0%, #2d20a0 100%); color: white; padding: 2rem 1rem; text-align: center; }
-        header h1 { font-size: 2.5rem; margin: 0.5rem 0; }
-        header .founder { font-size: 1rem; margin-bottom: 0.5rem; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-        nav { background: white; padding: 1rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; display: flex; justify-content: center; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-        nav a { color: #4f46e5; text-decoration: none; font-weight: 600; }
-        .nav-auth { margin-left: auto; }
-        .nav-auth button { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; margin: 0 0.5rem; }
-        .btn-login { background: #4f46e5; color: white; }
-        .btn-logout { background: #ef4444; color: white; }
-        h2 { font-size: 2.2rem; color: #1e1b4b; margin-bottom: 2rem; text-align: center; }
-        
-        /* Updated Hero Design */
-        .hero { background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%); padding: 5rem 1rem; text-align: center; }
-        .hero h2 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 1.5rem; }
-        .highlight { color: #4f46e5; }
-        .hero-sub { font-size: 1.25rem; font-weight: 500; color: #334155; margin: 0 auto 3rem; max-width: 850px; text-align: center; }
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 3rem 0; }
-        .stat-box { background: white; padding: 2.5rem 1.5rem; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.3s; }
-        .stat-box:hover { transform: translateY(-5px); }
-        .stat-number { font-size: 2.8rem; font-weight: 800; color: #4f46e5; margin-bottom: 0.5rem; }
-        .stat-box p { color: #64748b; font-weight: 500; }
-        
-        .btn { background: linear-gradient(135deg, #4f46e5 0%, #2d20a0 100%); color: white; padding: 1rem 2.5rem; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2); }
-        .btn-green { background: #10b981; }
-        
-        /* Results Picker Styles */
-        .date-picker-container { position: relative; }
-        .date-picker-btn { background: white; border: 2px solid #e2e8f0; padding: 0.8rem 1.5rem; border-radius: 12px; font-family: 'Outfit'; font-weight: 700; color: #1e1b4b; cursor: pointer; display: flex; align-items: center; min-height: 44px; transition: all 0.2s; }
-        .date-picker-btn:hover { border-color: #4f46e5; color: #4f46e5; }
-        .date-picker-dropdown { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); width: 280px; z-index: 1000; overflow: hidden; border: 1px solid #f1f5f9; }
-        .date-picker-dropdown.show { display: block; animation: fadeInDown 0.2s ease-out; }
-        .date-item { padding: 1rem 1.5rem; cursor: pointer; border-bottom: 1px solid #f1f5f9; transition: all 0.2s; display: flex; flex-direction: column; text-align: left; }
-        .date-item:last-child { border-bottom: none; }
-        .date-item:hover { background: #f8fafc; }
-        .date-item.active { background: #f0f4ff; border-left: 4px solid #4f46e5; }
-        .date-item .date-main { font-weight: 700; color: #1e1b4b; font-size: 1rem; }
-        .date-item .date-sub { font-size: 0.8rem; color: #64748b; font-weight: 500; }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .discovery-section { background: #4f46e5; color: white; padding: 4rem 1rem; border-radius: 20px; text-align: center; margin: 2rem auto; max-width: 1000px; box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3); }
-        .discovery-section h2 { color: white; font-size: 2.5rem; margin-bottom: 1rem; }
-        .discovery-section h3 { font-size: 1.4rem; font-weight: 400; margin-bottom: 2rem; opacity: 0.9; }
-        .discovery-section p { font-size: 1.1rem; max-width: 800px; margin: 0 auto 2.5rem; line-height: 1.8; }
-
-        /* Market Types Info Grid */
-        .markets-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; text-align: left; margin-top: 3rem; }
-        .market-info-box h3 { font-size: 1.6rem; color: #1e1b4b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-        .market-info-box .rate { font-size: 1.2rem; font-weight: 700; color: #4f46e5; margin-bottom: 1rem; }
-        .market-info-box p { color: #475569; margin-bottom: 1.5rem; line-height: 1.6; }
-        .market-info-box .examples { font-size: 0.95rem; color: #1e1b4b; }
-        
-        .section { padding: 4rem 1rem; background: white; }
-        .section.alt { background: #f8fafc; }
-        .result-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 2rem; border-left: 4px solid #4f46e5; }
-        .match-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #f0f4ff; }
-        .match-title { font-size: 1.2rem; font-weight: 700; color: #1e1b4b; }
-        .markets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
-        .market-section h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid #e2e8f0; }
-        .hidden-section h4 { color: #4f46e5; }
-        .familiar-section h4 { color: #10b981; }
-        .market-item { background: #f9fafb; padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; }
-        .market-name { font-weight: 600; color: #334155; flex: 1; }
-        .market-conf { color: #4f46e5; font-weight: 700; margin: 0 0.5rem; min-width: 50px; text-align: center; }
-        .result-badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 4px; font-weight: 600; font-size: 0.85rem; }
-        .result-win { background: #d1fae5; color: #065f46; }
-        .result-loss { background: #fee2e2; color: #7f1d1d; }
-        .result-pending { background: #fef3c7; color: #92400e; }
-        .member-badge { background: #4f46e5; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 700; display: inline-block; margin-bottom: 1rem; }
-        .login-section { max-width: 400px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 1.5rem; }
-        label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e1b4b; }
-        input { width: 100%; padding: 0.8rem; border: 2px solid #e2e8f0; border-radius: 6px; font-family: 'Outfit', Arial; font-size: 1rem; }
-        .message { padding: 1rem; border-radius: 6px; margin-bottom: 1rem; display: none; }
-        .message.success { background: #d1fae5; color: #065f46; display: block; }
-        .message.error { background: #fee2e2; color: #7f1d1d; display: block; }
-        .pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .price-card { background: white; padding: 2rem; border-radius: 12px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 2px solid transparent; }
-        .price-card.featured { border: 2px solid #4f46e5; }
-        .price { font-size: 2.2rem; color: #4f46e5; font-weight: 800; margin: 1rem 0; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); }
-        .modal-content { background: white; margin: 5% auto; padding: 2rem; border-radius: 12px; width: 90%; max-width: 600px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-        .close { color: #aaa; float: right; font-size: 2rem; font-weight: bold; cursor: pointer; }
-        
-        footer { background: #1e1b4b; color: white; padding: 4rem 1rem 2rem; text-align: center; }
-        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 600px; margin: 2rem auto; }
-        .footer-item { background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; }
-        .footer-item h4 { font-size: 0.8rem; opacity: 0.7; text-transform: uppercase; margin-bottom: 0.3rem; }
-        .footer-item p { font-weight: 600; font-size: 0.95rem; }
-        .risk-warning { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #fca5a5; padding: 1rem; border-radius: 10px; max-width: 800px; margin: 2rem auto; font-size: 0.9rem; }
-        
-        @media (max-width: 768px) { .markets-grid { grid-template-columns: 1fr; } nav { flex-direction: column; gap: 1rem; } .nav-auth { margin-left: 0; } .discovery-section h2 { font-size: 1.8rem; } .footer-grid { grid-template-columns: 1fr; } .markets-info-grid { grid-template-columns: 1fr; gap: 2rem; } .hero h2 { font-size: 2.5rem; } }
+        body { font-family: 'Outfit', sans-serif; background-color: #050505; color: white; scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .indigo-gradient { background: linear-gradient(to bottom, #6366f1, #4338ca); }
+        .text-gradient { background: linear-gradient(to bottom, #ffffff, #9ca3af); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body>
-    <header>
-        <p class="founder">Built by Gideon Sylvester</p>
-        <h1>🎯 PREDIKT AI</h1>
-        <p style="font-style: italic;">Patterns don't lie</p>
-        <p style="margin-top: 1rem; font-weight: 600;">⭐ 80-90% High Probability Markets</p>
+<body class="min-h-screen selection:bg-indigo-500/30">
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 bg-black/50 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold italic">P</div>
+                <span class="text-xl font-bold tracking-tighter uppercase">Predikt AI</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="scrollToId('#pricing')" class="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">Pricing</button>
+                <button onclick="showAuthModal()" id="login-nav-btn" class="px-4 py-1.5 text-sm font-medium hover:text-indigo-400 transition-colors">Login</button>
+                <button onclick="scrollToId('#signup')" id="signup-nav-btn" class="px-4 py-1.5 text-sm font-medium bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-all shadow-lg shadow-indigo-500/20">Sign Up</button>
+                <button onclick="logout()" id="logout-nav-btn" class="hidden p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
     </header>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#results">Results</a>
-        <a href="#markets">Markets</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact">Contact</a>
-        <div class="nav-auth">
-            <button id="loginBtn" class="btn-login" onclick="openLogin()">Login</button>
-            <button id="logoutBtn" class="btn-logout" onclick="logout()" style="display: none;">Logout</button>
-        </div>
-    </nav>
+    <main class="pt-24 pb-20">
+        <!-- Hero Section -->
+        <section class="max-w-7xl mx-auto px-4 mb-16 text-center">
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-gradient">
+                Stop Chasing Odds.<br />Start Making <span class="text-indigo-500">Smart Decisions.</span>
+            </h1>
+            <p class="text-gray-300 text-xl font-medium max-w-3xl mx-auto mb-12">
+                Get AI-analyzed predictions for 6-24 matches across 7+ global leagues. All predictions in one place.
+            </p>
 
-    <section class="hero" id="home">
-        <div class="container">
-            <h2>Stop Chasing Odds.<br>Start Making <span class="highlight">Smart Decisions.</span></h2>
-            <p class="hero-sub">Get AI-analyzed predictions for 6-24 matches across 7+ global leagues. All predictions in one place.</p>
-            <div class="stats">
-                <div class="stat-box"><div class="stat-number">80-90%</div><p>Win Rate (Hidden Markets)</p></div>
-                <div class="stat-box"><div class="stat-number">50-65%</div><p>Win Rate (Familiar Markets)</p></div>
-                <div class="stat-box"><div class="stat-number">6-24</div><p>Matches Analyzed Daily</p></div>
-            </div>
-            <p style="text-align: center;"><a href="#signup" class="btn">Start Free 7-Day Trial</a></p>
-        </div>
-    </section>
-
-    <section id="results" class="section">
-        <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
-                <div style="text-align: left;">
-                    <h2 style="text-align: left; margin-bottom: 0.5rem;">Prediction Results</h2>
-                    <p id="selectedDateText" style="color: #64748b; font-weight: 500;">Results for Yesterday</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="glass rounded-2xl p-8 hover:bg-white/[0.05] transition-all">
+                    <div class="text-4xl font-black text-indigo-500 mb-2">80-90%</div>
+                    <div class="text-xs font-bold uppercase tracking-widest text-gray-500">Win Rate (Hidden Markets)</div>
                 </div>
-                <div class="date-picker-container">
-                    <button id="datePickerBtn" class="date-picker-btn" onclick="toggleDatePicker()">
-                        <span id="currentDateLabel">Yesterday</span>
-                        <span style="font-size: 0.8rem; margin-left: 0.5rem;">▼</span>
-                    </button>
-                    <div id="datePickerDropdown" class="date-picker-dropdown"></div>
+                <div class="glass rounded-2xl p-8 hover:bg-white/[0.05] transition-all">
+                    <div class="text-4xl font-black text-green-500 mb-2">50-65%</div>
+                    <div class="text-xs font-bold uppercase tracking-widest text-gray-500">Win Rate (Familiar Markets)</div>
+                </div>
+                <div class="glass rounded-2xl p-8 hover:bg-white/[0.05] transition-all">
+                    <div class="text-4xl font-black text-white mb-2">6-24</div>
+                    <div class="text-xs font-bold uppercase tracking-widest text-gray-500">Matches Analyzed Daily</div>
                 </div>
             </div>
 
-            <div id="resultsStats" style="background: #f1f5f9; padding: 0.75rem 1.5rem; border-radius: 100px; display: inline-flex; align-items: center; gap: 1rem; margin-bottom: 2rem; font-size: 0.9rem; color: #475569; font-weight: 600;">
-                <span id="matchCount">0 matches analyzed</span>
-                <span style="opacity: 0.3;">|</span>
-                <span id="predictionCount">0 market predictions</span>
-            </div>
+            <button onclick="scrollToId('#signup')" class="px-10 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-2xl font-black uppercase tracking-tighter transition-all shadow-2xl shadow-indigo-500/40">
+                Start Free 7-Day Trial
+            </button>
+        </section>
 
-            <div id="resultsLoading" style="text-align: center; color: #4f46e5; font-weight: 600; padding: 2rem;">Loading...</div>
-            <div id="resultsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;"></div>
-            
-            <div id="noResults" style="display: none; text-align: center; padding: 4rem 2rem; background: #f8fafc; border-radius: 20px; border: 2px dashed #e2e8f0;">
-                <p style="font-size: 1.2rem; color: #64748b; font-weight: 500;">📊 No results found for this date.</p>
-            </div>
-
-            <div id="premiumHistoryCTA" style="display: none; margin-top: 3rem; text-align: center; padding: 2rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%); border-radius: 16px; border: 1px solid #d0dfff;">
-                <p style="color: #1e1b4b; font-weight: 600; margin-bottom: 1rem;">Want to see more than 7 days of history?</p>
-                <button onclick="scrollTo('#pricing')" class="btn" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">Upgrade to Premium</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="section alt" id="todayPredictions" style="display: none;">
-        <div class="container">
-            <div class="member-badge">🎯 Member Only</div>
-            <h2>Today's Live Predictions</h2>
-            <div id="todayLoading" style="text-align: center; color: #4f46e5; font-weight: 600; padding: 2rem;">Loading...</div>
-            <div id="todayContainer" style="display: none;"></div>
-        </div>
-    </section>
-
-    <section class="section container" id="markets">
-        <div class="discovery-section">
-            <h2>Most Bettors Miss These Markets</h2>
-            <h3>Simply because they don't know where to find them.</h3>
-            <p>Get exclusive access to 80-90% win rate hidden markets that most bettors never discover. Our AI identifies these opportunities daily.</p>
-            <a href="https://reffpa.com/L?tag=d_4237102m_1599c_&site=4237102&ad=1599&r=registration" target="_blank" class="btn btn-green">Find Hidden Markets Now</a>
-        </div>
-
-        <h2 style="font-size: 2.8rem; margin-top: 4rem;">Two Market Types</h2>
-        <div class="markets-info-grid">
-            <div class="market-info-box">
-                <h3>🎯 Hidden Markets</h3>
-                <div class="rate">80-90%</div>
-                <p>Overlooked opportunities most don't analyze. Better odds, higher win rates.</p>
-                <p class="examples"><strong>Examples:</strong> Over 17.5 Fouls • Over 3.5 Saves • No Injury Time Goal</p>
-            </div>
-            <div class="market-info-box">
-                <h3>📌 Familiar Markets</h3>
-                <div class="rate" style="color: #10b981;">50-65%</div>
-                <p>Popular options. Easy to understand but highly competitive.</p>
-                <p class="examples"><strong>Examples:</strong> Home Win • Over 1.5 Goals • Both Teams Score</p>
-            </div>
-        </div>
-    </section>
-    <section id="pricing" class="section alt">
-        <div class="container">
-            <h2>Simple Pricing</h2>
-            <div class="pricing">
-                <div class="price-card featured">
-                    <h3>🎯 Free Trial</h3>
-                    <div class="price">7 Days</div>
-                    <a href="#signup" class="btn">Start Trial Now</a>
+        <!-- Prediction Results (Fixed History) -->
+        <section class="max-w-7xl mx-auto px-4 mb-20">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="trophy" class="text-yellow-500"></i>
+                        <h2 class="text-2xl font-bold uppercase tracking-widest text-gray-300">Prediction Results</h2>
+                    </div>
+                    <p id="selected-date-label" class="text-gray-500 font-medium">Loading history...</p>
                 </div>
-                <div class="price-card">
-                    <h3>💎 Premium</h3>
-                    <div class="price">₦1,000<span style="font-size: 0.9rem;">/month</span></div>
-                    <button onclick="makePayment()" class="btn btn-green">Upgrade Now</button>
+                <div id="date-picker" class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"></div>
+            </div>
+            <div id="results-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- Today's Predictions -->
+        <section class="max-w-7xl mx-auto px-4 mb-20">
+            <div class="flex items-center gap-3 mb-8">
+                <i data-lucide="calendar" class="text-indigo-500"></i>
+                <h2 class="text-2xl font-bold uppercase tracking-widest text-gray-300">Today's Predictions</h2>
+            </div>
+            <div id="picks-locked" class="relative overflow-hidden glass rounded-3xl p-12 text-center">
+                <i data-lucide="lock" class="mx-auto mb-6 text-indigo-400 w-12 h-12"></i>
+                <h3 class="text-2xl font-bold mb-4">Member Access Only</h3>
+                <p class="text-gray-400 mb-8 max-w-md mx-auto">Join our community to unlock today's high-confidence AI predictions and hidden markets.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="scrollToId('#signup')" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-xl font-bold transition-all">Start 7-Day Free Trial</button>
+                    <button onclick="showAuthModal()" class="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-xl font-bold transition-all">Login to Account</button>
                 </div>
             </div>
-        </div>
-    </section>
+            <div id="picks-container" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </section>
+        <!-- Pricing Section -->
+        <section id="pricing" class="max-w-7xl mx-auto px-4 mb-20">
+            <h2 class="text-4xl font-bold text-center mb-12 tracking-tight">Simple Pricing</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="glass rounded-[2rem] p-10 text-center hover:bg-white/[0.05] transition-all">
+                    <h3 class="text-xl font-bold uppercase tracking-widest text-gray-400 mb-4">Free Trial</h3>
+                    <div class="text-5xl font-black mb-6">7 Days</div>
+                    <p class="text-gray-500 mb-8">Full access to all AI picks and hidden markets for 7 days.</p>
+                    <button onclick="scrollToId('#signup')" class="w-full py-4 bg-white/10 hover:bg-white/20 rounded-xl font-bold transition-all">Start Trial Now</button>
+                </div>
+                <div class="bg-indigo-600 rounded-[2rem] p-10 text-center shadow-2xl shadow-indigo-500/20 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4"><span class="bg-white text-indigo-600 text-[10px] font-black px-2 py-1 rounded uppercase">Popular</span></div>
+                    <h3 class="text-xl font-bold uppercase tracking-widest text-white/70 mb-4">Premium</h3>
+                    <div class="text-5xl font-black mb-2">₦1,000</div>
+                    <div class="text-sm font-bold text-white/50 mb-6 uppercase tracking-widest">Per Month</div>
+                    <p class="text-white/80 mb-8">Unlimited access to all predictions, full history, and priority support.</p>
+                    <button onclick="makePayment()" class="block w-full py-4 bg-white text-indigo-600 hover:bg-gray-100 rounded-xl font-black uppercase tracking-tighter transition-all">Upgrade Now (Bank/Card)</button>
+                </div>
+            </div>
+        </section>
 
-    <section id="signup" class="section">
-        <div class="container">
-            <h2>Start Your Free 7-Day Trial</h2>
-            <div class="login-section">
-                <div id="message" class="message"></div>
-                <form id="signupForm">
-                    <div class="form-group"><label>Full Name *</label><input type="text" id="name" required></div>
-                    <div class="form-group"><label>Email Address *</label><input type="email" id="email" required></div>
-                    <div class="form-group"><label>Phone Number *</label><input type="tel" id="phone" required></div>
-                    <button type="submit" class="btn" style="width: 100%;">Activate Trial</button>
+        <!-- Signup Section -->
+        <section id="signup" class="max-w-7xl mx-auto px-4 mb-20">
+            <div class="max-w-xl mx-auto glass rounded-[2rem] p-10">
+                <h2 class="text-3xl font-bold text-center mb-8 tracking-tight">Activate Free Trial</h2>
+                <form id="signup-form" action="YOUR_APPS_SCRIPT_URL" method="POST" class="space-y-4">
+                    <input type="hidden" name="action" value="signup">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Full Name</label>
+                        <input name="name" id="signup-name" type="text" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-indigo-500 outline-none transition-colors" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Email Address</label>
+                        <input name="email" id="signup-email" type="email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-indigo-500 outline-none transition-colors" placeholder="name@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Phone Number</label>
+                        <input name="phone" id="signup-phone" type="tel" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-indigo-500 outline-none transition-colors" placeholder="+234...">
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 rounded-xl font-bold transition-all shadow-lg shadow-indigo-500/20">Activate 7-Day Access</button>
                 </form>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <footer id="contact">
-        <h2>Let's Connect</h2>
-        <div class="footer-grid">
-            <div class="footer-item">
-                <h4>Telegram</h4>
-                <p><a href="https://t.me/PrediktAI" style="color: white; text-decoration: none;">@PrediktAI</a></p>
-            </div>
-            <div class="footer-item">
-                <h4>Phone</h4>
-                <p>+234 807 693 9887</p>
-            </div>
-            <div class="footer-item">
-                <h4>Email</h4>
-                <p>prediktaisystems@gmail.com</p>
-            </div>
-            <div class="footer-item">
-                <h4>Location</h4>
-                <p>FCT, Abuja, Nigeria</p>
-            </div>
-        </div>
-
-        <div class="risk-warning">
-            ⚠️ Gambling involves risk. Please bet responsibly. Our predictions are based on AI patterns but do not guarantee outcomes. Only bet what you can afford to lose.
-        </div>
-
-        <p style="margin-top: 2rem; opacity: 0.6;">🎯 PREDIKT AI &copy; 2026. Patterns don't lie. 🇳🇬</p>
-    </footer>
-
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLogin()">&times;</span>
-            <h2>Login</h2>
-            <form id="loginForm">
-                <div class="form-group"><label>Email *</label><input type="email" id="loginEmail" required></div>
-                <div class="form-group"><label>Phone *</label><input type="tel" id="loginPhone" required></div>
-                <button type="submit" class="btn" style="width: 100%;">Login</button>
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="glass relative w-full max-w-md rounded-[2rem] p-8 shadow-2xl">
+            <button onclick="closeAuthModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white"><i data-lucide="x"></i></button>
+            <h2 class="text-2xl font-bold mb-8">Welcome Back</h2>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Email Address</label>
+                    <input id="login-email" type="email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-indigo-500 outline-none transition-colors" placeholder="name@example.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Phone Number</label>
+                    <input id="login-phone" type="tel" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-indigo-500 outline-none transition-colors" placeholder="+234...">
+                </div>
+                <button type="submit" id="login-submit-btn" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 rounded-xl font-bold transition-all">Login to Dashboard</button>
             </form>
         </div>
     </div>
 
     <script>
-        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwoZDtztGN9Tswgk2CKuiU3ehnQHjwSd4hbQePFnz2Xy_f558U3uQiGiv9yPdDYxx6G/exec';
-        // IMPORTANT: Replace with your actual Flutterwave Public Key
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-e897ea2a840804cd9272f0e15519fbdb-X'; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzCp22lap1poWVk05Yp3KmSIjuavQ7D_9IiF849GTLsO5ffDQ9Ritmuv8d3NdHDChfE/exec"; // PASTE YOUR URL HERE
+        const FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK-e897ea2a840804cd9272f0e15519fbdb-X"; // PASTE YOUR PUBLIC KEY HERE
         
-        let loggedInUser = null;
         let allResults = [];
-        let selectedDate = null;
-        let historyDates = [];
+        let selectedDate = new Date();
+        selectedDate.setDate(selectedDate.getDate() - 1);
 
-        function initDates() {
-            historyDates = [];
-            for (let i = 1; i <= 7; i++) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
-                d.setHours(0,0,0,0);
-                historyDates.push({
-                    date: d,
-                    label: i === 1 ? 'Yesterday' : `${i} days ago`,
-                    formatted: d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })
-                });
-            }
-            selectedDate = historyDates[0];
+        window.onload = () => {
+            lucide.createIcons();
+            checkUser();
             renderDatePicker();
+            fetchResults();
+            
+            // Fix form action
+            document.getElementById('signup-form').action = SCRIPT_URL;
+        };
+
+        function makePayment() {
+            const user = JSON.parse(localStorage.getItem('predikt_user')) || {};
+            const email = user.email || document.getElementById('signup-email').value || "customer@example.com";
+            const name = user.name || document.getElementById('signup-name').value || "Customer";
+            const phone = user.phone || document.getElementById('signup-phone').value || "";
+
+            FlutterwaveCheckout({
+                public_key: FLUTTERWAVE_PUBLIC_KEY,
+                tx_ref: "PREDIKT-" + Date.now(),
+                amount: 1000,
+                currency: "NGN",
+                payment_options: "card, banktransfer, ussd",
+                customer: { email, phone_number: phone, name },
+                callback: async function (data) {
+                    if (data.status === "successful") {
+                        await fetch(`${SCRIPT_URL}?action=paid&email=${encodeURIComponent(email)}`);
+                        alert("Payment successful! Your account is now Premium.");
+                        location.reload();
+                    }
+                },
+                customizations: {
+                    title: "PREDIKT AI Premium",
+                    description: "30-Day Premium Access",
+                    logo: "https://prediktaisystems-byte.github.io/prediktai-website/logo.png",
+                },
+            });
         }
 
-        function toggleDatePicker() {
-            document.getElementById('datePickerDropdown').classList.toggle('show');
+        function checkUser() {
+            const user = localStorage.getItem('predikt_user');
+            if (user) {
+                const userData = JSON.parse(user);
+                document.getElementById('login-nav-btn').classList.add('hidden');
+                document.getElementById('signup-nav-btn').classList.add('hidden');
+                document.getElementById('logout-nav-btn').classList.remove('hidden');
+                document.getElementById('picks-locked').classList.add('hidden');
+                document.getElementById('picks-container').classList.remove('hidden');
+                loadPicks(userData.email);
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const phone = document.getElementById('login-phone').value;
+            const btn = document.getElementById('login-submit-btn');
+            btn.innerText = "Verifying...";
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=checkMember&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`);
+                const data = await res.json();
+                if (data.valid) {
+                    localStorage.setItem('predikt_user', JSON.stringify({ email, phone, type: data.type }));
+                    location.reload();
+                } else { alert("Invalid details."); btn.innerText = "Login"; }
+            } catch (err) { alert("Error."); btn.innerText = "Login"; }
+        }
+
+        async function loadPicks(email) {
+            const container = document.getElementById('picks-container');
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=unlockPicks&email=${encodeURIComponent(email)}`);
+                const json = await res.json();
+                if (json.status === 'success') {
+                    container.innerHTML = json.data.map(p => `
+                        <div class="glass rounded-2xl p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest bg-indigo-500/10 px-2 py-1 rounded">${p.competition}</span>
+                                <span class="text-[10px] font-bold text-gray-500">${p.kickoff}</span>
+                            </div>
+                            <h3 class="text-lg font-bold mb-4 leading-tight">${p.match}</h3>
+                            <div class="space-y-3">
+                                ${[ {m:p.market1, c:p.conf1}, {m:p.market2, c:p.conf2}, {m:p.market3, c:p.conf3} ].map(m => `
+                                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/5">
+                                        <span class="text-sm font-medium text-gray-300">${m.m}</span>
+                                        <span class="text-xs font-bold text-indigo-400">${m.c}%</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function fetchResults() {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getResults`);
+                allResults = await res.json();
+                renderResults();
+            } catch (e) { console.error(e); }
+        }
+
+        function getDateKey(dateInput) {
+            const d = new Date(dateInput);
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         }
 
         function renderDatePicker() {
-            const dropdown = document.getElementById('datePickerDropdown');
-            dropdown.innerHTML = historyDates.map((d, index) => `
-                <div class="date-item ${selectedDate.date.getTime() === d.date.getTime() ? 'active' : ''}" onclick="selectDate(${index})">
-                    <span class="date-main">${d.formatted}</span>
-                    <span class="date-sub">${d.label}</span>
-                </div>
-            `).join('');
-            document.getElementById('currentDateLabel').textContent = selectedDate.label;
-            document.getElementById('selectedDateText').textContent = `Results for ${selectedDate.formatted}`;
-        }
-
-        function selectDate(index) {
-            selectedDate = historyDates[index];
-            renderDatePicker();
-            toggleDatePicker();
-            renderFilteredResults();
-        }
-
-        function checkLogin() {
-            const storedUser = localStorage.getItem('prediktUser');
-            if (storedUser) {
-                loggedInUser = JSON.parse(storedUser);
-                updateUI();
-                loadTodayPredictions();
-            }
-        }
-
-        function updateUI() {
-            const loginBtn = document.getElementById('loginBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const todaySection = document.getElementById('todayPredictions');
-            const premiumCTA = document.getElementById('premiumHistoryCTA');
-            if (loggedInUser) {
-                loginBtn.style.display = 'none'; logoutBtn.style.display = 'block';
-                todaySection.style.display = 'block';
-                premiumCTA.style.display = 'none';
-            } else {
-                loginBtn.style.display = 'block'; logoutBtn.style.display = 'none';
-                todaySection.style.display = 'none';
-                premiumCTA.style.display = 'block';
-            }
-        }
-
-        function openLogin() { document.getElementById('loginModal').style.display = 'block'; }
-        function closeLogin() { document.getElementById('loginModal').style.display = 'none'; }
-        function logout() { loggedInUser = null; localStorage.removeItem('prediktUser'); updateUI(); location.reload(); }
-        function scrollTo(id) { document.querySelector(id).scrollIntoView({ behavior: 'smooth' }); }
-
-        function makePayment() {
-            if (!loggedInUser) { alert("Please login or signup first to upgrade."); scrollTo("#signup"); return; }
-            FlutterwaveCheckout({
-                public_key: FLUTTERWAVE_PUBLIC_KEY,
-                tx_ref: "PREDIKT_" + Math.floor((Math.random() * 1000000000) + 1),
-                amount: 1000, currency: "NGN", payment_options: "card, banktransfer, ussd",
-                customer: { email: loggedInUser.email, phone_number: loggedInUser.phone || "", name: loggedInUser.name || "Member" },
-                callback: function (data) {
-                    if (data.status === "successful") {
-                        fetch(APPS_SCRIPT + '?action=paid&email=' + encodeURIComponent(loggedInUser.email), { method: 'POST', mode: 'no-cors' }).then(() => {
-                            alert("✅ Payment successful! Your account is being upgraded."); location.reload();
-                        });
-                    }
-                },
-                customizations: { title: "PREDIKT AI Premium", description: "30 Days Premium Access" },
-            });
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const phone = document.getElementById('loginPhone').value;
-            try {
-                const response = await fetch(APPS_SCRIPT + '?action=checkMember&email=' + encodeURIComponent(email) + '&phone=' + encodeURIComponent(phone));
-                const data = await response.json();
-                if (data.valid) {
-                    loggedInUser = { email, phone };
-                    localStorage.setItem('prediktUser', JSON.stringify(loggedInUser));
-                    closeLogin(); updateUI(); loadTodayPredictions();
-                } else { alert('❌ Account not found.'); }
-            } catch (error) { alert('Error: ' + error.message); }
-        });
-
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const msg = document.getElementById('message');
-            try {
-                await fetch(APPS_SCRIPT, {
-                    method: 'POST', mode: 'no-cors',
-                    body: `action=signup&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`
-                });
-                msg.className = 'message success'; msg.textContent = '✅ Trial activated! Login above.';
-            } catch (error) { msg.className = 'message error'; msg.textContent = '❌ Error: ' + error.message; }
-        });
-
-        function formatTime(timeStr) {
-            if (!timeStr) return 'N/A';
-            const str = String(timeStr);
-            if (str.includes('1899-12-30') || str.includes('T')) {
-                try {
-                    const date = new Date(str);
-                    if (isNaN(date.getTime())) return str;
-                    const h = date.getHours().toString().padStart(2, '0');
-                    const m = date.getMinutes().toString().padStart(2, '0');
-                    return `${h}:${m}`;
-                } catch (e) { return str; }
-            }
-            return str;
-        }
-
-        async function loadResults() {
-            try {
-                const response = await fetch(APPS_SCRIPT + '?action=getResults');
-                allResults = await response.json();
-                renderFilteredResults();
-            } catch (e) { document.getElementById('resultsLoading').innerHTML = '❌ Error loading results.'; }
-        }
-
-        function renderFilteredResults() {
-            const container = document.getElementById('resultsContainer');
-            const loading = document.getElementById('resultsLoading');
-            const noResults = document.getElementById('noResults');
-            const matchCountEl = document.getElementById('matchCount');
-            const predCountEl = document.getElementById('predictionCount');
-
-            if (!Array.isArray(allResults)) return;
-
-            const filtered = allResults.filter(r => {
-                const d = new Date(r.date);
-                d.setHours(0,0,0,0);
-                return d.getTime() === selectedDate.date.getTime();
-            });
-
+            const container = document.getElementById('date-picker');
             container.innerHTML = '';
+            for (let i = 1; i <= 7; i++) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const isActive = getDateKey(d) === getDateKey(selectedDate);
+                const label = i === 1 ? 'Yesterday' : `${i} days ago`;
+                const btn = document.createElement('button');
+                btn.className = `flex-shrink-0 px-6 py-2 rounded-xl font-bold text-sm transition-all border ${isActive ? 'bg-indigo-600 text-white border-indigo-500' : 'glass text-gray-400 hover:bg-white/10'}`;
+                btn.innerText = label;
+                btn.onclick = () => { selectedDate = d; renderDatePicker(); renderResults(); };
+                container.appendChild(btn);
+            }
+        }
+
+        function renderResults() {
+            const container = document.getElementById('results-container');
+            const label = document.getElementById('selected-date-label');
+            const targetKey = getDateKey(selectedDate);
+            label.innerText = `Results for ${selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}`;
+            const filtered = allResults.filter(r => getDateKey(r.date) === targetKey);
             if (filtered.length === 0) {
-                loading.style.display = 'none'; container.style.display = 'none'; noResults.style.display = 'block';
-                matchCountEl.textContent = '0 matches analyzed'; predCountEl.textContent = '0 market predictions';
+                container.innerHTML = `<div class="col-span-full glass rounded-2xl p-20 text-center text-gray-500 italic">No results found for this date.</div>`;
                 return;
             }
-
-            const matchGroups = groupMatches(filtered);
-            let totalMatches = 0;
-            let totalPreds = 0;
-
-            Object.keys(matchGroups).forEach(k => {
-                const group = matchGroups[k];
-                container.appendChild(createMatchCard(group));
-                totalMatches++;
-                totalPreds += (group.hidden.length + group.familiar.length) * 3;
-            });
-
-            matchCountEl.textContent = `${totalMatches} matches analyzed`;
-            predCountEl.textContent = `${totalPreds} market predictions`;
-            loading.style.display = 'none'; noResults.style.display = 'none'; container.style.display = 'grid';
+            const grouped = filtered.reduce((acc, curr) => {
+                if (!acc[curr.match]) acc[curr.match] = { match: curr.match, competition: curr.competition, kickoff: curr.kickoff, hidden: null, familiar: null };
+                if (curr.marketType === 'HIDDEN') acc[curr.match].hidden = curr;
+                if (curr.marketType === 'FAMILIAR') acc[curr.match].familiar = curr;
+                return acc;
+            }, {});
+            container.innerHTML = Object.values(grouped).map(m => `
+                <div class="glass rounded-2xl overflow-hidden">
+                    <div class="p-4 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
+                        <div><span class="text-[10px] font-black uppercase text-indigo-400 block">${m.competition}</span><span class="text-[10px] font-medium text-gray-500">${m.kickoff}</span></div>
+                        <div class="px-2 py-0.5 bg-green-500/10 text-green-500 text-[10px] font-bold rounded uppercase">Completed</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold mb-6">${m.match}</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                            ${m.hidden ? renderMarketBox('Hidden Markets', m.hidden, 'indigo') : ''}
+                            ${m.familiar ? renderMarketBox('Familiar Markets', m.familiar, 'green') : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
         }
 
-        async function loadTodayPredictions() {
-            if (!loggedInUser) return;
-            try {
-                const response = await fetch(APPS_SCRIPT + '?action=unlockPicks&email=' + encodeURIComponent(loggedInUser.email));
-                const res = await response.json();
-                const container = document.getElementById('todayContainer');
-                const loading = document.getElementById('todayLoading');
-                if (res.status !== 'success' || !Array.isArray(res.data) || res.data.length === 0) {
-                    loading.innerHTML = '📊 No predictions yet.'; return;
-                }
-                container.innerHTML = '';
-                const matchGroups = groupMatches(res.data);
-                Object.keys(matchGroups).forEach(k => container.appendChild(createMatchCard(matchGroups[k])));
-                loading.style.display = 'none'; container.style.display = 'grid';
-            } catch (e) { document.getElementById('todayLoading').innerHTML = '❌ Error.'; }
+        function renderMarketBox(title, data, color) {
+            return `<div><div class="flex items-center gap-2 mb-3"><div class="w-1.5 h-1.5 bg-${color}-500 rounded-full"></div><span class="text-[10px] font-black uppercase text-gray-400">${title}</span></div><div class="space-y-3 pl-3 border-l border-white/5">${renderMarketRow('Primary', data.market1, data.conf1, data.result1)}${renderMarketRow('Secondary', data.market2, data.conf2, data.result2)}${renderMarketRow('Alternative', data.market3, data.conf3, data.result3)}</div></div>`;
         }
 
-        function groupMatches(data) {
-            const groups = {};
-            data.forEach(r => {
-                if (!r || !r.match) return;
-                if (!groups[r.match]) groups[r.match] = { match: r.match, competition: r.competition, kickoff: r.kickoff, hidden: [], familiar: [] };
-                const type = String(r.marketType || '').toUpperCase();
-                if (type.includes('HIDDEN')) groups[r.match].hidden.push(r);
-                else groups[r.match].familiar.push(r);
-            });
-            return groups;
+        function renderMarketRow(label, market, conf, result) {
+            const isWin = result === 'WON' || result === 'WIN';
+            const isLoss = result === 'LOST' || result === 'LOSS';
+            return `<div class="flex items-center justify-between gap-4"><div class="flex-1"><span class="text-[9px] font-bold uppercase text-gray-600 block mb-0.5">${label}</span><span class="text-sm font-medium text-gray-300">${market}</span></div><div class="text-right"><span class="text-[9px] font-bold uppercase text-gray-600 block mb-0.5">Conf.</span><span class="text-sm font-mono text-indigo-400">${conf}%</span></div><div class="w-6 h-6 rounded flex items-center justify-center ${isWin ? 'text-green-500' : isLoss ? 'text-red-500' : 'text-gray-600'}"><i data-lucide="${isWin ? 'check-circle-2' : isLoss ? 'alert-circle' : 'help-circle'}" class="w-4 h-4"></i></div></div>`;
         }
 
-        function createMatchCard(group) {
-            const card = document.createElement('div'); card.className = 'result-card';
-            const cleanTime = formatTime(group.kickoff);
-            const headerText = `${group.match} | ${group.competition || 'N/A'} | ${cleanTime}`;
-            let html = `<div class="match-header"><div class="match-title">${headerText}</div></div><div class="markets-grid">`;
-            if (group.hidden.length > 0) {
-                html += `<div class="market-section hidden-section"><h4>🎯 Hidden Markets</h4>`;
-                group.hidden.forEach(r => {
-                    [1,2,3].forEach(i => { if(r['market'+i]) html += `<div class="market-item"><span class="market-name">${r['market'+i]}</span><span class="market-conf">${r['conf'+i]}%</span>${getResultBadge(r['result'+i])}</div>`; });
-                });
-                html += `</div>`;
-            }
-            if (group.familiar.length > 0) {
-                html += `<div class="market-section familiar-section"><h4>📌 Familiar Markets</h4>`;
-                group.familiar.forEach(r => {
-                    [1,2,3].forEach(i => { if(r['market'+i]) html += `<div class="market-item"><span class="market-name">${r['market'+i]}</span><span class="market-conf">${r['conf'+i]}%</span>${getResultBadge(r['result'+i])}</div>`; });
-                });
-                html += `</div>`;
-            }
-            html += `</div>`; card.innerHTML = html; return card;
-        }
-
-        function getResultBadge(res) {
-            const r = String(res || '').toUpperCase().trim();
-            if (r === 'WIN') return '<span class="result-badge result-win">WIN</span>';
-            if (r === 'LOSS') return '<span class="result-badge result-loss">LOSS</span>';
-            return '<span class="result-badge result-pending">PENDING</span>';
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.closest('.date-picker-container')) {
-                const dropdown = document.getElementById('datePickerDropdown');
-                if (dropdown && dropdown.classList.contains('show')) dropdown.classList.remove('show');
-            }
-        }
-
-        initDates(); loadResults(); checkLogin();
-        setInterval(loadResults, 30000);
+        function scrollToId(id) { document.querySelector(id).scrollIntoView({ behavior: 'smooth' }); }
+        function showAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
+        function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+        function logout() { localStorage.removeItem('predikt_user'); location.reload(); }
     </script>
 </body>
 </html>
