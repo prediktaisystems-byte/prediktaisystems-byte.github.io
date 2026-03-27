@@ -53,7 +53,7 @@
 
         .section { padding: 6rem 0; }
         .section.alt { background: #f1f5f9; }
-        .section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 3rem; letter-spacing: -1px; }
+        .section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 3rem; letter-spacing: -1px; text-align: center; }
 
         .result-card { background: white; border-radius: 24px; padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid #f1f5f9; }
         .match-header { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f1f5f9; }
@@ -78,6 +78,7 @@
 
         footer { background: #0f172a; color: white; padding: 6rem 1rem 3rem; text-align: center; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-bottom: 4rem; }
+        .footer-item h4 { margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; opacity: 0.6; }
         .risk-warning { background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px; font-size: 0.9rem; max-width: 800px; margin: 0 auto; opacity: 0.8; }
 
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); }
@@ -139,8 +140,8 @@
     <section id="results" class="section">
         <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <h2>Prediction Results</h2>
+                <div style="text-align: left;">
+                    <h2 style="text-align: left; margin-bottom: 0.5rem;">Prediction Results</h2>
                     <p id="resultsDateLabel" style="color: #64748b; font-weight: 600;">Results for Yesterday</p>
                 </div>
                 <select id="dateSelect" onchange="loadResultsByDate()" style="padding: 0.8rem; border-radius: 12px; border: 2px solid #f1f5f9; font-family: 'Outfit'; font-weight: 600; color: #4f46e5;">
@@ -173,7 +174,7 @@
 
     <section id="pricing" class="section alt">
         <div class="container">
-            <h2 style="text-align: center;">Simple Pricing</h2>
+            <h2>Simple Pricing</h2>
             <div class="pricing">
                 <div class="price-card featured">
                     <h3>🎯 Free Trial</h3>
@@ -191,7 +192,7 @@
 
     <section id="signup" class="section">
         <div class="container">
-            <h2 style="text-align: center;">Start Your Free 7-Day Trial</h2>
+            <h2>Start Your Free 7-Day Trial</h2>
             <div class="login-section">
                 <div id="signupMsg" style="display: none; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; font-weight: 700; text-align: center;"></div>
                 <form id="signupForm" onsubmit="handleSignup(event)">
@@ -207,10 +208,18 @@
     <footer>
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-item"><h4>Telegram</h4><p><a href="https://t.me/PrediktAI" style="color: white; text-decoration: none; font-weight: 700;">@PrediktAI</a></p></div>
-                <div class="footer-item"><h4>Phone</h4><p style="font-weight: 700;">+234 807 693 9887</p></div>
-                <div class="footer-item"><h4>Email</h4><p style="font-weight: 700;">prediktaisystems@gmail.com</p></div>
-                <div class="footer-item"><h4>Location</h4><p style="font-weight: 700;">FCT, Abuja, Nigeria</p></div>
+                <div class="footer-item">
+                    <h4>Telegram</h4>
+                    <p><a href="https://t.me/PrediktAI" style="color: white; text-decoration: none; font-weight: 700;">@PrediktAI</a></p>
+                </div>
+                <div class="footer-item">
+                    <h4>Phone</h4>
+                    <p style="font-weight: 700;">+234 807 693 9887</p>
+                </div>
+                <div class="footer-item">
+                    <h4>Email</h4>
+                    <p style="font-weight: 700;">prediktaisystems@gmail.com</p>
+                </div>
             </div>
             <div class="risk-warning">⚠️ Gambling involves risk. Please bet responsibly. Our predictions are based on AI patterns but do not guarantee outcomes.</div>
             <p style="margin-top: 4rem; opacity: 0.5; font-size: 0.8rem;">🎯 PREDIKT AI &copy; 2026. Patterns don't lie. 🇳🇬</p>
@@ -231,7 +240,7 @@
 
     <script>
         const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyOJDbOzm3J-BKgrbxd2_ZFO3CxGkOZVlbbT627l0YPfO60QsOvGLYGvEU9AGkhFo0o/exec';
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-3f5ea8d01747c5d65314e4b3da7c7b6b-X'; // Preserved original key
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-a601fba5c000d8421c2f1ef69849e70d-X'; 
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
         let allResults = [];
@@ -308,7 +317,7 @@
                 if (list.length === 0) return '';
                 return `
                     <div class="market-section">
-                        <h4 style="font-size: 0.8rem; text-transform: uppercase; color: #64748b; margin-bottom: 0.5rem;">${icon} ${title}</h4>
+                        <h4 style="font-size: 0.8rem; text-transform: uppercase; color: #64748b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">${icon} ${title}</h4>
                         ${list.map(r => [1,2,3].map(i => r[`market${i}`] ? `
                             <div class="market-item">
                                 <span>${r[`market${i}`]}</span>
@@ -344,29 +353,21 @@
             } catch (e) { alert('Login error.'); }
         }
 
-        // --- FIXED SIGNUP FUNCTION ---
         async function handleSignup(e) {
             e.preventDefault();
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
             const msg = document.getElementById('signupMsg');
-            
-            // FIX: Pass parameters in the URL for Google Apps Script compatibility
             const url = `${APPS_SCRIPT}?action=signup&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
-            
             try {
-                // Using POST with parameters in the URL is the most reliable way for Apps Script
                 await fetch(url, { method: 'POST', mode: 'no-cors' });
-                
                 msg.style.display = 'block';
                 msg.style.background = '#dcfce7';
                 msg.style.color = '#166534';
                 msg.textContent = '✅ Congratulations! Trial activated. Login above.';
-                e.target.reset(); // Clear the form
-            } catch (e) { 
-                alert('Signup error. Please check your connection.'); 
-            }
+                e.target.reset();
+            } catch (e) { alert('Signup error.'); }
         }
 
         async function loadTodayPredictions() {
@@ -412,10 +413,12 @@
         function openLogin() { document.getElementById('loginModal').style.display = 'block'; }
         function closeLogin() { document.getElementById('loginModal').style.display = 'none'; }
         function scrollToSignup() { document.getElementById('signup').scrollIntoView({ behavior: 'smooth' }); }
+        
+        // FIXED: Now takes user straight to signup form
         function handleHeroAction() {
-            if (loggedInUser) document.getElementById('todayPredictions').scrollIntoView({ behavior: 'smooth' });
-            else scrollToSignup();
+            scrollToSignup();
         }
+        
         function loadResultsByDate() { renderResults(); }
 
         init();
