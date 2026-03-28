@@ -247,7 +247,7 @@
     </div>
 
     <script>
-        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwCb0LGi_4I4ZBR0zx0AkvCTwHHA4O1syXtmVI_s58NETcJowx4bzC70gIctaDi/exec';
+        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzXFDamYtLrCsRFaqheIMKeYUsIRxH30pix6O2hYKSdgKbVj5FgyMlvf44x-ergiKgW/exec';
         const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-9410af5261af81ed9919c6c74a408be4-X'; 
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
@@ -337,9 +337,12 @@
                 `;
             };
 
-            // IMPROVED: Robust regex to extract HH:mm from any string format
-            const timeMatch = g.kickoff ? String(g.kickoff).match(/\d{2}:\d{2}/) : null;
-            const kickoffTime = timeMatch ? timeMatch[0] : (g.kickoff || '00:00');
+            // IMPROVED: Extract HH:mm safely from any string format (e.g. "14:00" or ISO)
+            let kickoffTime = '00:00';
+            if (g.kickoff) {
+                const timeMatch = String(g.kickoff).match(/\d{1,2}:\d{2}/);
+                kickoffTime = timeMatch ? timeMatch[0] : String(g.kickoff);
+            }
 
             return `
                 <div class="result-card">
@@ -409,7 +412,6 @@
                 customer: { email: loggedInUser.email, phone_number: loggedInUser.phone, name: "Member" },
                 callback: function(data) {
                     if (data.status === "successful") {
-                        // Updated to use the new paymentSuccess action
                         fetch(`${APPS_SCRIPT}?action=paymentSuccess&email=${encodeURIComponent(loggedInUser.email)}`, { method: 'GET', mode: 'no-cors' })
                         .then(() => { alert("Payment successful! Account upgraded."); location.reload(); });
                     }
