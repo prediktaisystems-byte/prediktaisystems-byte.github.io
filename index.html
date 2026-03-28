@@ -56,7 +56,7 @@
         .stat-number { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; }
         .stat-box p { font-weight: 600; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        .btn { background: var(--primary); color: white; padding: 1.2rem 2.5rem; border-radius: 16px; text-decoration: none; font-weight: 800; font-size: 1.1rem; border: none; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3); transition: all 0.3s; }
+        .btn { background: var(--primary); color: white; padding: 1.2rem 2.5rem; border-radius: 16px; text-decoration: none; font-weight: 800; font-size: 1.1rem; display: inline-block; border: none; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3); transition: all 0.3s; }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(79, 70, 229, 0.4); }
         .btn-green { background: var(--accent); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); }
 
@@ -337,11 +337,16 @@
                 `;
             };
 
+            // FIX: Extract HH:mm from ISO string (e.g., 1899-12-30T15:00:00.000Z -> 15:00)
+            const kickoffTime = g.kickoff && String(g.kickoff).includes('T') 
+                ? String(g.kickoff).split('T')[1].substring(0, 5) 
+                : g.kickoff;
+
             return `
                 <div class="result-card">
                     <div class="match-header">
                         <div class="match-title">${g.match}</div>
-                        <div style="font-size: 0.8rem; color: #64748b; font-weight: 600;">${g.competition} • ${g.kickoff}</div>
+                        <div style="font-size: 0.8rem; color: #64748b; font-weight: 600;">${g.competition} • ${kickoffTime}</div>
                     </div>
                     ${renderMarkets(g.hidden, 'Hidden Markets', '🎯')}
                     ${renderMarkets(g.familiar, 'Familiar Markets', '📌')}
@@ -405,6 +410,7 @@
                 customer: { email: loggedInUser.email, phone_number: loggedInUser.phone, name: "Member" },
                 callback: function(data) {
                     if (data.status === "successful") {
+                        // Updated to use the new paymentSuccess action
                         fetch(`${APPS_SCRIPT}?action=paymentSuccess&email=${encodeURIComponent(loggedInUser.email)}`, { method: 'GET', mode: 'no-cors' })
                         .then(() => { alert("Payment successful! Account upgraded."); location.reload(); });
                     }
@@ -428,4 +434,4 @@
         init();
     </script>
 </body>
-</html>
+    </html>
