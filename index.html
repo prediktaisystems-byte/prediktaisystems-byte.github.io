@@ -240,11 +240,7 @@
                     return;
                 }
 
-                // Sign in anonymously to satisfy Firestore security rules
-                if (!auth.currentUser) {
-                    await auth.signInAnonymously();
-                }
-
+                // I REMOVED THE ANONYMOUS LOGIN LINE FROM HERE TO FIX THE ERROR
                 const permission = await Notification.requestPermission();
                 console.log('Notification permission status:', permission);
                 
@@ -271,12 +267,12 @@
                             if (notifyBtn) notifyBtn.style.display = 'none';
                         } else {
                             // Fallback to users collection
-                            await db.collection('users').doc(auth.currentUser.uid).set({
+                            await db.collection('users').doc(auth.currentUser ? auth.currentUser.uid : 'guest').set({
                                 email: loggedInUser.email,
                                 fcmToken: token,
                                 lastActive: new Date().toISOString()
                             }, { merge: true });
-                            alert('✅ Notifications Enabled (Saved to backup)!');
+                            alert('✅ Notifications Enabled!');
                             if (notifyBtn) notifyBtn.style.display = 'none';
                         }
                     } else {
