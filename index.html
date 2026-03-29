@@ -17,7 +17,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-3QQ5W2XE4Y');
 </script>
     <style>
@@ -31,16 +30,13 @@
             --white: #ffffff;
             --shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Outfit', Arial, sans-serif; color: var(--text); line-height: 1.6; background: var(--bg); overflow-x: hidden; }
-        
         header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 3rem 1rem; text-align: center; }
         header .founder { font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem; font-weight: 500; }
         header h1 { font-size: 3rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 0.5rem; }
         header .italic { font-style: italic; opacity: 0.8; font-size: 1.1rem; }
         header .badge { background: rgba(255,255,255,0.2); display: inline-block; padding: 0.4rem 1rem; border-radius: 20px; font-weight: 600; margin-top: 1rem; font-size: 0.9rem; }
-
         nav { background: white; padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; }
         nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: opacity 0.2s; }
         nav a:hover { opacity: 0.7; }
@@ -48,60 +44,45 @@
         .nav-auth button { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: 'Outfit'; transition: transform 0.2s; }
         .btn-login { background: var(--primary); color: white; }
         .btn-logout { background: #ef4444; color: white; }
-
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-        
         .hero { padding: 5rem 0; text-align: center; background: radial-gradient(circle at top right, #f0f4ff, transparent); }
         .hero h2 { font-size: 3.5rem; line-height: 1.1; font-weight: 800; color: #0f172a; margin-bottom: 1.5rem; letter-spacing: -2px; }
         .hero .highlight { color: var(--primary); }
         .hero-sub { font-size: 1.25rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 3rem; font-weight: 400; }
-        
         .stats { display: flex; justify-content: center; gap: 2rem; margin-bottom: 4rem; flex-wrap: wrap; }
         .stat-box { background: white; padding: 2rem; border-radius: 24px; box-shadow: var(--shadow); min-width: 220px; border: 1px solid #f1f5f9; }
         .stat-number { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; }
         .stat-box p { font-weight: 600; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-
         .btn { background: var(--primary); color: white; padding: 1.2rem 2.5rem; border-radius: 16px; text-decoration: none; font-weight: 800; font-size: 1.1rem; display: inline-block; border: none; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3); transition: all 0.3s; }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(79, 70, 229, 0.4); }
         .btn-green { background: var(--accent); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); }
-
         .section { padding: 6rem 0; }
         .section.alt { background: #f1f5f9; }
         .section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 3rem; letter-spacing: -1px; text-align: center; }
-
         .result-card { background: white; border-radius: 24px; padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid #f1f5f9; }
         .match-header { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f1f5f9; }
         .match-title { font-weight: 800; font-size: 1.1rem; color: #0f172a; }
-        
         .market-item { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: #f8fafc; border-radius: 12px; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
         .market-conf { color: var(--primary); font-weight: 800; }
-        
         .result-badge { padding: 0.3rem 0.8rem; border-radius: 8px; font-size: 0.7rem; font-weight: 800; }
         .result-win { background: #dcfce7; color: #166534; }
         .result-loss { background: #fee2e2; color: #991b1b; }
         .result-pending { background: #f1f5f9; color: #475569; }
-
         .pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto; }
         .price-card { background: white; padding: 3rem 2rem; border-radius: 32px; box-shadow: var(--shadow); text-align: center; }
         .price-card.featured { border: 2px solid var(--primary); position: relative; }
-
         .login-section { background: white; padding: 3rem; border-radius: 32px; box-shadow: var(--shadow); max-width: 500px; margin: 0 auto; }
         .form-group { margin-bottom: 1.5rem; text-align: left; }
         .form-group label { display: block; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.9rem; color: #475569; }
         .form-group input { width: 100%; padding: 1rem; border: 2px solid #f1f5f9; border-radius: 12px; font-family: 'Outfit'; font-size: 1rem; }
-
         footer { background: #0f172a; color: white; padding: 6rem 1rem 3rem; text-align: center; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-bottom: 4rem; }
         .footer-item h4 { margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; opacity: 0.6; }
         .risk-warning { background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px; font-size: 0.9rem; max-width: 800px; margin: 0 auto; opacity: 0.8; }
-
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); }
         .modal-content { background: white; margin: 10% auto; padding: 3rem; border-radius: 32px; width: 90%; max-width: 450px; position: relative; }
         .close { position: absolute; right: 1.5rem; top: 1.5rem; font-size: 2rem; cursor: pointer; opacity: 0.5; }
-
-        @media (max-width: 768px) {
-            .hero h2 { font-size: 2.5rem; }
-        }
+        @media (max-width: 768px) { .hero h2 { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
@@ -111,7 +92,6 @@
         <p class="italic">Patterns don't lie</p>
         <div class="badge">⭐ 80-90% High Probability Markets</div>
     </header>
-
     <nav>
         <div class="container" style="display: flex; align-items: center; width: 100%;">
             <a href="#home">Home</a>
@@ -124,49 +104,35 @@
             </div>
         </div>
     </nav>
-
     <section class="hero" id="home">
         <div class="container">
             <h2>Stop Chasing Odds.<br />Start Making <span class="highlight">Smart Decisions.</span></h2>
             <p class="hero-sub">Get AI-analyzed predictions for 6-24 matches across 7+ global leagues. All predictions in one place.</p>
-            
             <div class="stats">
-                <div class="stat-box">
-                    <div class="stat-number">80-90%</div>
-                    <p>Win Rate (Hidden)</p>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">50-65%</div>
-                    <p>Win Rate (Familiar)</p>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">6-24</div>
-                    <p>Matches Daily</p>
-                </div>
+                <div class="stat-box"><div class="stat-number">80-90%</div><p>Win Rate (Hidden)</p></div>
+                <div class="stat-box"><div class="stat-number">50-65%</div><p>Win Rate (Familiar)</p></div>
+                <div class="stat-box"><div class="stat-number">6-24</div><p>Matches Daily</p></div>
             </div>
-
             <div style="text-align: center;">
                 <button onclick="handleHeroAction()" class="btn">Unlock 🔓 Today's Prediction Now</button>
                 <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; font-weight: 600;">Only available to trial & premium users</p>
             </div>
         </div>
     </section> 
-<section id="results" class="section">
+    <section id="results" class="section">
         <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;">
                 <div style="text-align: left;">
                     <h2 style="text-align: left; margin-bottom: 0.5rem;">Prediction Results</h2>
                     <p id="resultsDateLabel" style="color: #64748b; font-weight: 600;">Results for Yesterday</p>
                 </div>
-                <select id="dateSelect" onchange="loadResultsByDate()" style="padding: 0.8rem; border-radius: 12px; border: 2px solid #f1f5f9; font-family: 'Outfit'; font-weight: 600; color: #4f46e5;">
-                </select>
+                <select id="dateSelect" onchange="loadResultsByDate()" style="padding: 0.8rem; border-radius: 12px; border: 2px solid #f1f5f9; font-family: 'Outfit'; font-weight: 600; color: #4f46e5;"></select>
             </div>
             <div id="resultsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
                 <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">Loading results...</div>
             </div>
         </div>
     </section>
-
     <section id="todayPredictions" class="section alt" style="display: none;">
         <div class="container">
             <div style="background: #4f46e5; color: white; display: inline-block; padding: 0.4rem 1rem; border-radius: 12px; font-weight: 800; font-size: 0.8rem; margin-bottom: 1rem;">🎯 MEMBER ONLY</div>
@@ -174,7 +140,6 @@
             <div id="todayGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;"></div>
         </div>
     </section>
-
     <section id="markets" class="section">
         <div class="container">
             <div style="background: #f1f5f9; padding: 4rem; border-radius: 40px; text-align: center;">
@@ -184,25 +149,15 @@
             </div>
         </div>
     </section>
-
     <section id="pricing" class="section alt">
         <div class="container">
             <h2>Simple Pricing</h2>
             <div class="pricing">
-                <div class="price-card featured">
-                    <h3>🎯 Free Trial</h3>
-                    <div class="price">7 Days</div>
-                    <button onclick="scrollToSignup()" class="btn">Start Trial Now</button>
-                </div>
-                <div class="price-card">
-                    <h3>💎 Premium</h3>
-                    <div class="price">₦1,000<span style="font-size: 1rem; opacity: 0.6;">/mo</span></div>
-                    <button onclick="makePayment()" class="btn btn-green">Upgrade Now</button>
-                </div>
+                <div class="price-card featured"><h3>🎯 Free Trial</h3><div class="price">7 Days</div><button onclick="scrollToSignup()" class="btn">Start Trial Now</button></div>
+                <div class="price-card"><h3>💎 Premium</h3><div class="price">₦1,000<span style="font-size: 1rem; opacity: 0.6;">/mo</span></div><button onclick="makePayment()" class="btn btn-green">Upgrade Now</button></div>
             </div>
         </div>
     </section>
-
     <section id="signup" class="section">
         <div class="container">
             <h2>Start Your Free 7-Day Trial</h2>
@@ -217,28 +172,17 @@
             </div>
         </div>
     </section>
-
     <footer>
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-item">
-                    <h4>Telegram</h4>
-                    <p><a href="https://t.me/PrediktAI" style="color: white; text-decoration: none; font-weight: 700;">@PrediktAI</a></p>
-                </div>
-                <div class="footer-item">
-                    <h4>Phone</h4>
-                    <p style="font-weight: 700;">+234 807 693 9887</p>
-                </div>
-                <div class="footer-item">
-                    <h4>Email</h4>
-                    <p style="font-weight: 700;">prediktaisystems@gmail.com</p>
-                </div>
+                <div class="footer-item"><h4>Telegram</h4><p><a href="https://t.me/PrediktAI" style="color: white; text-decoration: none; font-weight: 700;">@PrediktAI</a></p></div>
+                <div class="footer-item"><h4>Phone</h4><p style="font-weight: 700;">+234 807 693 9887</p></div>
+                <div class="footer-item"><h4>Email</h4><p style="font-weight: 700;">prediktaisystems@gmail.com</p></div>
             </div>
             <div class="risk-warning">⚠️ Gambling involves risk. Please bet responsibly. Our predictions are based on AI patterns but do not guarantee outcomes.</div>
             <p style="margin-top: 4rem; opacity: 0.5; font-size: 0.8rem;">🎯 PREDIKT AI &copy; 2026. Patterns don't lie. 🇳🇬</p>
         </div>
     </footer>
-
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeLogin()">&times;</span>
@@ -258,12 +202,13 @@
           projectId: "gen-lang-client-0026790187",
           storageBucket: "gen-lang-client-0026790187.firebasestorage.app",
           messagingSenderId: "173723999209",
-          appId: "1:173723999209:web:e811b43d1030e135c68978"
+          appId: "1:173723999209:web:e811b43d1030e135c68978",
+          firestoreDatabaseId: "ai-studio-4668ab6b-b551-4cb4-b468-c73a1f36ae0c"
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
         const auth = firebase.auth();
         const messaging = firebase.messaging();
 
@@ -280,33 +225,74 @@
             loadResults();
             if (loggedInUser) {
                 loadTodayPredictions();
-                setupNotifications();
             }
         }
 
         async function setupNotifications() {
             try {
+                const notifyBtn = document.getElementById('notifyBtn');
+                if (notifyBtn) notifyBtn.textContent = '⌛ Processing...';
+
+                console.log('Starting notification setup...');
+                
+                if (!firebase.messaging.isSupported()) {
+                    alert("Push Messaging is not supported in this browser.");
+                    return;
+                }
+
                 // Sign in anonymously to satisfy Firestore security rules
                 if (!auth.currentUser) {
                     await auth.signInAnonymously();
                 }
 
                 const permission = await Notification.requestPermission();
+                console.log('Notification permission status:', permission);
+                
                 if (permission === 'granted') {
-                    // IMPORTANT: Replace 'YOUR_VAPID_KEY_HERE' with your key from Firebase Console
-                    const token = await messaging.getToken({ vapidKey: 'BBJHUzvmtqujGx_MJqDzSvPgdrAQkcfGSi_qZN9P1Ku7_3TW6nwDpNwKCCUmr1oio1D_oIp-W6gJJgmnESMDZ5U' }); 
+                    const token = await messaging.getToken({ 
+                        vapidKey: 'BBJHUzvmtqujGx_MJqDzSvPgdrAQkcfGSi_qZN9P1Ku7_3TW6nwDpNwKCCUmr1oio1D_oIp-W6gJJgmnESMDZ5U' 
+                    }); 
+                    
                     if (token) {
-                        console.log('FCM Token:', token);
-                        // Save token to Firestore using the Auth UID
-                        await db.collection('users').doc(auth.currentUser.uid).set({
-                            email: loggedInUser.email,
-                            fcmToken: token,
-                            lastActive: new Date().toISOString()
-                        }, { merge: true });
+                        console.log('FCM Token generated successfully');
+                        
+                        // Save token to Firestore signups collection
+                        const userQuery = await db.collection('signups')
+                            .where('email', '==', loggedInUser.email)
+                            .get();
+                            
+                        if (!userQuery.empty) {
+                            const docId = userQuery.docs[0].id;
+                            await db.collection('signups').doc(docId).update({
+                                fcmToken: token,
+                                lastActive: new Date().toISOString()
+                            });
+                            alert('✅ Notifications Enabled Successfully!');
+                            if (notifyBtn) notifyBtn.style.display = 'none';
+                        } else {
+                            // Fallback to users collection
+                            await db.collection('users').doc(auth.currentUser.uid).set({
+                                email: loggedInUser.email,
+                                fcmToken: token,
+                                lastActive: new Date().toISOString()
+                            }, { merge: true });
+                            alert('✅ Notifications Enabled (Saved to backup)!');
+                            if (notifyBtn) notifyBtn.style.display = 'none';
+                        }
+                    } else {
+                        alert('❌ No token received. Try refreshing.');
                     }
+                } else {
+                    alert('⚠️ Permission ' + permission + '. Please click the lock icon in the URL bar and set Notifications to "Allow".');
                 }
             } catch (error) {
                 console.error('Notification setup failed:', error);
+                alert('❌ Error: ' + error.message);
+            } finally {
+                const notifyBtn = document.getElementById('notifyBtn');
+                if (notifyBtn && notifyBtn.textContent === '⌛ Processing...') {
+                    notifyBtn.textContent = '🔔 Enable Notifications';
+                }
             }
         }
 
@@ -342,12 +328,10 @@
                 d.setHours(0,0,0,0);
                 return d.getTime() === selectedTime;
             });
-
             if (filtered.length === 0) {
                 grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: #64748b;">No results for this date.</div>';
                 return;
             }
-
             const groups = groupMatches(filtered);
             grid.innerHTML = Object.values(groups).map(g => createMatchCard(g)).join('');
         }
@@ -369,7 +353,6 @@
                 if (r === 'LOSS') return '<span class="result-badge result-loss">LOSS</span>';
                 return '<span class="result-badge result-pending">PENDING</span>';
             };
-
             const renderMarkets = (list, title, icon) => {
                 if (list.length === 0) return '';
                 return `
@@ -385,21 +368,16 @@
                     </div>
                 `;
             };
-
-            // IMPROVED: Extract HH:mm safely from any string format (e.g. "14:00" or ISO)
             let kickoffTime = '00:00';
             if (g.kickoff) {
                 const timeMatch = String(g.kickoff).match(/\d{1,2}:\d{2}/);
                 kickoffTime = timeMatch ? timeMatch[0] : String(g.kickoff);
             }
-
-            // Format date
             let matchDate = '';
             if (g.date) {
                 const d = new Date(g.date);
                 matchDate = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' • ';
             }
-
             return `
                 <div class="result-card">
                     <div class="match-header">
@@ -478,7 +456,12 @@
 
         function updateAuthUI() {
             const auth = document.getElementById('navAuth');
-            if (loggedInUser) auth.innerHTML = `<button class="btn-logout" onclick="logout()">Logout</button>`;
+            if (loggedInUser) {
+                auth.innerHTML = `
+                    <button id="notifyBtn" class="btn-login" style="background: #10b981; margin-right: 10px;" onclick="setupNotifications()">🔔 Enable Notifications</button>
+                    <button class="btn-logout" onclick="logout()">Logout</button>
+                `;
+            }
         }
 
         function logout() { localStorage.removeItem('prediktUser'); location.reload(); }
