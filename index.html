@@ -123,7 +123,7 @@
   // SAVE TOKEN TO GOOGLE SHEET
   // ============================================
   async function saveTokenToSheet(email, token) {
-    const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyOlCMZ0ebvgUfbc_lkY35-XF04lcbeXErbAxEUYHV4KsfGuM_hzg2rnsirxWxK0b15/exec';
+    const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyXaYc1FYWI1aWfZUNMjjXqydz0uCaogboN09MfkQ0WgRYd5-r2QqBucANSiVsBwXvu/exec';
     
     try {
       const response = await fetch(APPS_SCRIPT, {
@@ -504,7 +504,7 @@ window.addEventListener('load', async () => {
 });
 
 console.log('Notification tracking initialized');
-        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyOlCMZ0ebvgUfbc_lkY35-XF04lcbeXErbAxEUYHV4KsfGuM_hzg2rnsirxWxK0b15/exec';
+        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyXaYc1FYWI1aWfZUNMjjXqydz0uCaogboN09MfkQ0WgRYd5-r2QqBucANSiVsBwXvu/exec';
         const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-58ea416442a1b4d5aec77b64ed222957-X'; 
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
