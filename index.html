@@ -294,7 +294,7 @@
                 const permission = await Notification.requestPermission();
                 if (permission === 'granted') {
                     // IMPORTANT: Replace 'YOUR_VAPID_KEY_HERE' with your key from Firebase Console
-                    const token = await messaging.getToken({ vapidKey: 'BALb2079HDHK3BAOfpFdxy_n3c0G4xtm9OTn9hHVYvamychrti5yaPucZWByv8BGCVR5szHaAvjz0qKHS69DEOQ' }); 
+                    const token = await messaging.getToken({ vapidKey: 'BJZG8lXBRmLNvpPHXBAlAu4XvpHq29aDXziZgtf_K7IYfqK4QUiIuxXjt6-6LjS2JnrGj9yEvGwIlw6ggOCZy74' }); 
                     if (token) {
                         console.log('FCM Token:', token);
                         // Save token to Firestore using the Auth UID
