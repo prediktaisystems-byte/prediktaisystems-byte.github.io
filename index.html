@@ -36,8 +36,8 @@
         header .italic { font-style: italic; opacity: 0.8; font-size: 1.1rem; }
         header .badge { background: rgba(255,255,255,0.2); display: inline-block; padding: 0.4rem 1rem; border-radius: 20px; font-weight: 600; margin-top: 1rem; font-size: 0.9rem; }
 
-        nav { background: white; padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; }
-        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: opacity 0.2s; }
+        nav { background: white; padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; }
+        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: opacity 0.2s; }
         nav a:hover { opacity: 0.7; }
         .nav-auth { margin-left: auto; display: flex; gap: 1rem; }
         .nav-auth button { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: 'Outfit'; transition: transform 0.2s; }
@@ -108,13 +108,13 @@
     </header>
 
     <nav>
-        <div class="container" style="display: flex; align-items: center; width: 100%;">
-            <a href="#home">Home</a>
-            <a href="#results">Results</a>
-            <a href="#markets">Markets</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#signup">Signup</a>
-            <a href="#story">Story</a>
+        <div class="container" style="display: flex; align-items: center; width: 100%; gap: 0.6rem;">
+            <a href="#home">Home</a> <span style="opacity: 0.2">|</span>
+            <a href="#results">Results</a> <span style="opacity: 0.2">|</span>
+            <a href="#markets">Markets</a> <span style="opacity: 0.2">|</span>
+            <a href="#pricing">Pricing</a> <span style="opacity: 0.2">|</span>
+            <a href="#signup">Signup</a> <span style="opacity: 0.2">|</span>
+            <a href="#story">Story</a> <span style="opacity: 0.2">|</span>
             <a href="#faq">FAQ</a>
             <div class="nav-auth" id="navAuth">
                 <button class="btn-login" onclick="openLogin()">Login</button>
@@ -262,15 +262,15 @@
 
     <section id="faq" class="section">
         <div class="container">
-            <h2 style="margin-bottom: 4rem;">FAQ Answers</h2>
+            <h2 style="text-align: center; margin-bottom: 4rem;">FAQ Answers</h2>
             <div style="max-width: 900px; margin: 0 auto; text-align: left; display: grid; gap: 2.5rem;">
                 <div>
                     <h3 style="color: var(--primary); margin-bottom: 0.5rem;">1. Hidden Markets Explained</h3>
                     <p>Hidden markets are statistical betting options most people don't know about. Unlike traditional markets like Home Win or Over 1.5 Goals, hidden markets analyze specific in-game events like Yellow Cards, No Brace, or Ball Not Hitting Post. This gives you an edge because fewer people analyze them, meaning better odds and higher win rates.</p>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">2. Familiar Markets Explained</h3>
-                    <p>Familiar markets are the common betting options most people use, such as Match Winner (1X2), Over/Under 2.5 Goals, and Both Teams To Score (BTTS). These markets are popular because they are easy to understand and widely promoted. However, they are also highly competitive and often influenced by public opinion, making them less predictable over time.</p>
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">2. Familiar markets explained</h3>
+                    <p>Familiar markets are the common betting options most people use, such as: Match Winner (1X2), Over/Under 2.5 Goals, and Both Teams To Score (BTTS). These markets are popular because they are easy to understand and widely promoted. However, they are also highly competitive and often influenced by public opinion, making them less predictable over time.</p>
                 </div>
                 <div>
                     <h3 style="color: var(--primary); margin-bottom: 0.5rem;">3. Cancellation</h3>
@@ -281,11 +281,11 @@
                     <p>We accept Flutterwave payments (all major cards, bank transfers, mobile money). Click 'Upgrade Now', complete payment, and your subscription activates immediately.</p>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">5. Not Happy Guarantee</h3>
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">5. Not happy guarantee</h3>
                     <p>You get 7 days free to test our system completely. If you're not seeing winning predictions or our analysis doesn't match your needs, simply cancel and pay nothing.</p>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">6. Matches Per Day</h3>
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">6. Matches per day</h3>
                     <p>We analyze 6-24 matches per day across 7+ global leagues (Premier League, La Liga, Serie A, Bundesliga, Ligue 1, Champions League, Europa League). On busy weekends with more fixtures, we can analyze up to 24 matches. Each match receives detailed statistical analysis using AI to identify the safest betting opportunities.</p>
                 </div>
                 <div style="background: #f1f5f9; padding: 2.5rem; border-radius: 24px; border-left: 6px solid var(--primary);">
