@@ -84,22 +84,156 @@
         .form-group { margin-bottom: 1.5rem; text-align: left; }
         .form-group label { display: block; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.9rem; color: #475569; }
         .form-group input { width: 100%; padding: 1rem; border: 2px solid #f1f5f9; border-radius: 12px; font-family: 'Outfit'; font-size: 1rem; }
-        <section id="story" class="section alt">
+
+        footer { background: #0f172a; color: white; padding: 6rem 1rem 3rem; text-align: center; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-bottom: 4rem; }
+        .footer-item h4 { margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; opacity: 0.6; }
+        .risk-warning { background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px; font-size: 0.9rem; max-width: 800px; margin: 0 auto; opacity: 0.8; }
+
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); }
+        .modal-content { background: white; margin: 10% auto; padding: 3rem; border-radius: 32px; width: 90%; max-width: 450px; position: relative; }
+        .close { position: absolute; right: 1.5rem; top: 1.5rem; font-size: 2rem; cursor: pointer; opacity: 0.5; }
+
+        @media (max-width: 768px) {
+            .hero h2 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <p class="founder">Built by Gideon Sylvester</p>
+        <h1>🎯 PREDIKT AI</h1>
+        <p class="italic">Patterns don't lie</p>
+        <div class="badge">⭐ 80-90% High Probability Markets</div>
+    </header>
+
+    <nav>
+        <div class="container" style="display: flex; align-items: center; width: 100%;">
+            <a href="#home">Home</a>
+            <a href="#results">Results</a>
+            <a href="#markets">Markets</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#signup">Signup</a>
+            <a href="#story">Story</a>
+            <a href="#faq">FAQ</a>
+            <div class="nav-auth" id="navAuth">
+                <button class="btn-login" onclick="openLogin()">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Stop Chasing Odds.<br />Start Making <span class="highlight">Smart Decisions.</span></h2>
+            <p class="hero-sub">Get AI-analyzed predictions for 6-24 matches across 7+ global leagues. All predictions in one place.</p>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number">80-90%</div>
+                    <p>Win Rate (Hidden)</p>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">50-65%</div>
+                    <p>Win Rate (Familiar)</p>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">6-24</div>
+                    <p>Matches Daily</p>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <button onclick="handleHeroAction()" class="btn">Unlock 🔓 Today's Prediction Now</button>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; font-weight: 600;">Only available to trial & premium users</p>
+            </div>
+        </div>
+    </section> 
+<section id="results" class="section">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;">
+                <div style="text-align: left;">
+                    <h2 style="text-align: left; margin-bottom: 0.5rem;">Prediction Results</h2>
+                    <p id="resultsDateLabel" style="color: #64748b; font-weight: 600;">Results for Yesterday</p>
+                </div>
+                <select id="dateSelect" onchange="loadResultsByDate()" style="padding: 0.8rem; border-radius: 12px; border: 2px solid #f1f5f9; font-family: 'Outfit'; font-weight: 600; color: #4f46e5;">
+                </select>
+            </div>
+            <div id="resultsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">Loading results...</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="todayPredictions" class="section alt" style="display: none;">
+        <div class="container">
+            <div style="background: #4f46e5; color: white; display: inline-block; padding: 0.4rem 1rem; border-radius: 12px; font-weight: 800; font-size: 0.8rem; margin-bottom: 1rem;">🎯 MEMBER ONLY</div>
+            <h2>Today's Live Predictions</h2>
+            <div id="todayGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;"></div>
+        </div>
+    </section>
+
+    <section id="markets" class="section">
+        <div class="container">
+            <div style="background: #f1f5f9; padding: 4rem; border-radius: 40px; text-align: center;">
+                <h2 style="margin-bottom: 1rem;">Most Bettors Miss These Markets</h2>
+                <h3 style="color: #4f46e5; margin-bottom: 2rem;">Simply because they don't know where to find them.</h3>
+                <a href="https://reffpa.com/L?tag=d_4237102m_1599c_&site=4237102&ad=1599&r=registration" target="_blank" class="btn btn-green">Find Hidden Markets Now</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="section alt">
+        <div class="container">
+            <h2>Simple Pricing</h2>
+            <div class="pricing">
+                <div class="price-card featured">
+                    <h3>🎯 Free Trial</h3>
+                    <div class="price">7 Days</div>
+                    <button onclick="scrollToSignup()" class="btn">Start Trial Now</button>
+                </div>
+                <div class="price-card">
+                    <h3>💎 Premium</h3>
+                    <div class="price">₦1,000<span style="font-size: 1rem; opacity: 0.6;">/mo</span></div>
+                    <button onclick="makePayment()" class="btn btn-green">Upgrade Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="signup" class="section">
+        <div class="container">
+            <h2>Start Your Free 7-Day Trial</h2>
+            <div class="login-section">
+                <div id="signupMsg" style="display: none; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; font-weight: 700; text-align: center;"></div>
+                <form id="signupForm" onsubmit="handleSignup(event)">
+                    <div class="form-group"><label>Full Name *</label><input type="text" id="name" required></div>
+                    <div class="form-group"><label>Email Address *</label><input type="email" id="email" required></div>
+                    <div class="form-group"><label>Phone Number *</label><input type="tel" id="phone" required></div>
+                    <button type="submit" class="btn" style="width: 100%;">Activate Trial</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section id="story" class="section alt">
         <div class="container">
             <div style="max-width: 800px; margin: 0 auto; text-align: left;">
                 <h2 style="text-align: center; margin-bottom: 4rem;">Why We Built PREDIKT AI</h2>
+                
                 <div style="margin-bottom: 3rem;">
                     <h3 style="color: var(--primary); margin-bottom: 1rem;">The Story</h3>
                     <p>PrediktAI was built to transform how people approach football predictions by replacing emotion with structured analysis. Instead of chasing odds, users get a system designed to identify the most reliable opportunities each day. It’s not about luck — it’s about better decisions.</p>
                 </div>
+
                 <div style="margin-bottom: 3rem;">
                     <h3 style="color: var(--primary); margin-bottom: 1rem;">What Makes Us Different</h3>
                     <p>What makes PrediktAI different is its focus on decision-making, not just predictions. Instead of flooding users with risky picks, it filters each fixture down to the top 3 highest-probability markets. It’s built to reduce mistakes, not chase unrealistic wins.</p>
                 </div>
+
                 <div style="margin-bottom: 3rem;">
                     <h3 style="color: var(--primary); margin-bottom: 1rem;">Our Achievements</h3>
                     <p>The system has demonstrated an estimated 80–90% accuracy on selected low-risk markets across tested fixtures. Its strength lies in filtering out noise and focusing only on high-probability opportunities. This approach promotes consistency and long-term sustainability over short-term hype.</p>
                 </div>
+
                 <div style="margin-bottom: 3rem;">
                     <h3 style="color: var(--primary); margin-bottom: 1.5rem;">What Users Are Saying</h3>
                     <div style="display: grid; gap: 1.5rem;">
@@ -117,6 +251,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div style="background: #0f172a; color: white; padding: 3rem; border-radius: 32px; margin-top: 4rem;">
                     <h3 style="color: var(--accent); margin-bottom: 1rem;">Our Guarantee</h3>
                     <p style="opacity: 0.9;">There are no guaranteed wins in betting — and PrediktAI is honest about that. What it guarantees is a smarter, more disciplined approach to selecting markets. The focus is on consistency, not luck.</p>
