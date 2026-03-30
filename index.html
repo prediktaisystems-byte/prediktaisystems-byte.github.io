@@ -8,197 +8,6 @@
     <script src="https://checkout.flutterwave.com/v3.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3QQ5W2XE4Y"></script>
-    <!-- Firebase Cloud Messaging Libraries -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging.js"></script>
-
-<script>
-  // ============================================
-  // FIREBASE INITIALIZATION
-  // ============================================
-  // Replace these values with YOUR Firebase config from Step 2
-  // (The config code Firebase gave you when you registered your web app)
-  
-  const firebaseConfig = {
-    apiKey: "AIzaSyAZy71jhxme60mpZK_qG2AfEAsgr3CPz08",
-    authDomain: "predikt-ai-42309.firebaseapp.com",
-    projectId: "predikt-ai-42309",
-    storageBucket: "predikt-ai-42309.firebasestorage.app",
-    messagingSenderId: "165344247434",
-    appId: "165344247434"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  
-  // Initialize Cloud Messaging
-  const messaging = firebase.messaging();
-
-  // ============================================
-  // HANDLE NOTIFICATIONS WHEN APP IS IN FOREGROUND
-  // ============================================
-  messaging.onMessage((payload) => {
-    console.log('Message received:', payload);
-    
-    // Track in GA4
-    gtag('event', 'notification_received', {
-      'notification_title': payload.notification.title,
-      'notification_body': payload.notification.body,
-      'timestamp': new Date().toLocaleTimeString()
-    });
-    
-    // Show browser notification
-    if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: 'https://prediktaisystems-byte.github.io/prediktai-website/logo.png',
-        badge: 'https://prediktaisystems-byte.github.io/prediktai-website/badge.png',
-        tag: 'predikt-notification',
-        requireInteraction: true
-      });
-    }
-  });
-
-  // ============================================
-  // FIREBASE TOKEN MANAGEMENT
-  // ============================================
-  let currentFirebaseToken = null;
-
-  async function getFirebaseToken() {
-    try {
-      const token = await messaging.getToken({
-        vapidKey: 'BKlFFOlEUdoyVrhIwgwTgBjKxymiXdObS6ooIPKdgagopWbdObdippP2_TJ1SelxtdDjdPCO3uWSyYCkJIm7vcA'
-        // Replace with the VAPID key from Firebase Messaging settings
-      });
-      
-      console.log('Firebase token obtained:', token);
-      currentFirebaseToken = token;
-      return token;
-    } catch (error) {
-      console.error('Error getting Firebase token:', error);
-      return null;
-    }
-  }
-
-  // ============================================
-  // REQUEST NOTIFICATION PERMISSION
-  // ============================================
-  async function requestNotificationPermission() {
-    try {
-      // Check if browser supports notifications
-      if (!('Notification' in window)) {
-        console.log('This browser does not support notifications');
-        return false;
-      }
-
-      // Check current permission status
-      if (Notification.permission === 'granted') {
-        console.log('Notification permission already granted');
-        await getFirebaseToken();
-        return true;
-      }
-
-      // If permission not decided, request it
-      if (Notification.permission !== 'denied') {
-        const permission = await Notification.requestPermission();
-        
-        if (permission === 'granted') {
-          console.log('Notification permission granted');
-          await getFirebaseToken();
-          return true;
-        } else {
-          console.log('Notification permission denied');
-          return false;
-        }
-      }
-
-      return false;
-    } catch (error) {
-      console.error('Error requesting notification permission:', error);
-      return false;
-    }
-  }
-
-  // ============================================
-  // SAVE TOKEN TO GOOGLE SHEET
-  // ============================================
-  async function saveTokenToSheet(email, token) {
-    const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyXaYc1FYWI1aWfZUNMjjXqydz0uCaogboN09MfkQ0WgRYd5-r2QqBucANSiVsBwXvu/exec';
-    
-    try {
-      const response = await fetch(APPS_SCRIPT, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify({
-          action: 'saveToken',
-          email: email,
-          token: token
-        })
-      });
-
-      console.log('Token saved to sheet');
-      
-      // Track in GA4
-      gtag('event', 'notifications_enabled', {
-        'user_email': email
-      });
-
-      return true;
-    } catch (error) {
-      console.error('Error saving token:', error);
-      return false;
-    }
-  }
-
-  // ============================================
-  // PUBLIC FUNCTION TO ENABLE NOTIFICATIONS
-  // ============================================
-  async function enableNotifications() {
-    // Get currently logged-in user
-    const user = JSON.parse(localStorage.getItem('prediktUser'));
-    
-    if (!user || !user.email) {
-      alert('Please login first to enable notifications');
-      openLogin();
-      return;
-    }
-
-    // Show loading state
-    const btn = document.getElementById('enableNotificationsBtn');
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = 'Enabling...';
-    }
-
-    // Request permission
-    const hasPermission = await requestNotificationPermission();
-
-    if (hasPermission && currentFirebaseToken) {
-      // Save token to sheet
-      const saved = await saveTokenToSheet(user.email, currentFirebaseToken);
-      
-      if (saved) {
-        // Update UI to show success
-        const prompt = document.getElementById('notificationPrompt');
-        if (prompt) {
-          prompt.innerHTML = `
-            <div style="padding: 1.5rem; background: #dcfce7; border-radius: 12px; color: #166534; font-weight: 700; text-align: center;">
-              ✅ Notifications Enabled! You'll receive predictions at 8:00 AM every day.
-            </div>
-          `;
-        }
-      }
-    } else {
-      alert('Could not enable notifications. Please try again.');
-      if (btn) {
-        btn.disabled = false;
-        btn.textContent = 'Enable Notifications';
-      }
-    }
-  }
-
-  console.log('Firebase initialized successfully');
-</script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -305,6 +114,7 @@
             <a href="#markets">Markets</a>
             <a href="#pricing">Pricing</a>
             <a href="#signup">Signup</a>
+            <a href="#story">Story</a>
             <div class="nav-auth" id="navAuth">
                 <button class="btn-login" onclick="openLogin()">Login</button>
             </div>
@@ -336,43 +146,7 @@
                 <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; font-weight: 600;">Only available to trial & premium users</p>
             </div>
         </div>
-    </section>
-    <!-- NOTIFICATION PERMISSION SECTION -->
-<div id="notificationPrompt" style="background: linear-gradient(135deg, #4f46e5 0%, #2d20a0 100%); color: white; padding: 2rem 1rem;">
-    <div class="container" style="text-align: center;">
-        <div style="max-width: 600px; margin: 0 auto;">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔔</div>
-            <h3 style="color: white; margin-bottom: 0.5rem; font-size: 1.4rem;">Never Miss a Prediction</h3>
-            <p style="opacity: 0.9; margin-bottom: 1.5rem; font-size: 1rem;">
-                Get instant notifications when your daily predictions are ready. Receive alerts at 8:00 AM every morning.
-            </p>
-            <button 
-                id="enableNotificationsBtn"
-                onclick="enableNotifications()"
-                style="
-                    background: white;
-                    color: #4f46e5;
-                    padding: 1rem 2rem;
-                    border: none;
-                    border-radius: 12px;
-                    font-weight: 800;
-                    font-size: 1rem;
-                    cursor: pointer;
-                    font-family: 'Outfit';
-                    transition: all 0.3s;
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-                "
-                onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.3)';"
-                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.2)';"
-            >
-                🔔 Enable Notifications
-            </button>
-            <p style="font-size: 0.85rem; opacity: 0.8; margin-top: 1rem;">
-                You'll receive one notification per day at 8:00 AM WAT
-            </p>
-        </div>
-    </div>
-</div>
+    </section> 
 <section id="results" class="section">
         <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;">
@@ -439,6 +213,51 @@
             </div>
         </div>
     </section>
+    <section id="story" class="section alt">
+        <div class="container">
+            <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+                <h2 style="text-align: center; margin-bottom: 4rem;">Why We Built PREDIKT AI</h2>
+                
+                <div style="margin-bottom: 3rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">The Story</h3>
+                    <p>PrediktAI was built to transform how people approach football predictions by replacing emotion with structured analysis. Instead of chasing odds, users get a system designed to identify the most reliable opportunities each day. It’s not about luck — it’s about better decisions.</p>
+                </div>
+
+                <div style="margin-bottom: 3rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">What Makes Us Different</h3>
+                    <p>What makes PrediktAI different is its focus on decision-making, not just predictions. Instead of flooding users with risky picks, it filters each fixture down to the top 3 highest-probability markets. It’s built to reduce mistakes, not chase unrealistic wins.</p>
+                </div>
+
+                <div style="margin-bottom: 3rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Our Achievements</h3>
+                    <p>The system has demonstrated an estimated 80–90% accuracy on selected low-risk markets across tested fixtures. Its strength lies in filtering out noise and focusing only on high-probability opportunities. This approach promotes consistency and long-term sustainability over short-term hype.</p>
+                </div>
+
+                <div style="margin-bottom: 3rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem;">What Users Are Saying</h3>
+                    <div style="display: grid; gap: 1.5rem;">
+                        <div style="background: white; padding: 2rem; border-radius: 20px; box-shadow: var(--shadow); border-left: 4px solid var(--primary);">
+                            <p style="font-style: italic; margin-bottom: 1rem;">"Since I started following PrediktAI, I stopped chasing random odds. The markets are simpler and make more sense."</p>
+                            <p style="font-weight: 800; font-size: 0.9rem; color: var(--primary);">— Early User</p>
+                        </div>
+                        <div style="background: white; padding: 2rem; border-radius: 20px; box-shadow: var(--shadow); border-left: 4px solid var(--primary);">
+                            <p style="font-style: italic; margin-bottom: 1rem;">"I saw how he explained the games in the shop, and it was different from what we’re used to. It actually made me more confident before placing bets."</p>
+                            <p style="font-weight: 800; font-size: 0.9rem; color: var(--primary);">— Local User</p>
+                        </div>
+                        <div style="background: white; padding: 2rem; border-radius: 20px; box-shadow: var(--shadow); border-left: 4px solid var(--primary);">
+                            <p style="font-style: italic; margin-bottom: 1rem;">"I used to bet based on guesswork, but now I follow a system. It feels more controlled."</p>
+                            <p style="font-weight: 800; font-size: 0.9rem; color: var(--primary);">— User</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #0f172a; color: white; padding: 3rem; border-radius: 32px; margin-top: 4rem;">
+                    <h3 style="color: var(--accent); margin-bottom: 1rem;">Our Guarantee</h3>
+                    <p style="opacity: 0.9;">There are no guaranteed wins in betting — and PrediktAI is honest about that. What it guarantees is a smarter, more disciplined approach to selecting markets. The focus is on consistency, not luck.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer>
         <div class="container">
@@ -472,40 +291,9 @@
             </form>
         </div>
     </div>
-    <script>
-        // ============================================
-// FIREBASE NOTIFICATION TRACKING
-// ============================================
-
-// Track when user enables notifications
-function trackNotificationEnable(email) {
-  gtag('event', 'notifications_enabled', {
-    'user_email': email,
-    'timestamp': new Date().toISOString()
-  });
-}
-
-// Track notification clicks
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.ready.then((registration) => {
-    console.log('Service Worker ready for notifications');
-  });
-}
-
-// Auto-request notifications if user is logged in (optional)
-window.addEventListener('load', async () => {
-  const user = JSON.parse(localStorage.getItem('prediktUser'));
-  
-  if (user && 'Notification' in window && Notification.permission === 'default') {
-    // Optional: Auto-show permission request for logged-in users
-    // Uncomment the line below to auto-request
-    // await requestNotificationPermission();
-  }
-});
-
-console.log('Notification tracking initialized');
+<script>
         const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyXaYc1FYWI1aWfZUNMjjXqydz0uCaogboN09MfkQ0WgRYd5-r2QqBucANSiVsBwXvu/exec';
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-58ea416442a1b4d5aec77b64ed222957-X'; 
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK_TEST-XXXXX-X'; 
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
         let allResults = [];
