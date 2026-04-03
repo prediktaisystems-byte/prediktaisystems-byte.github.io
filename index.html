@@ -6,10 +6,7 @@
     <title>PREDIKT AI - AI Football Market Analysis</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://checkout.flutterwave.com/v3.js"></script>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3QQ5W2XE4Y"></script>
 <script>
@@ -222,9 +219,8 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <section id="faq" class="section">
+            </section>
+            <section id="faq" class="section">
         <div class="container">
             <h2 style="text-align: center; margin-bottom: 3rem;">Frequently Asked Questions</h2>
             <div style="max-width: 800px; margin: 0 auto; display: grid; gap: 1.5rem;">
@@ -258,6 +254,7 @@
     <section id="pricing" class="section alt">
         <div class="container">
             <h2>Simple Pricing</h2>
+            <p id="pricingNote" style="text-align:center; color:#64748b; font-size:0.85rem; margin-top:-1.5rem; margin-bottom:2rem; font-weight:600;">Pricing shown in your local currency</p>
             <div class="pricing">
                 <div class="price-card featured">
                     <h3>🎯 Free Trial</h3>
@@ -266,7 +263,7 @@
                 </div>
                 <div class="price-card">
                     <h3>💎 Premium</h3>
-                    <div class="price">₦5,000<span style="font-size: 1rem; opacity: 0.6;">/mo</span></div>
+                    <div id="priceDisplay" class="price">₦3,500<span style="font-size:1rem; opacity:0.6;">/mo</span></div>
                     <button onclick="makePayment()" class="btn btn-green">Upgrade Now</button>
                 </div>
             </div>
@@ -278,53 +275,41 @@
             <h2>Start Your Free 7-Day Trial</h2>
             <div class="login-section">
 
-                <!-- Message box (shared between both steps) -->
-                <div id="signupMsg" style="display: none; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; font-weight: 700; text-align: center;"></div>
+                <!-- Shared message box -->
+                <div id="signupMsg" style="display:none; padding:1rem; border-radius:12px; margin-bottom:1.5rem; font-weight:700; text-align:center;"></div>
 
-                <!-- ── STEP 1: Name / Email / Phone ── -->
+                <!-- STEP 1: Details -->
                 <div id="signupStep1">
-                    <form id="signupForm" onsubmit="handleSignup(event)">
+                    <form id="signupForm" onsubmit="return handleSignup(event)">
                         <div class="form-group"><label>Full Name *</label><input type="text" id="name" required></div>
                         <div class="form-group"><label>Email Address *</label><input type="email" id="email" required></div>
                         <div class="form-group"><label>Phone Number *</label><input type="tel" id="phone" required></div>
-                        <button type="submit" id="signupBtn" class="btn" style="width: 100%;">Activate Trial</button>
+                        <button type="submit" id="signupBtn" class="btn" style="width:100%;">Activate Trial</button>
                     </form>
                 </div>
 
-                <!-- ── STEP 2: OTP Verification (hidden until code is sent) ── -->
-                <div id="signupStep2" style="display: none;">
-                    <div style="text-align: center; margin-bottom: 1.5rem;">
-                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📧</div>
-                        <h3 style="color: #0f172a; margin-bottom: 0.5rem;">Check Your Email</h3>
-                        <p style="color: #64748b; font-size: 0.95rem;">We sent a 6-digit verification code to<br><strong id="otpEmailDisplay" style="color: #4f46e5;"></strong></p>
+                <!-- STEP 2: OTP (hidden until code is sent) -->
+                <div id="signupStep2" style="display:none;">
+                    <div style="text-align:center; margin-bottom:1.5rem;">
+                        <div style="font-size:2.5rem; margin-bottom:0.5rem;">&#128231;</div>
+                        <h3 style="color:#0f172a; margin-bottom:0.5rem;">Check Your Email</h3>
+                        <p style="color:#64748b; font-size:0.95rem;">We sent a 6-digit code to<br>
+                        <strong id="otpEmailDisplay" style="color:#4f46e5;"></strong></p>
                     </div>
-
-                    <form id="otpForm" onsubmit="handleOTPVerify(event)">
+                    <form id="otpForm" onsubmit="return handleOTPVerify(event)">
                         <div class="form-group">
                             <label>Enter Verification Code *</label>
-                            <input type="text" id="otpInput"
-                                   placeholder="e.g. 482916"
-                                   maxlength="6"
-                                   inputmode="numeric"
-                                   pattern="[0-9]{6}"
-                                   autocomplete="one-time-code"
-                                   style="text-align: center; font-size: 1.8rem; font-weight: 800; letter-spacing: 0.5rem;"
-                                   required>
+                            <input type="text" id="otpInput" placeholder="e.g. 482916"
+                                   maxlength="6" inputmode="numeric" autocomplete="one-time-code"
+                                   style="text-align:center; font-size:1.8rem; font-weight:800; letter-spacing:0.5rem;" required>
                         </div>
-                        <button type="submit" id="verifyBtn" class="btn" style="width: 100%; margin-bottom: 1rem;">Verify & Activate Trial</button>
+                        <button type="submit" id="verifyBtn" class="btn" style="width:100%; margin-bottom:1rem;">Verify &amp; Activate Trial</button>
                     </form>
-
-                    <div style="text-align: center;">
-                        <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.5rem;">Didn't receive the code?</p>
-                        <button onclick="resendOTP()" id="resendBtn"
-                                style="background: none; border: none; color: #4f46e5; font-weight: 700; cursor: pointer; font-family: 'Outfit'; font-size: 0.9rem; text-decoration: underline;">
-                            Resend Code
-                        </button>
-                        <span style="color: #94a3b8; margin: 0 0.5rem;">|</span>
-                        <button onclick="resetSignupForm()"
-                                style="background: none; border: none; color: #94a3b8; font-weight: 600; cursor: pointer; font-family: 'Outfit'; font-size: 0.9rem; text-decoration: underline;">
-                            Use different email
-                        </button>
+                    <div style="text-align:center;">
+                        <p style="color:#64748b; font-size:0.85rem; margin-bottom:0.5rem;">Didn't receive the code?</p>
+                        <button onclick="resendOTP()" id="resendBtn" style="background:none; border:none; color:#4f46e5; font-weight:700; cursor:pointer; font-family:'Outfit'; font-size:0.9rem; text-decoration:underline;">Resend Code</button>
+                        <span style="color:#94a3b8; margin:0 0.5rem;">|</span>
+                        <button onclick="resetSignupForm()" style="background:none; border:none; color:#94a3b8; font-weight:600; cursor:pointer; font-family:'Outfit'; font-size:0.9rem; text-decoration:underline;">Use different email</button>
                     </div>
                 </div>
 
@@ -338,7 +323,7 @@
                 <h4 style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--accent);">Contact</h4>
                 <div style="opacity: 0.3; margin-bottom: 1rem;">━━━━━━━━━━━━━━━━━</div>
                 <p style="margin-bottom: 0.5rem;">📱 <strong>Telegram:</strong> <a href="https://t.me/PrediktAI" style="color: white; text-decoration: none;">@PrediktAI</a></p>
-                <p style="margin-bottom: 0.5rem;">📧 <strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c6b6b4a3a2afadb2a7afb5bfb5b2a3abb586a1aba7afaae8a5a9ab">[email&#160;protected]</a></p>
+                <p style="margin-bottom: 0.5rem;">📧 <strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dcacaeb9b8b5b7a8bdb5afa5afa8b9b1af9cbbb1bdb5b0f2bfb3b1">[email&#160;protected]</a></p>
                 <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 1rem;">Response: 24-48 hours</p>
             </div>
             <div class="risk-warning">⚠️ Gambling involves risk. Please bet responsibly. Our predictions are based on AI patterns but do not guarantee outcomes.</div>
@@ -368,19 +353,7 @@
     </div>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // Firebase Configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyANiFQjhKNtCWYFdibEvm_HAbtcmVwjq00",
-          authDomain: "gen-lang-client-0026790187.firebaseapp.com",
-          projectId: "gen-lang-client-0026790187",
-          appId: "1:173723999209:web:e811b43d1030e135c68978",
-          firestoreDatabaseId: "ai-studio-8203f81d-1a46-4022-986f-975a2f5a9ed8"
-        };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore(app);
-        const auth = firebase.auth();
 
         const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzpQLrvtXEgW3k_nnWzhCY-xVkK4DA2GsIapk1THo3AAOe5qbLUw54gmpjaHhdHQn6GNw/exec';
         const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-ea43f13a75ac4e8a27a5bf196d6a028c-X'; 
@@ -502,7 +475,6 @@
                 </div>
             `;
         }
-
         async function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -518,8 +490,35 @@
             } catch (e) { alert('Login error.'); }
         }
 
-        // Stores details between Step 1 and Step 2
+        // ── Region & payment config (set by detectRegion) ────────────────
+        let _payRegion = { gateway:'flutterwave', amount:3500, currency:'NGN', label:'NGN' };
         let _otpPending = {};
+
+        // ── IP Detection (runs silently on load) ──────────────────
+        async function detectRegion() {
+            try {
+                const res  = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                const cc   = data.country_code || 'NG';
+                const map  = {
+                    NG: { gateway:'flutterwave', amount:3500,  currency:'NGN', display:'&#8358;3,500'  },
+                    GH: { gateway:'flutterwave', amount:30,     currency:'GHS', display:'GH&#8373;30'            },
+                    KE: { gateway:'flutterwave', amount:450,     currency:'KES', display:'KES 450'            },
+                    ZA: { gateway:'flutterwave', amount:45,     currency:'ZAR', display:'R45'            },
+                    UG: { gateway:'flutterwave', amount:9000,     currency:'UGX', display:'UGX 9,000'            },
+                    TZ: { gateway:'flutterwave', amount:6000,     currency:'TZS', display:'TZS 6,000'            },
+                    GB: { gateway:'paystack',    amount:10,  currency:'GBP', display:'&pound;10'     },
+                    DE: { gateway:'paystack',    amount:10,  currency:'EUR', display:'&euro;10'      },
+                    FR: { gateway:'paystack',    amount:10,  currency:'EUR', display:'&euro;10'      },
+                    NL: { gateway:'paystack',    amount:10,  currency:'EUR', display:'&euro;10'      },
+                    US: { gateway:'paystack',    amount:15,  currency:'USD', display:'$15'           },
+                    CA: { gateway:'paystack',    amount:20,  currency:'USD', display:'$20'           },
+                };
+                _payRegion = map[cc] || { gateway:'paystack', amount:15, currency:'USD', display:'$15' };
+                const el = document.getElementById('priceDisplay');
+                if (el) el.innerHTML = _payRegion.display + '<span style="font-size:1rem; opacity:0.6;">/mo</span>';
+            } catch(e) { /* default Nigeria stays */ }
+        }
 
         // ── STEP 1: Send OTP ──────────────────────────────────────
         async function handleSignup(e) {
@@ -527,110 +526,75 @@
             const name  = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
-            const msg   = document.getElementById('signupMsg');
             const btn   = document.getElementById('signupBtn');
-
             btn.disabled = true;
             btn.textContent = 'Sending code...';
-            showMsg('', 'neutral');
-
+            showSignupMsg('', 'neutral');
             try {
-                const url = `${APPS_SCRIPT}?action=sendOTP&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
+                const url  = APPS_SCRIPT + '?action=sendOTP&name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email) + '&phone=' + encodeURIComponent(phone);
                 const res  = await fetch(url);
                 const data = await res.json();
-
                 if (data.success) {
-                    // Save for Step 2
                     _otpPending = { name, email, phone };
-
-                    // Switch to Step 2
                     document.getElementById('signupStep1').style.display = 'none';
                     document.getElementById('signupStep2').style.display = 'block';
                     document.getElementById('otpEmailDisplay').textContent = email;
                     document.getElementById('otpInput').value = '';
                     document.getElementById('otpInput').focus();
-                    showMsg('✅ Code sent! Check your email inbox (and spam folder).', 'success');
-
+                    showSignupMsg('Code sent! Check your inbox and spam folder.', 'success');
                 } else if (data.message === 'already_registered') {
-                    showMsg('ℹ️ This email is already registered. Please login above.', 'info');
-                    btn.disabled = false;
-                    btn.textContent = 'Activate Trial';
+                    showSignupMsg('This email is already registered. Please login above.', 'info');
+                    btn.disabled = false; btn.textContent = 'Activate Trial';
                 } else {
-                    showMsg('❌ ' + (data.message || 'Failed to send code. Try again.'), 'error');
-                    btn.disabled = false;
-                    btn.textContent = 'Activate Trial';
+                    showSignupMsg('Could not send code: ' + (data.message || 'Try again.'), 'error');
+                    btn.disabled = false; btn.textContent = 'Activate Trial';
                 }
-            } catch (err) {
-                showMsg('❌ Network error. Check your connection and try again.', 'error');
-                btn.disabled = false;
-                btn.textContent = 'Activate Trial';
+            } catch(err) {
+                showSignupMsg('Network error. Check your connection and try again.', 'error');
+                btn.disabled = false; btn.textContent = 'Activate Trial';
             }
+            return false;
         }
 
-        // ── STEP 2: Verify OTP & Activate ────────────────────────
+        // ── STEP 2: Verify OTP ────────────────────────────────────
         async function handleOTPVerify(e) {
             e.preventDefault();
-            const otp  = document.getElementById('otpInput').value.trim();
-            const btn  = document.getElementById('verifyBtn');
-
-            if (otp.length !== 6 || isNaN(otp)) {
-                showMsg('❌ Please enter the 6-digit code from your email.', 'error');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = 'Verifying...';
-
+            const otp = document.getElementById('otpInput').value.trim();
+            const btn = document.getElementById('verifyBtn');
+            if (otp.length !== 6) { showSignupMsg('Please enter the full 6-digit code.', 'error'); return false; }
+            btn.disabled = true; btn.textContent = 'Verifying...';
             try {
-                const url  = `${APPS_SCRIPT}?action=verifyOTP&email=${encodeURIComponent(_otpPending.email)}&otp=${encodeURIComponent(otp)}`;
+                const url  = APPS_SCRIPT + '?action=verifyOTP&email=' + encodeURIComponent(_otpPending.email) + '&otp=' + encodeURIComponent(otp);
                 const res  = await fetch(url);
                 const data = await res.json();
-
                 if (data.success) {
-                    // Hide OTP form, show full success
                     document.getElementById('signupStep2').style.display = 'none';
-                    showMsg('🎉 Identity verified! Your 7-Day Trial is now ACTIVE. Login above to access your predictions.', 'success');
+                    showSignupMsg('Identity verified! Your 7-Day Trial is ACTIVE. Login above to access predictions.', 'success');
                 } else {
-                    showMsg('❌ ' + (data.message || 'Verification failed. Try again.'), 'error');
-                    btn.disabled = false;
-                    btn.textContent = 'Verify & Activate Trial';
+                    showSignupMsg((data.message || 'Verification failed. Try again.'), 'error');
+                    btn.disabled = false; btn.textContent = 'Verify & Activate Trial';
                 }
-            } catch (err) {
-                showMsg('❌ Network error. Check your connection and try again.', 'error');
-                btn.disabled = false;
-                btn.textContent = 'Verify & Activate Trial';
+            } catch(err) {
+                showSignupMsg('Network error. Try again.', 'error');
+                btn.disabled = false; btn.textContent = 'Verify & Activate Trial';
             }
+            return false;
         }
 
         // ── Resend OTP ────────────────────────────────────────────
         async function resendOTP() {
             const btn = document.getElementById('resendBtn');
-            btn.disabled = true;
-            btn.textContent = 'Sending...';
-            showMsg('', 'neutral');
-
+            btn.disabled = true; btn.textContent = 'Sending...';
             try {
-                const url  = `${APPS_SCRIPT}?action=sendOTP&name=${encodeURIComponent(_otpPending.name)}&email=${encodeURIComponent(_otpPending.email)}&phone=${encodeURIComponent(_otpPending.phone)}`;
+                const url  = APPS_SCRIPT + '?action=sendOTP&name=' + encodeURIComponent(_otpPending.name) + '&email=' + encodeURIComponent(_otpPending.email) + '&phone=' + encodeURIComponent(_otpPending.phone);
                 const res  = await fetch(url);
                 const data = await res.json();
-
-                if (data.success) {
-                    showMsg('✅ New code sent! Check your inbox.', 'success');
-                } else {
-                    showMsg('❌ Could not resend. Try again in a moment.', 'error');
-                }
-            } catch (err) {
-                showMsg('❌ Network error. Try again.', 'error');
-            }
-
-            // Re-enable resend button after 30 seconds
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.textContent = 'Resend Code';
-            }, 30000);
+                showSignupMsg(data.success ? 'New code sent! Check your inbox.' : 'Could not resend. Try again.', data.success ? 'success' : 'error');
+            } catch(e) { showSignupMsg('Network error. Try again.', 'error'); }
+            setTimeout(() => { btn.disabled = false; btn.textContent = 'Resend Code'; }, 30000);
         }
 
-        // ── Reset back to Step 1 ──────────────────────────────────
+        // ── Go back to Step 1 ─────────────────────────────────────
         function resetSignupForm() {
             _otpPending = {};
             document.getElementById('signupStep2').style.display = 'none';
@@ -638,27 +602,19 @@
             document.getElementById('signupBtn').disabled = false;
             document.getElementById('signupBtn').textContent = 'Activate Trial';
             document.getElementById('signupForm').reset();
-            showMsg('', 'neutral');
+            showSignupMsg('', 'neutral');
         }
 
         // ── Message helper ────────────────────────────────────────
-        function showMsg(text, type) {
-            const msg = document.getElementById('signupMsg');
-            if (!text) { msg.style.display = 'none'; return; }
-            msg.style.display = 'block';
-            const styles = {
-                success: { bg: '#dcfce7', color: '#166534' },
-                error:   { bg: '#fee2e2', color: '#991b1b' },
-                info:    { bg: '#dbeafe', color: '#1e40af' },
-                neutral: { bg: '#f1f5f9', color: '#475569' }
-            };
+        function showSignupMsg(text, type) {
+            const el = document.getElementById('signupMsg');
+            if (!text) { el.style.display = 'none'; return; }
+            const styles = { success:{bg:'#dcfce7',color:'#166534'}, error:{bg:'#fee2e2',color:'#991b1b'}, info:{bg:'#dbeafe',color:'#1e40af'}, neutral:{bg:'#f1f5f9',color:'#475569'} };
             const s = styles[type] || styles.neutral;
-            msg.style.background = s.bg;
-            msg.style.color      = s.color;
-            msg.textContent      = text;
+            el.style.display = 'block'; el.style.background = s.bg; el.style.color = s.color; el.textContent = text;
         }
 
-       async function loadTodayPredictions() {
+        async function loadTodayPredictions() {
             const section = document.getElementById('todayPredictions');
             const grid = document.getElementById('todayGrid');
             section.style.display = 'block';
@@ -677,20 +633,32 @@
 
         function makePayment() {
             if (!loggedInUser) { alert("Please login or signup first."); scrollToSignup(); return; }
-            FlutterwaveCheckout({
-                public_key: FLUTTERWAVE_PUBLIC_KEY,
-                tx_ref: "PREDIKT_" + Date.now(),
-                amount: 1000,
-                currency: "NGN",
-                customer: { email: loggedInUser.email, phone_number: loggedInUser.phone, name: "Member" },
-                callback: function(data) {
-                    if (data.status === "successful") {
-                        fetch(`${APPS_SCRIPT}?action=paymentSuccess&email=${encodeURIComponent(loggedInUser.email)}`, { method: 'GET', mode: 'no-cors' })
-                        .then(() => { alert("Payment successful! Account upgraded."); location.reload(); });
-                    }
-                },
-                customizations: { title: "PREDIKT AI Premium", description: "30 Days Access" }
-            });
+            const onSuccess = function() {
+                fetch(APPS_SCRIPT + '?action=paymentSuccess&email=' + encodeURIComponent(loggedInUser.email), { method: 'GET', mode: 'no-cors' })
+                .then(() => { alert("Payment successful! Account upgraded."); location.reload(); });
+            };
+            if (_payRegion.gateway === 'paystack') {
+                const handler = PaystackPop.setup({
+                    key: PAYSTACK_PUBLIC_KEY,
+                    email: loggedInUser.email,
+                    amount: _payRegion.amount * 100,
+                    currency: _payRegion.currency,
+                    metadata: { phone: loggedInUser.phone },
+                    callback: function(res) { if (res.status === 'success') onSuccess(); },
+                    onClose: function() {}
+                });
+                handler.openIframe();
+            } else {
+                FlutterwaveCheckout({
+                    public_key: FLUTTERWAVE_PUBLIC_KEY,
+                    tx_ref: "PREDIKT_" + Date.now(),
+                    amount: _payRegion.amount,
+                    currency: _payRegion.currency,
+                    customer: { email: loggedInUser.email, phone_number: loggedInUser.phone, name: "Member" },
+                    callback: function(data) { if (data.status === "successful") onSuccess(); },
+                    customizations: { title: "PREDIKT AI Premium", description: "30 Days Access" }
+                });
+            }
         }
 
         function updateAuthUI() {
@@ -770,10 +738,15 @@
             document.body.style.overflow = 'auto';
         }
 
-        function scrollToSignup() { do
-                
+        function scrollToSignup() { document.getElementById('signup').scrollIntoView({ behavior: 'smooth' }); }
+        function handleHeroAction() { if (loggedInUser) { document.getElementById('todayPredictions').scrollIntoView({ behavior: 'smooth' }); } else { scrollToSignup(); } }
+        function loadResultsByDate() { renderResults(); }
 
-            
-                
-                    
-                        
+        // ── Constants (add your Paystack live key here after signup at paystack.com) ──
+        const PAYSTACK_PUBLIC_KEY = 'pk_live_REPLACE_WITH_YOUR_KEY';
+
+        init();
+        detectRegion();
+    </script>
+</body>
+</html>
