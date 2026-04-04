@@ -6,7 +6,6 @@
     <title>PREDIKT AI - AI Football Market Analysis</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://checkout.flutterwave.com/v3.js"></script>
-    <script src="https://js.paystack.co/v1/inline.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3QQ5W2XE4Y"></script>
 <script>
@@ -164,6 +163,7 @@
             </div>
         </div>
     </section>
+
     <section id="todayPredictions" class="section alt" style="display: none;">
         <div class="container">
             <div style="background: #4f46e5; color: white; display: inline-block; padding: 0.4rem 1rem; border-radius: 12px; font-weight: 800; font-size: 0.8rem; margin-bottom: 1rem;">🎯 MEMBER ONLY</div>
@@ -254,36 +254,22 @@
     <section id="pricing" class="section alt">
         <div class="container">
             <h2>Simple Pricing</h2>
-            <p id="pricingNote" style="text-align:center; color:#64748b; font-size:0.85rem; margin-top:-1.5rem; margin-bottom:2.5rem; font-weight:600;">Pricing shown in your local currency</p>
             <div class="pricing">
 
-                <!-- FREE TRIAL CARD -->
                 <div class="price-card featured">
                     <h3>🎯 Free Trial</h3>
-                    <div class="price" style="font-size:2rem; margin:1rem 0;">7 Days</div>
-                    <p style="font-style:italic; color:#4f46e5; font-weight:700; margin-bottom:0.8rem;">Try before you commit.</p>
-                    <div style="text-align:left; margin-bottom:1.5rem; display:grid; gap:0.6rem;">
-                        <p style="font-size:0.9rem; color:#475569; display:flex; align-items:flex-start; gap:0.5rem;"><span style="color:#10b981; font-weight:800; flex-shrink:0;">✓</span> 7 full days of access.</p>
-                        <p style="font-size:0.9rem; color:#475569; display:flex; align-items:flex-start; gap:0.5rem;"><span style="color:#10b981; font-weight:800; flex-shrink:0;">✓</span> Every feature unlocked.</p>
-                        <p style="font-size:0.9rem; color:#475569; display:flex; align-items:flex-start; gap:0.5rem;"><span style="color:#10b981; font-weight:800; flex-shrink:0;">✓</span> No strings attached.</p>
+                    <div style="margin:1.5rem 0; text-align:left; display:grid; gap:0.5rem;">
+                        <p style="font-size:0.95rem; color:#475569;">7 days. Full access. No payment required.</p>
                     </div>
                     <button onclick="scrollToSignup()" class="btn" style="width:100%;">Start Free Trial</button>
-                    <p style="font-size:0.8rem; color:#94a3b8; margin-top:0.8rem; text-align:center;">No payment required.</p>
                 </div>
 
-                <!-- PREMIUM CARD -->
                 <div class="price-card">
                     <h3>💎 Premium</h3>
-                    <div id="priceDisplay" class="price" style="margin:1rem 0;">&#8358;3,500<span style="font-size:1rem; opacity:0.6;">/mo</span></div>
-                    <p style="font-style:italic; color:#4f46e5; font-weight:700; margin-bottom:0.8rem;">Professional analysis. Daily delivery.</p>
-                    <div style="text-align:left; margin-bottom:1.5rem; display:grid; gap:0.6rem;">
-                        <p style="font-size:0.9rem; color:#475569; display:flex; align-items:flex-start; gap:0.5rem;"><span style="color:#4f46e5; font-weight:800; flex-shrink:0;">✓</span> AI-powered predictions across global leagues.</p>
-                        <p style="font-size:0.9rem; color:#475569; display:flex; align-items:flex-start; gap:0.5rem;"><span style="color:#4f46e5; font-weight:800; flex-shrink:0;">✓</span> Hidden and Familiar market picks.</p>
-                        <p style="font-size:0.9rem; color:#475569; display:flex; align-items:flex-start; gap:0.5rem;"><span style="color:#4f46e5; font-weight:800; flex-shrink:0;">✓</span> Confidence percentages &amp; full reasoning.</p>
-                        <p style="font-size:0.9rem; color:#475569; display:flex; align-items:flex-start; gap:0.5rem;"><span style="color:#4f46e5; font-weight:800; flex-shrink:0;">✓</span> 30-day rolling access.</p>
+                    <div style="margin:1.5rem 0; text-align:left; display:grid; gap:0.5rem;">
+                        <p style="font-size:0.95rem; color:#475569;">AI predictions. Daily. 7+ leagues. Hidden Markets. Familiar Markets. Top 3 picks per match. Full analysis. 30 days.</p>
                     </div>
                     <button onclick="makePayment()" class="btn btn-green" style="width:100%;">Upgrade Now</button>
-                    <p style="font-size:0.8rem; color:#94a3b8; margin-top:0.8rem; text-align:center;">Secure payment. Cancel anytime.</p>
                 </div>
 
             </div>
@@ -294,7 +280,6 @@
         <div class="container">
             <h2>Start Your Free 7-Day Trial</h2>
             <div class="login-section">
-
                 <!-- Shared message box -->
                 <div id="signupMsg" style="display:none; padding:1rem; border-radius:12px; margin-bottom:1.5rem; font-weight:700; text-align:center;"></div>
 
@@ -336,6 +321,7 @@
             </div>
         </div>
     </section>
+
     <footer>
         <div class="container">
             <div style="max-width: 400px; margin: 0 auto 3rem; text-align: left; background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 24px;">
@@ -375,7 +361,7 @@
 
 
         const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbxtOlU85ZCB8NXHi7VUOri0XnOzarIHPO9cm5srBzKD5xhZBfuoncubqbWr4eMSK6_icA/exec';
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-b3a01b394811db4b680a1db4a0f915b3-X'; 
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-ab1439e03a18daa077224281219e4220-X'; 
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
         let allResults = [];
@@ -470,6 +456,7 @@
                     </div>
                 `;
             };
+
             let kickoffTime = '00:00';
             if (g.kickoff) {
                 const timeMatch = String(g.kickoff).match(/\d{1,2}:\d{2}/);
@@ -493,7 +480,6 @@
                 </div>
             `;
         }
-
         async function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -509,35 +495,47 @@
             } catch (e) { alert('Login error.'); }
         }
 
-        // ── Region & payment config (set by detectRegion) ────────────────
-        let _payRegion = { gateway:'flutterwave', amount:5000, currency:'NGN', label:'NGN' };
+        // ── Region & payment config ──────────────────────────────────
+        let _payRegion = { amount:3500, currency:'NGN' };
         let _otpPending = {};
 
-        // ── IP Detection (runs silently on load) ──────────────────
+        // ── IP Detection (runs silently on load) ──────────────
         async function detectRegion() {
             try {
                 const res  = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
                 const cc   = data.country_code || 'NG';
                 const map  = {
-                    NG: { gateway:'flutterwave', amount:5000,  currency:'NGN', display:'&#8358;5,000'  },
-                    GH: { gateway:'flutterwave', amount:8,     currency:'USD', display:'$8'            },
-                    KE: { gateway:'flutterwave', amount:8,     currency:'USD', display:'$8'            },
-                    ZA: { gateway:'flutterwave', amount:8,     currency:'USD', display:'$8'            },
-                    GB: { gateway:'paystack',    amount:2000,  currency:'GBP', display:'&pound;20'     },
-                    DE: { gateway:'paystack',    amount:2000,  currency:'EUR', display:'&euro;20'      },
-                    FR: { gateway:'paystack',    amount:2000,  currency:'EUR', display:'&euro;20'      },
-                    NL: { gateway:'paystack',    amount:2000,  currency:'EUR', display:'&euro;20'      },
-                    US: { gateway:'paystack',    amount:2500,  currency:'USD', display:'$25'           },
-                    CA: { gateway:'paystack',    amount:2500,  currency:'USD', display:'$25'           },
+                    // ── Africa ──────────────────────────────────
+                    NG: { amount:3500,  currency:'NGN' },
+                    GH: { amount:160,   currency:'GHS' },
+                    KE: { amount:1400,  currency:'KES' },
+                    ZA: { amount:210,   currency:'ZAR' },
+                    UG: { amount:43000, currency:'UGX' },
+                    TZ: { amount:27500, currency:'TZS' },
+                    ZM: { amount:220,   currency:'ZMW' },
+                    RW: { amount:15500, currency:'RWF' },
+                    // ── Europe ──────────────────────────────────
+                    GB: { amount:10,    currency:'GBP' },
+                    DE: { amount:10,    currency:'EUR' },
+                    FR: { amount:10,    currency:'EUR' },
+                    ES: { amount:10,    currency:'EUR' },
+                    IT: { amount:10,    currency:'EUR' },
+                    NL: { amount:10,    currency:'EUR' },
+                    BE: { amount:10,    currency:'EUR' },
+                    SE: { amount:100,   currency:'SEK' },
+                    NO: { amount:100,   currency:'NOK' },
+                    // ── Americas ────────────────────────────────
+                    US: { amount:15,    currency:'USD' },
+                    CA: { amount:20,    currency:'CAD' },
+                    // ── Default ─────────────────────────────────
                 };
-                _payRegion = map[cc] || { gateway:'paystack', amount:1500, currency:'USD', display:'$15' };
-                const el = document.getElementById('priceDisplay');
-                if (el) el.innerHTML = _payRegion.display + '<span style="font-size:1rem; opacity:0.6;">/mo</span>';
+                _payRegion = map[cc] || { amount:10, currency:'USD' };
             } catch(e) { /* default Nigeria stays */ }
         }
 
-        // ── STEP 1: Send OTP ──────────────────────────────────────
+        // ── STEP 1: Send OTP ──────────────────────────────────
+// ── STEP 1: Send OTP ──────────────────────────────────────
         async function handleSignup(e) {
             e.preventDefault();
             const name  = document.getElementById('name').value.trim();
@@ -650,34 +648,30 @@
 
         function makePayment() {
             if (!loggedInUser) { alert("Please login or signup first."); scrollToSignup(); return; }
-            const onSuccess = function() {
-                fetch(APPS_SCRIPT + '?action=paymentSuccess&email=' + encodeURIComponent(loggedInUser.email), { method: 'GET', mode: 'no-cors' })
-                .then(() => { alert("Payment successful! Account upgraded."); location.reload(); });
-            };
-            if (_payRegion.gateway === 'paystack') {
-                const handler = PaystackPop.setup({
-                    key: PAYSTACK_PUBLIC_KEY,
+            FlutterwaveCheckout({
+                public_key: FLUTTERWAVE_PUBLIC_KEY,
+                tx_ref: "PREDIKT_" + Date.now(),
+                amount: _payRegion.amount,
+                currency: _payRegion.currency,
+                customer: {
                     email: loggedInUser.email,
-                    amount: _payRegion.amount * 100,
-                    currency: _payRegion.currency,
-                    metadata: { phone: loggedInUser.phone },
-                    callback: function(res) { if (res.status === 'success') onSuccess(); },
-                    onClose: function() {}
-                });
-                handler.openIframe();
-            } else {
-                FlutterwaveCheckout({
-                    public_key: FLUTTERWAVE_PUBLIC_KEY,
-                    tx_ref: "PREDIKT_" + Date.now(),
-                    amount: _payRegion.amount,
-                    currency: _payRegion.currency,
-                    customer: { email: loggedInUser.email, phone_number: loggedInUser.phone, name: "Member" },
-                    callback: function(data) { if (data.status === "successful") onSuccess(); },
-                    customizations: { title: "PREDIKT AI Premium", description: "30 Days Access" }
-                });
-            }
+                    phone_number: loggedInUser.phone,
+                    name: "Member"
+                },
+                callback: function(data) {
+                    if (data.status === "successful") {
+                        fetch(APPS_SCRIPT + '?action=paymentSuccess&email=' + encodeURIComponent(loggedInUser.email), { method:'GET', mode:'no-cors' })
+                        .then(() => { alert("Payment successful! Account upgraded."); location.reload(); });
+                    }
+                },
+                customizations: {
+                    title: "PREDIKT AI Premium",
+                    description: "30 Days Full Access"
+                }
+            });
         }
 
+        
         function updateAuthUI() {
             const auth = document.getElementById('navAuth');
             if (loggedInUser) {
@@ -749,8 +743,6 @@
         function handleHeroAction() { if (loggedInUser) { document.getElementById('todayPredictions').scrollIntoView({ behavior: 'smooth' }); } else { scrollToSignup(); } }
         function loadResultsByDate() { renderResults(); }
 
-        // ── Constants (add your Paystack live key here after signup at paystack.com) ──
-        const PAYSTACK_PUBLIC_KEY = 'pk_live_REPLACE_WITH_YOUR_KEY';
 
         init();
         detectRegion();
