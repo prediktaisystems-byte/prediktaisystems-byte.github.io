@@ -285,19 +285,32 @@
         <div class="container">
             <h2>Start Your Free 7-Day Trial</h2>
             <div class="login-section">
-                <!-- Shared message box -->
-                <div id="signupMsg" style="display:none; padding:1rem; border-radius:12px; margin-bottom:1.5rem; font-weight:700; text-align:center;"></div>
 
-                <!-- STEP 1: Details -->
-                <div id="signupStep1">
-                    <form id="signupForm" onsubmit="return handleSignup(event)">
-                        <div class="form-group"><label>Full Name *</label><input type="text" id="name" required></div>
-                        <div class="form-group"><label>Email Address *</label><input type="email" id="email" required></div>
-                        <div class="form-group"><label>Phone Number *</label><input type="tel" id="phone" required></div>
-                        <button type="submit" id="signupBtn" class="btn" style="width:100%;">Activate Trial</button>
-                    </form>
-                </div>
+                <!-- Shared message box --> <div id="signupMsg" style="display:none; padding:1rem; border-radius:12px; margin-bottom:1.5rem; font-weight:700; text-align:center;"></div>
 
+<!-- STEP 1: Details -->
+
+<div id="signupStep1">
+
+<form id="signupForm" onsubmit="return
+
+handleSignup(event)">
+
+<div class="form-group"><label>Full Name *</label><input type="text" id="name" required></div>
+
+<div class="form-group"><label>Email Address *</
+
+label><input type="email" id="email" required></div>
+
+<div class="form-group"><label>Phone Number *</ label><input type="tel" id="phone" required></div>
+
+<button type="submit" id="signupBtn" class="btn"
+
+style="width:100%;">Activate Trial</button>
+
+</form>
+
+</div>
                 <!-- STEP 2: OTP (hidden until code is sent) -->
                 <div id="signupStep2" style="display:none;">
                     <div style="text-align:center; margin-bottom:1.5rem;">
@@ -353,6 +366,16 @@
         </div>
     </div>
 
+
+    <div id="statsModal" class="modal">
+        <div class="modal-content" style="max-width:700px; max-height:90vh; overflow-y:auto;">
+            <span class="close" onclick="closeStats()">&times;</span>
+            <div id="statsContent">
+                <div style="text-align:center; padding:2rem; color:#64748b;">Loading stats...</div>
+            </div>
+        </div>
+    </div>
+
     <div id="analysisModal" class="modal">
         <div class="modal-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
             <span class="close" onclick="closeAnalysis()">&times;</span>
@@ -365,8 +388,8 @@
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 
-        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwnmeEF-k5NxXd0AeUN17C89Uox9e7CxesjcV8pKcmcngUdjIvRLChbWusmFAeqjP7aKA/exec';
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-76f9f0afb8759e52126d732ae562d6b5-X'; 
+        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbxBF-9Lz1yNk-zu6NMZLK1iBeE1XI-eT5jJr1EN79rRsPm6luDsRCr1e-GWs9w8ov_hjg/exec';
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-ea43f13a75ac4e8a27a5bf196d6a028c-X'; 
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
         let allResults = [];
@@ -450,7 +473,7 @@
                             <div class="market-item">
                                 <div style="display: flex; flex-direction: column; gap: 0.2rem;">
                                     <span style="font-weight: 700;">${r[`market${i}`]}</span>
-                                    <a href="javascript:void(0)" onclick="openAnalysis('${r.match.replace(/'/g, "\\'")}', '${r.marketType}', ${i})" style="font-size: 0.7rem; color: var(--primary); text-decoration: none; font-weight: 700;">Learn why →</a>
+                                    <a href="javascript:void(0)" onclick="openMarketAction(r, ${i})" style="font-size:0.7rem; color:var(--primary); text-decoration:none; font-weight:700;">${r['result'+i] && r['result'+i] !== 'PENDING' && r['result'+i] !== '' ? 'Stats →' : 'Learn why →'}</a>
                                 </div>
                                 <div style="text-align: right; display: flex; align-items: center; gap: 0.5rem;">
                                     <span class="market-conf">${r[`conf${i}`]}%</span>
@@ -619,7 +642,6 @@
             }
             return false;
         }
-
         // ── Resend OTP ────────────────────────────────────────────
         async function resendOTP() {
             const btn = document.getElementById('resendBtn');
@@ -763,6 +785,123 @@
             document.body.style.overflow = 'auto';
         }
 
+        function closeStats() {
+            document.getElementById('statsModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Routes click to Learn Why (pre-match) or Stats (post-match)
+        function openMarketAction(row, marketIndex) {
+            const matchName  = row.match;
+            const marketType = row.marketType;
+            const result = row['result' + marketIndex] || '';
+            const isPostMatch = result && result !== 'PENDING' && result !== '';
+            if (isPostMatch) {
+                openStats(matchName, marketType, marketIndex, row, true);
+            } else {
+                openAnalysis(matchName, marketType, marketIndex);
+            }
+        }
+
+        // Opens stats modal — pre-match (fast) or post-match (live API)
+        async function openStats(matchName, marketType, marketIndex, row, isPostMatch) {
+            document.getElementById('statsModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            const content = document.getElementById('statsContent');
+            content.innerHTML = '<div style="text-align:center; padding:3rem; color:#64748b; font-size:1rem;">Loading stats...</div>';
+
+            const market = row ? row['market' + marketIndex] : '';
+            const conf   = row ? row['conf'   + marketIndex] : '';
+            const result = row ? row['result' + marketIndex] : '';
+
+            const resultBadge = result === 'WIN'
+                ? '<span style="background:#dcfce7; color:#166534; padding:0.3rem 0.8rem; border-radius:8px; font-weight:800; font-size:0.85rem;">&#10003; WIN</span>'
+                : result === 'LOSS'
+                ? '<span style="background:#fee2e2; color:#991b1b; padding:0.3rem 0.8rem; border-radius:8px; font-weight:800; font-size:0.85rem;">&#10007; LOSS</span>'
+                : result === 'VOID'
+                ? '<span style="background:#f1f5f9; color:#475569; padding:0.3rem 0.8rem; border-radius:8px; font-weight:800; font-size:0.85rem;">VOID</span>'
+                : '';
+
+            try {
+                const postParam = isPostMatch ? '&postmatch=true' : '&postmatch=false';
+                const res  = await fetch(APPS_SCRIPT + '?action=getMatchStats&match=' + encodeURIComponent(matchName) + postParam);
+                const data = await res.json();
+
+                if (data.status !== 'success' || !data.stats) {
+                    content.innerHTML = '<div style="padding:2rem; text-align:center; color:#64748b;">No stats available for this match.</div>';
+                    return;
+                }
+
+                const s    = data.stats;
+                const home = s.home;
+                const away = s.away;
+                const score = data.score || null;
+
+                const scoreHtml = score
+                    ? '<div style="font-size:2rem; font-weight:800; text-align:center; margin:1rem 0; color:#0f172a;">' + score.homeTeam + ' <span style="color:var(--primary);">' + score.home + ' - ' + score.away + '</span> ' + score.awayTeam + '</div>'
+                    : '';
+
+                const h2hHtml = data.h2h ? `
+                    <div style="background:#f1f5f9; padding:1.2rem; border-radius:16px; margin-top:1rem;">
+                        <h4 style="color:var(--primary); margin-bottom:0.8rem; font-size:0.9rem; text-transform:uppercase;">&#128200; Head to Head (Last ${data.h2h.total} Games)</h4>
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem; text-align:center;">
+                            <div><div style="font-size:1.4rem; font-weight:800; color:#0f172a;">${data.h2h.homeWins}</div><div style="font-size:0.75rem; color:#64748b;">Home Wins</div></div>
+                            <div><div style="font-size:1.4rem; font-weight:800; color:#64748b;">${data.h2h.draws}</div><div style="font-size:0.75rem; color:#64748b;">Draws</div></div>
+                            <div><div style="font-size:1.4rem; font-weight:800; color:#0f172a;">${data.h2h.awayWins}</div><div style="font-size:0.75rem; color:#64748b;">Away Wins</div></div>
+                        </div>
+                        <div style="margin-top:0.8rem; font-size:0.85rem; color:#475569; display:flex; gap:1.5rem; justify-content:center;">
+                            <span>BTTS Rate: <strong>${data.h2h.bttsRate}</strong></span>
+                            <span>Avg Goals: <strong>${data.h2h.avgGoalsPerGame}</strong></span>
+                        </div>
+                    </div>` : '';
+
+                const statRow = (label, homeVal, awayVal, icon) => `
+                    <div style="display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:0.6rem 0; border-bottom:1px solid #f1f5f9; gap:0.5rem;">
+                        <div style="text-align:right; font-weight:700; color:#0f172a;">${homeVal !== undefined ? homeVal : 'N/A'}</div>
+                        <div style="text-align:center; font-size:0.75rem; color:#64748b; min-width:100px;">${icon} ${label}</div>
+                        <div style="text-align:left; font-weight:700; color:#0f172a;">${awayVal !== undefined ? awayVal : 'N/A'}</div>
+                    </div>`;
+
+                content.innerHTML = `
+                    <div style="margin-bottom:1.5rem;">
+                        <div style="background:var(--primary); color:white; display:inline-block; padding:0.3rem 0.8rem; border-radius:8px; font-size:0.7rem; font-weight:800; margin-bottom:0.8rem;">${isPostMatch ? 'MATCH STATS' : 'PRE-MATCH STATS'}</div>
+                        <h2 style="font-size:1.5rem; color:#0f172a; margin-bottom:0.3rem;">${matchName}</h2>
+                        ${scoreHtml}
+                        <div style="display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap; margin-top:0.5rem;">
+                            <span style="background:#f8fafc; padding:0.3rem 0.8rem; border-radius:8px; font-weight:700; font-size:0.9rem;">${market}</span>
+                            <span style="color:var(--primary); font-weight:800;">${conf}% Confidence</span>
+                            ${resultBadge}
+                        </div>
+                    </div>
+
+                    <div style="background:#f8fafc; border-radius:20px; padding:1.2rem; margin-bottom:1rem;">
+                        <div style="display:grid; grid-template-columns:1fr auto 1fr; margin-bottom:0.5rem;">
+                            <div style="font-weight:800; color:#0f172a; font-size:0.9rem; text-align:right;">${home.team || 'Home'}</div>
+                            <div></div>
+                            <div style="font-weight:800; color:#0f172a; font-size:0.9rem;">${away.team || 'Away'}</div>
+                        </div>
+                        ${statRow('Fouls',          home.fouls,          away.fouls,          '&#128308;')}
+                        ${statRow('Corners',        home.corners,        away.corners,        '&#128210;')}
+                        ${statRow('Yellow Cards',   home.yellowCards,    away.yellowCards,    '&#127DF;')}
+                        ${statRow('Red Cards',      home.redCards,       away.redCards,       '&#127FF;')}
+                        ${statRow('Saves',          home.saves,          away.saves,          '&#129354;')}
+                        ${statRow('Shots on Target',home.shotsOnTarget,  away.shotsOnTarget,  '&#127919;')}
+                        ${statRow('Possession',     home.ballPossession, away.ballPossession, '&#9917;')}
+                    </div>
+
+                    ${h2hHtml}
+
+                    <div style="margin-top:2rem;">
+                        <button onclick="closeStats()" class="btn" style="width:100%;">Close</button>
+                    </div>
+                `;
+
+            } catch(err) {
+                content.innerHTML = '<div style="padding:2rem; text-align:center; color:#ef4444;">Failed to load stats. Please try again.</div>';
+                console.error('Stats error:', err);
+            }
+        }
+
         function scrollToSignup() { document.getElementById('signup').scrollIntoView({ behavior: 'smooth' }); }
         function handleHeroAction() { if (loggedInUser) { document.getElementById('todayPredictions').scrollIntoView({ behavior: 'smooth' }); } else { scrollToSignup(); } }
         function loadResultsByDate() { renderResults(); }
@@ -773,3 +912,4 @@
     </script>
 </body>
 </html>
+      
