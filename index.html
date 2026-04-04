@@ -141,7 +141,6 @@
                     <p>Matches Daily</p>
                 </div>
             </div>
-
             <div style="text-align: center;">
                 <button onclick="handleHeroAction()" class="btn">Unlock 🔓 Today's Prediction Now</button>
                 <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; font-weight: 600;">Only available to trial & premium users</p>
@@ -285,32 +284,19 @@
         <div class="container">
             <h2>Start Your Free 7-Day Trial</h2>
             <div class="login-section">
+                <!-- Shared message box -->
+                <div id="signupMsg" style="display:none; padding:1rem; border-radius:12px; margin-bottom:1.5rem; font-weight:700; text-align:center;"></div>
 
-                <!-- Shared message box --> <div id="signupMsg" style="display:none; padding:1rem; border-radius:12px; margin-bottom:1.5rem; font-weight:700; text-align:center;"></div>
+                <!-- STEP 1: Details -->
+                <div id="signupStep1">
+                    <form id="signupForm" onsubmit="return handleSignup(event)">
+                        <div class="form-group"><label>Full Name *</label><input type="text" id="name" required></div>
+                        <div class="form-group"><label>Email Address *</label><input type="email" id="email" required></div>
+                        <div class="form-group"><label>Phone Number *</label><input type="tel" id="phone" required></div>
+                        <button type="submit" id="signupBtn" class="btn" style="width:100%;">Activate Trial</button>
+                    </form>
+                </div>
 
-<!-- STEP 1: Details -->
-
-<div id="signupStep1">
-
-<form id="signupForm" onsubmit="return
-
-handleSignup(event)">
-
-<div class="form-group"><label>Full Name *</label><input type="text" id="name" required></div>
-
-<div class="form-group"><label>Email Address *</
-
-label><input type="email" id="email" required></div>
-
-<div class="form-group"><label>Phone Number *</ label><input type="tel" id="phone" required></div>
-
-<button type="submit" id="signupBtn" class="btn"
-
-style="width:100%;">Activate Trial</button>
-
-</form>
-
-</div>
                 <!-- STEP 2: OTP (hidden until code is sent) -->
                 <div id="signupStep2" style="display:none;">
                     <div style="text-align:center; margin-bottom:1.5rem;">
@@ -388,8 +374,8 @@ style="width:100%;">Activate Trial</button>
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 
-        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzcT6tRoOVSOIyJz5EPynXsxtZDoCfdrLgfgMLt_M6jW5OKq_EnxoyghtQO-oXO-iC3/exec';
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-de0dae45af316852905cb338686de0e2-X'; 
+        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbxBF-9Lz1yNk-zu6NMZLK1iBeE1XI-eT5jJr1EN79rRsPm6luDsRCr1e-GWs9w8ov_hjg/exec';
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-ea43f13a75ac4e8a27a5bf196d6a028c-X'; 
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
         let allResults = [];
@@ -419,7 +405,6 @@ style="width:100%;">Activate Trial</button>
                 select.appendChild(opt);
             }
         }
-
         async function loadResults() {
             try {
                 const res = await fetch(`${APPS_SCRIPT}?action=getResults`);
@@ -508,6 +493,7 @@ style="width:100%;">Activate Trial</button>
                 </div>
             `;
         }
+
         async function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -521,8 +507,7 @@ style="width:100%;">Activate Trial</button>
                     location.reload();
                 } else { alert('Account not found.'); }
             } catch (e) { alert('Login error.'); }
-        }
-
+                                        }
         // ── Region & payment config ──────────────────────────────────
         let _payRegion = { amount:3500, currency:'NGN', display:'&#8358;3,500' };
         let _otpPending = {};
@@ -642,6 +627,7 @@ style="width:100%;">Activate Trial</button>
             }
             return false;
         }
+
         // ── Resend OTP ────────────────────────────────────────────
         async function resendOTP() {
             const btn = document.getElementById('resendBtn');
@@ -653,8 +639,7 @@ style="width:100%;">Activate Trial</button>
                 showSignupMsg(data.success ? 'New code sent! Check your inbox.' : 'Could not resend. Try again.', data.success ? 'success' : 'error');
             } catch(e) { showSignupMsg('Network error. Try again.', 'error'); }
             setTimeout(() => { btn.disabled = false; btn.textContent = 'Resend Code'; }, 30000);
-        }
-
+                        }
         // ── Go back to Step 1 ─────────────────────────────────────
         function resetSignupForm() {
             _otpPending = {};
@@ -789,7 +774,6 @@ style="width:100%;">Activate Trial</button>
             document.getElementById('statsModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-
         // Routes click to Learn Why (pre-match) or Stats (post-match)
         function openMarketAction(row, marketIndex) {
             const matchName  = row.match;
@@ -912,4 +896,3 @@ style="width:100%;">Activate Trial</button>
     </script>
 </body>
 </html>
-      
