@@ -147,7 +147,6 @@
                     <p>Matches Daily</p>
                 </div>
             </div>
-
             <div style="text-align: center;">
                 <button onclick="handleHeroAction()" class="btn">Unlock 🔓 Today's Prediction Now</button>
                 <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; font-weight: 600;">Only available to trial & premium users</p>
@@ -262,7 +261,6 @@
             <h2>Simple Pricing</h2>
             <p style="text-align:center; color:#64748b; font-size:0.85rem; margin-top:-1.5rem; margin-bottom:2.5rem; font-weight:600;">Pricing shown in your local currency</p>
             <div class="pricing">
-
                 <div class="price-card featured">
                     <h3>🎯 Free Trial</h3>
                     <div style="margin:1.5rem 0;">
@@ -282,7 +280,8 @@
                     <button onclick="makePayment()" class="btn btn-green" style="width:100%;">Upgrade Now</button>
                     <p style="font-size:0.8rem; color:#94a3b8; margin-top:0.8rem; text-align:center;">Secure payment. Cancel anytime.</p>
                 </div>
-                </div>
+
+            </div>
         </div>
     </section>
 
@@ -379,11 +378,10 @@
             </div>
         </div>
     </div>
-
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 
-        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbx44f9RcgkGya6VhMAJet2waRZx7o19oARqRI1CXBj4kMS0Ooj2zTnwN408DHsAAUSkPw/exec';
+        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbz_n_Lhbsoh9WfLaLL8M8f8sfNDZ45mrjPsnvUH4uFwPfr7XZNx2Nde0Csb8Tey9OiMjA/exec';
         const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-ea43f13a75ac4e8a27a5bf196d6a028c-X'; 
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
@@ -393,11 +391,11 @@
         async function init() {
             initDates();
             updateAuthUI();
-            loadResults();
-            loadWinRates();
-            if (loggedInUser) {
-                loadTodayPredictions();
-            }
+            // Run all independent API calls in parallel — much faster load
+            const promises = [loadResults()];
+            if (loggedInUser) promises.push(loadTodayPredictions());
+            await Promise.all(promises);
+            // Win rates calculated from results data after load (no extra API call)
         }
 
         async function loadWinRates() {
@@ -451,9 +449,10 @@
                 select.appendChild(opt);
             }
         }
+
         async function loadResults() {
             try {
-                const res  = await fetch(APPS_SCRIPT + '?action=getResults');
+                const res  = await fetch(APPS_SCRIPT + '?action=getResults', { cache: 'no-store' });
                 const raw  = await res.json();
 
                 // Transform flat results format into the market-row format
@@ -535,7 +534,6 @@
             });
             return groups;
         }
-
         function createMatchCard(g) {
             const getBadge = (res) => {
                 const r = String(res || '').toUpperCase();
@@ -561,7 +559,7 @@
                             <div class="market-item">
                                 <div style="display: flex; flex-direction: column; gap: 0.2rem;">
                                     <span style="font-weight: 700;">${r['market'+i]}</span>
-                                    <a href="javascript:void(0)" onclick="openStoredRow('${rowKey}', ${i})" style="font-size:0.7rem; color:var(--primary); text-decoration:none; font-weight:700;">${r['result'+i] && r['result'+i] !== 'PENDING' && r['result'+i] !== '' ? 'Stats →' : 'Learn why →'}</a>
+                                    <a href="javascript:void(0)" onclick="openStoredRow('${rowKey}', ${i})" style="font-size:0.7rem; color:var(--primary); text-decoration:none; font-weight:700;">${'Learn why →'}</a>
                                 </div>
                                 <div style="text-align: right; display: flex; align-items: center; gap: 0.5rem;">
                                     <span class="market-conf">${r['conf'+i]}%</span>
@@ -639,6 +637,7 @@
                 btn.disabled = false; btn.textContent = 'Login';
             }
         }
+
         // ── Region & payment config ──────────────────────────────────
         let _payRegion = { amount:3500, currency:'NGN', display:'&#8358;3,500' };
         let _otpPending = {};
@@ -695,7 +694,6 @@
 
             } catch(e) { /* default Nigeria stays */ }
         }
-
         // ── STEP 1: Send OTP ──────────────────────────────────
         async function handleSignup(e) {
             e.preventDefault();
@@ -792,20 +790,34 @@
 
         async function loadTodayPredictions() {
             const section = document.getElementById('todayPredictions');
-            const grid = document.getElementById('todayGrid');
-            section.style.display = 'block';
+            const grid    = document.getElementById('todayGrid');
+            if (section) section.style.display = 'block';
+            if (grid)    grid.innerHTML = '<div style="text-align:center;padding:2rem;color:#64748b;">Loading predictions...</div>';
             try {
-                const res = await fetch(`${APPS_SCRIPT}?action=unlockPicks&email=${encodeURIComponent(loggedInUser.email)}`);
+                const res  = await fetch(APPS_SCRIPT + '?action=unlockPicks&email=' + encodeURIComponent(loggedInUser.email));
                 const data = await res.json();
-                if (data.status === 'success') {
-                    const today = new Date().toISOString();
-                    const picksWithDate = data.data.map(r => ({ ...r, date: r.date || today }));
-                    allResults = [...allResults, ...picksWithDate.filter(p => !allResults.some(r => r.match === p.match && r.marketType === p.marketType))];
+                if (data.status === 'success' && data.data && data.data.length > 0) {
+                    const today        = new Date().toISOString();
+                    const picksWithDate= data.data.map(r => ({ ...r, date: r.date || today }));
+                    // Merge into allResults without duplicates
+                    picksWithDate.forEach(p => {
+                        if (!allResults.some(r => r.match === p.match && r.marketType === p.marketType)) {
+                            allResults.push(p);
+                        }
+                    });
                     const groups = groupMatches(picksWithDate);
-                    grid.innerHTML = Object.values(groups).map(g => createMatchCard(g)).join('');
+                    if (grid) grid.innerHTML = Object.values(groups).map(g => createMatchCard(g)).join('');
+                } else if (data.status === 'success') {
+                    if (grid) grid.innerHTML = '<div style="text-align:center;padding:2rem;color:#64748b;">No predictions available for today yet.</div>';
+                } else {
+                    if (grid) grid.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444;">Could not load predictions. Try refreshing.</div>';
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error('loadTodayPredictions error:', e);
+                if (grid) grid.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444;">Network error. Please refresh.</div>';
+            }
         }
+
         function makePayment() {
             if (!loggedInUser) { alert("Please login or signup first."); scrollToSignup(); return; }
             FlutterwaveCheckout({
@@ -830,8 +842,6 @@
                 }
             });
         }
-
-        
         function updateAuthUI() {
             const auth = document.getElementById('navAuth');
             if (loggedInUser) {
@@ -906,31 +916,43 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Retrieves stored row by key and opens the correct modal
-        // This is called from onclick in match cards (fixes scope issue with r)
+        // Retrieves stored row by key and opens analysis modal
         function openStoredRow(rowKey, marketIndex) {
             window._prediktRows = window._prediktRows || {};
-            const row = window._prediktRows[rowKey];
+            let row = window._prediktRows[rowKey];
+
+            // Fallback: if key not found (happens after page reload between sessions),
+            // search allResults by reconstructing match + marketType from the key
             if (!row) {
-                console.warn('openStoredRow: row not found for key:', rowKey);
+                const keyParts  = rowKey.split('_');
+                // Try to find in allResults by partial match on the key
+                row = allResults.find(r => {
+                    const k = (r.match + '_' + r.marketType).replace(/[^a-zA-Z0-9]/g, '_');
+                    return k === rowKey;
+                });
+            }
+
+            if (!row) {
+                // Show friendly modal instead of silently failing
+                const modal = document.getElementById('analysisModal');
+                const content = document.getElementById('analysisContent');
+                if (modal && content) {
+                    content.innerHTML = '<div style="padding:2rem;text-align:center;color:#64748b;line-height:2;">Could not load analysis.<br><small>Please refresh the page and try again.</small><br><br><button onclick="closeAnalysis()" class="btn" style="padding:0.5rem 1.5rem;">Close</button></div>';
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
                 return;
             }
             openMarketAction(row, marketIndex);
         }
 
-        // Routes click to Learn Why (pre-match) or Stats (post-match)
+        // Always opens Learn Why analysis modal
+        // Stats button removed — results are marked manually in Sheets
         function openMarketAction(row, marketIndex) {
             if (!row) { console.warn('openMarketAction: row is undefined'); return; }
-            const matchName  = row.match;
-            const marketType = row.marketType;
-            const result = (row['result' + marketIndex] || '').toString().toUpperCase();
-            const isPostMatch = result && result !== 'PENDING' && result !== '';
-            if (isPostMatch) {
-                openStats(matchName, marketType, marketIndex, row, true);
-            } else {
-                openAnalysis(matchName, marketType, marketIndex, row);
-            }
+            openAnalysis(row.match, row.marketType, marketIndex, row);
         }
+
         // Opens stats modal — pre-match (fast) or post-match (live API)
         async function openStats(matchName, marketType, marketIndex, row, isPostMatch) {
             document.getElementById('statsModal').style.display = 'block';
@@ -1072,25 +1094,30 @@
             }
         }
 
-        function scrollToSignup() {
-            const el = document.getElementById('signup');
-            if (el) {
-                el.scrollIntoView({ behavior: 'smooth' });
-                // Focus the name input to make it obvious
-                setTimeout(() => {
-                    const nameInput = document.getElementById('name');
-                    if (nameInput) nameInput.focus();
-                }, 600);
-            }
+                function scrollToSignup() {
+            // Use hash navigation — most reliable across all mobile browsers
+            window.location.hash = 'signup';
+            setTimeout(() => {
+                const nameInput = document.getElementById('name');
+                if (nameInput) nameInput.focus();
+            }, 400);
         }
+
         function handleHeroAction() {
             if (loggedInUser) {
-                // Logged in → scroll to today's predictions section
-                const el = document.getElementById('todayPredictions');
-                if (el) { el.scrollIntoView({ behavior: 'smooth' }); }
-                else { loadTodayPredictions(); }
+                const section = document.getElementById('todayPredictions');
+                const grid    = document.getElementById('todayGrid');
+                // Make section visible first (it starts as display:none)
+                if (section) section.style.display = 'block';
+                // If grid is empty, load predictions then scroll
+                if (!grid || !grid.innerHTML.trim()) {
+                    loadTodayPredictions().then(() => {
+                        if (section) section.scrollIntoView({ behavior: 'smooth' });
+                    });
+                } else {
+                    if (section) section.scrollIntoView({ behavior: 'smooth' });
+                }
             } else {
-                // Not logged in → scroll to signup section smoothly
                 scrollToSignup();
             }
         }
