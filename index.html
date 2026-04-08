@@ -147,9 +147,10 @@
                     <p>Matches Daily</p>
                 </div>
             </div>
+
             <div style="text-align: center;">
-                <button onclick="handleHeroAction()" class="btn">Unlock 🔓 Today's Prediction Now</button>
-                <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; font-weight: 600;">Only available to trial & premium users</p>
+                <button onclick="handleHeroAction()" class="btn" id="heroBtn">Unlock 🔓 Today's Prediction Now</button>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; font-weight: 600;" id="heroBtnSub">Only available to trial &amp; premium users</p>
             </div>
         </div>
     </section>
@@ -186,7 +187,6 @@
             </div>
         </div>
     </section>
-
     <section id="story" class="section alt">
         <div class="container">
             <div style="max-width: 800px; margin: 0 auto;">
@@ -261,6 +261,7 @@
             <h2>Simple Pricing</h2>
             <p style="text-align:center; color:#64748b; font-size:0.85rem; margin-top:-1.5rem; margin-bottom:2.5rem; font-weight:600;">Pricing shown in your local currency</p>
             <div class="pricing">
+
                 <div class="price-card featured">
                     <h3>🎯 Free Trial</h3>
                     <div style="margin:1.5rem 0;">
@@ -359,8 +360,6 @@
             </form>
         </div>
     </div>
-
-
     <div id="statsModal" class="modal">
         <div class="modal-content" style="max-width:700px; max-height:90vh; overflow-y:auto;">
             <span class="close" onclick="closeStats()">&times;</span>
@@ -378,6 +377,7 @@
             </div>
         </div>
     </div>
+
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 
@@ -534,6 +534,7 @@
             });
             return groups;
         }
+
         function createMatchCard(g) {
             const getBadge = (res) => {
                 const r = String(res || '').toUpperCase();
@@ -606,7 +607,6 @@
                 </div>
             `;
         }
-
         async function handleLogin(e) {
             e.preventDefault();
             const email   = document.getElementById('loginEmail').value.toLowerCase().trim();
@@ -694,6 +694,7 @@
 
             } catch(e) { /* default Nigeria stays */ }
         }
+
         // ── STEP 1: Send OTP ──────────────────────────────────
         async function handleSignup(e) {
             e.preventDefault();
@@ -817,7 +818,6 @@
                 if (grid) grid.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444;">Network error. Please refresh.</div>';
             }
         }
-
         function makePayment() {
             if (!loggedInUser) { alert("Please login or signup first."); scrollToSignup(); return; }
             FlutterwaveCheckout({
@@ -842,12 +842,23 @@
                 }
             });
         }
+
+        
         function updateAuthUI() {
-            const auth = document.getElementById('navAuth');
+            const auth    = document.getElementById('navAuth');
+            const heroBtn = document.getElementById('heroBtn');
+            const heroSub = document.getElementById('heroBtnSub');
+
             if (loggedInUser) {
-                auth.innerHTML = `
-                    <button class="btn-logout" onclick="logout()">Logout</button>
-                `;
+                // Logged in state
+                if (auth) auth.innerHTML = '<button class="btn-logout" onclick="logout()">Logout</button>';
+                if (heroBtn) heroBtn.textContent = '📊 View Today's Predictions';
+                if (heroSub) heroSub.textContent = 'Your predictions are ready';
+            } else {
+                // Logged out state
+                if (auth) auth.innerHTML = '';
+                if (heroBtn) heroBtn.innerHTML = 'Start Free Trial 🎯';
+                if (heroSub) heroSub.textContent = 'Free 7-day trial — no payment required';
             }
         }
 
@@ -1105,12 +1116,11 @@
 
         function handleHeroAction() {
             if (loggedInUser) {
+                // Logged in → show and scroll to predictions
                 const section = document.getElementById('todayPredictions');
                 const grid    = document.getElementById('todayGrid');
-                // Make section visible first (it starts as display:none)
                 if (section) section.style.display = 'block';
-                // If grid is empty, load predictions then scroll
-                if (!grid || !grid.innerHTML.trim()) {
+                if (!grid || !grid.innerHTML.trim() || grid.innerHTML.includes('Loading')) {
                     loadTodayPredictions().then(() => {
                         if (section) section.scrollIntoView({ behavior: 'smooth' });
                     });
@@ -1118,6 +1128,7 @@
                     if (section) section.scrollIntoView({ behavior: 'smooth' });
                 }
             } else {
+                // NOT logged in → always go to free trial signup
                 scrollToSignup();
             }
         }
