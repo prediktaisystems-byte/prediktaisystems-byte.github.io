@@ -147,9 +147,10 @@
                     <p>Matches Daily</p>
                 </div>
             </div>
+
             <div style="text-align: center;">
-                <button onclick="handleHeroAction()" class="btn">Unlock 🔓 Today's Prediction Now</button>
-                <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; font-weight: 600;">Only available to trial & premium users</p>
+                <button onclick="handleHeroAction()" class="btn" id="heroBtn">Unlock 🔓 Today's Prediction Now</button>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b; font-weight: 600;" id="heroBtnSub">Only available to trial &amp; premium users</p>
             </div>
         </div>
     </section>
@@ -163,6 +164,35 @@
                 <select id="dateSelect" onchange="loadResultsByDate()" style="padding: 0.8rem; border-radius: 12px; border: 2px solid #f1f5f9; font-family: 'Outfit'; font-weight: 600; color: #4f46e5;">
                 </select>
             </div>
+            <!-- Per-day win rate summary — updates when date changes -->
+            <div id="dayWinRateBar" style="display:none; background:#f8fafc; border-radius:16px; padding:1rem 1.5rem; margin-bottom:1.5rem; border:1px solid #e2e8f0;">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <span style="font-size:0.8rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">📅 Day Summary</span>
+                        <span id="dayLabel" style="font-size:0.8rem; color:#94a3b8;"></span>
+                    </div>
+                    <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+                        <div style="text-align:center;">
+                            <div style="font-size:1.4rem; font-weight:800; color:#4f46e5;" id="dayHiddenRate">--</div>
+                            <div style="font-size:0.7rem; color:#64748b; font-weight:600;">Hidden Win Rate</div>
+                            <div style="font-size:0.65rem; color:#94a3b8;" id="dayHiddenDetail"></div>
+                        </div>
+                        <div style="width:1px; background:#e2e8f0;"></div>
+                        <div style="text-align:center;">
+                            <div style="font-size:1.4rem; font-weight:800; color:#10b981;" id="dayFamiliarRate">--</div>
+                            <div style="font-size:0.7rem; color:#64748b; font-weight:600;">Familiar Win Rate</div>
+                            <div style="font-size:0.65rem; color:#94a3b8;" id="dayFamiliarDetail"></div>
+                        </div>
+                        <div style="width:1px; background:#e2e8f0;"></div>
+                        <div style="text-align:center;">
+                            <div style="font-size:1.4rem; font-weight:800; color:#0f172a;" id="dayMatchCount">0</div>
+                            <div style="font-size:0.7rem; color:#64748b; font-weight:600;">Matches</div>
+                            <div style="font-size:0.65rem; color:#94a3b8;" id="dayMarketCount"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="resultsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
                 <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">Loading results...</div>
             </div>
@@ -176,7 +206,6 @@
             <div id="todayGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;"></div>
         </div>
     </section>
-
     <section id="markets" class="section">
         <div class="container">
             <div style="background: #f1f5f9; padding: 4rem; border-radius: 40px; text-align: center;">
@@ -261,6 +290,7 @@
             <h2>Simple Pricing</h2>
             <p style="text-align:center; color:#64748b; font-size:0.85rem; margin-top:-1.5rem; margin-bottom:2.5rem; font-weight:600;">Pricing shown in your local currency</p>
             <div class="pricing">
+
                 <div class="price-card featured">
                     <h3>🎯 Free Trial</h3>
                     <div style="margin:1.5rem 0;">
@@ -289,20 +319,6 @@
         <div class="container">
             <h2>Start Your Free 7-Day Trial</h2>
             <div class="login-section">
-
-                <!-- Shared message box -->
-                <div id="signupMsg" style="display:none; padding:1rem; border-radius:12px; margin-bottom:1.5rem; font-weight:700; text-align:center;"></div>
-
-                <!-- STEP 1: Details -->
-                <div id="signupStep1">
-                    <form id="signupForm" onsubmit="return handleSignup(event)">
-                        <div class="form-group"><label>Full Name *</label><input type="text" id="name" required></div>
-                        <div class="form-group"><label>Email Address *</label><input type="email" id="email" required></div>
-                        <div class="form-group"><label>Phone Number *</label><input type="tel" id="phone" required></div>
-                        <button type="submit" id="signupBtn" class="btn" style="width:100%;">Activate Trial</button>
-                    </form>
-                </div>
-
                 <!-- STEP 2: OTP (hidden until code is sent) -->
                 <div id="signupStep2" style="display:none;">
                     <div style="text-align:center; margin-bottom:1.5rem;">
@@ -342,7 +358,7 @@
                 <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 1rem;">Response: 24-48 hours</p>
             </div>
             <div class="risk-warning">⚠️ Gambling involves risk. Please bet responsibly. Our predictions are based on AI patterns but do not guarantee outcomes.</div>
-            <p style="margin-top: 4rem; opacity: 0.5; font-size: 0.8rem;">🎯 PREDIKT AI &copy; 2026. Patterns don't lie. </p>
+            <p style="margin-top: 4rem; opacity: 0.5; font-size: 0.8rem;">🎯 PREDIKT AI &copy; 2026. Patterns don't lie. 🇳🇬</p>
         </div>
     </footer>
 
@@ -378,11 +394,12 @@
             </div>
         </div>
     </div>
+
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 
         const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycby5Soq7xOu9aHiH9GkoNMAXcf6thgQrWMhqiX3uakajCSaOADCDUaqGBRXYjyk5KkNXmg/exec';
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-7ff754c95736ea50d98016990aa2eb6e-X'; 
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-ea43f13a75ac4e8a27a5bf196d6a028c-X'; 
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
         let allResults = [];
@@ -496,25 +513,25 @@
 
             } catch (e) { console.error('loadResults error:', e); }
         }
-
         function renderResults() {
-            const grid = document.getElementById('resultsGrid');
+            const grid         = document.getElementById('resultsGrid');
             const selectedTime = parseInt(document.getElementById('dateSelect').value);
+
             const filtered = allResults.filter(r => {
                 if (!r.date) return false;
                 try {
-                    // Handle "4/7/2026", ISO strings, Date objects
                     let d = new Date(r.date);
-                    // If invalid, try parsing "M/D/YYYY" format manually
                     if (isNaN(d.getTime()) && typeof r.date === 'string' && r.date.includes('/')) {
                         const parts = r.date.split('/');
-                        if (parts.length === 3) d = new Date(parts[2], parts[0]-1, parts[1]);
+                        if (parts.length === 3) d = new Date(parseInt(parts[2]), parseInt(parts[0])-1, parseInt(parts[1]));
                     }
                     if (isNaN(d.getTime())) return false;
                     d.setHours(0,0,0,0);
                     return d.getTime() === selectedTime;
                 } catch(e) { return false; }
             });
+
+            updateDayWinRateBar(filtered);
 
             if (filtered.length === 0) {
                 grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: #64748b;">No results for this date.</div>';
@@ -523,6 +540,47 @@
 
             const groups = groupMatches(filtered);
             grid.innerHTML = Object.values(groups).map(g => createMatchCard(g)).join('');
+        }
+
+        function updateDayWinRateBar(filtered) {
+            const bar = document.getElementById('dayWinRateBar');
+            if (!bar) return;
+            if (!filtered || filtered.length === 0) { bar.style.display = 'none'; return; }
+
+            let hWins=0, hTotal=0, fWins=0, fTotal=0;
+            const matchNames = new Set();
+
+            filtered.forEach(r => {
+                matchNames.add(r.match);
+                const isHidden = String(r.marketType || '').toUpperCase().includes('HIDDEN');
+                [1,2,3].forEach(i => {
+                    const result = String(r['result'+i] || '').toUpperCase().trim();
+                    if (result === 'WIN' || result === 'LOSS') {
+                        if (isHidden) { hTotal++; if (result === 'WIN') hWins++; }
+                        else          { fTotal++; if (result === 'WIN') fWins++; }
+                    }
+                });
+            });
+
+            const hRate = hTotal > 0 ? Math.round((hWins/hTotal)*100) : null;
+            const fRate = fTotal > 0 ? Math.round((fWins/fTotal)*100) : null;
+            const selectEl = document.getElementById('dateSelect');
+            const dayText  = selectEl && selectEl.selectedIndex >= 0 ? selectEl.options[selectEl.selectedIndex].text : '';
+
+            document.getElementById('dayLabel').textContent          = dayText ? '— ' + dayText : '';
+            document.getElementById('dayHiddenRate').textContent     = hRate !== null ? hRate + '%' : 'N/A';
+            document.getElementById('dayHiddenDetail').textContent   = hTotal > 0 ? hWins + '/' + hTotal + ' markets' : 'No graded markets';
+            document.getElementById('dayFamiliarRate').textContent   = fRate !== null ? fRate + '%' : 'N/A';
+            document.getElementById('dayFamiliarDetail').textContent = fTotal > 0 ? fWins + '/' + fTotal + ' markets' : 'No graded markets';
+            document.getElementById('dayMatchCount').textContent     = matchNames.size;
+            document.getElementById('dayMarketCount').textContent    = (hTotal+fTotal) > 0 ? (hTotal+fTotal) + ' markets graded' : 'No graded markets yet';
+
+            const hEl = document.getElementById('dayHiddenRate');
+            const fEl = document.getElementById('dayFamiliarRate');
+            if (hEl && hRate !== null) hEl.style.color = hRate >= 70 ? '#10b981' : hRate >= 50 ? '#f59e0b' : '#ef4444';
+            if (fEl && fRate !== null) fEl.style.color = fRate >= 70 ? '#10b981' : fRate >= 50 ? '#f59e0b' : '#ef4444';
+
+            bar.style.display = 'block';
         }
 
         function groupMatches(data) {
@@ -534,6 +592,7 @@
             });
             return groups;
         }
+
         function createMatchCard(g) {
             const getBadge = (res) => {
                 const r = String(res || '').toUpperCase();
@@ -843,11 +902,20 @@
             });
         }
         function updateAuthUI() {
-            const auth = document.getElementById('navAuth');
+            const auth    = document.getElementById('navAuth');
+            const heroBtn = document.getElementById('heroBtn');
+            const heroSub = document.getElementById('heroBtnSub');
+
             if (loggedInUser) {
-                auth.innerHTML = `
-                    <button class="btn-logout" onclick="logout()">Logout</button>
-                `;
+                // Logged in state
+                if (auth) auth.innerHTML = '<button class="btn-logout" onclick="logout()">Logout</button>';
+                if (heroBtn) heroBtn.textContent = '📊 View Today's Predictions';
+                if (heroSub) heroSub.textContent = 'Your predictions are ready';
+            } else {
+                // Logged out state
+                if (auth) auth.innerHTML = '';
+                if (heroBtn) heroBtn.innerHTML = 'Start Free Trial 🎯';
+                if (heroSub) heroSub.textContent = 'Free 7-day trial — no payment required';
             }
         }
 
@@ -1105,12 +1173,11 @@
 
         function handleHeroAction() {
             if (loggedInUser) {
+                // Logged in → show and scroll to predictions
                 const section = document.getElementById('todayPredictions');
                 const grid    = document.getElementById('todayGrid');
-                // Make section visible first (it starts as display:none)
                 if (section) section.style.display = 'block';
-                // If grid is empty, load predictions then scroll
-                if (!grid || !grid.innerHTML.trim()) {
+                if (!grid || !grid.innerHTML.trim() || grid.innerHTML.includes('Loading')) {
                     loadTodayPredictions().then(() => {
                         if (section) section.scrollIntoView({ behavior: 'smooth' });
                     });
@@ -1118,10 +1185,18 @@
                     if (section) section.scrollIntoView({ behavior: 'smooth' });
                 }
             } else {
+                // NOT logged in → always go to free trial signup
                 scrollToSignup();
             }
         }
-        function loadResultsByDate() { renderResults(); }
+        function loadResultsByDate() {
+            const selectEl = document.getElementById('dateSelect');
+            const labelEl  = document.getElementById('resultsDateLabel');
+            if (selectEl && labelEl && selectEl.selectedIndex >= 0) {
+                labelEl.textContent = 'Results for ' + selectEl.options[selectEl.selectedIndex].text;
+            }
+            renderResults();
+        }
 
 
         init();
