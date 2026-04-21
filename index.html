@@ -265,14 +265,19 @@
         .close-btn { position:absolute; right:1.2rem; top:1.2rem; font-size:1.5rem; cursor:pointer; color:var(--text-muted); background:none; border:none; }
 
         /* BOTTOM NAV */
-        .bottom-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:linear-gradient(180deg,rgba(15,23,42,0.8) 0%,rgba(15,23,42,0.95) 100%); border-top:1px solid var(--border-color); padding:0.3rem 0; z-index:999; }
+        .bottom-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:rgba(10,14,26,0.97); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid rgba(99,102,241,0.12); padding:0.4rem 0 calc(0.4rem + env(safe-area-inset-bottom)); z-index:999; }
         .bottom-nav-content { display:flex; justify-content:space-around; max-width:1400px; margin:0 auto; }
-        .bottom-nav-item { flex:1; display:flex; flex-direction:column; align-items:center; padding:0.5rem 0.3rem; color:var(--text-muted); cursor:pointer; border:none; background:none; font-family:'Outfit'; font-size:0.62rem; font-weight:700; transition:all 0.2s ease; }
+        .bottom-nav-item { flex:1; display:flex; flex-direction:column; align-items:center; padding:0.55rem 0.2rem; color:var(--text-muted); cursor:pointer; border:none; background:none; font-family:'Outfit'; font-size:0.6rem; font-weight:600; transition:color 0.2s ease; gap:0.25rem; letter-spacing:0.02em; }
         .bottom-nav-item.active { color:var(--primary-light); }
-        .nav-icon { font-size:1.15rem; margin-bottom:0.2rem; }
+        .bottom-nav-item.active .nav-svg { stroke:var(--primary-light); filter:drop-shadow(0 0 6px rgba(129,140,248,0.5)); }
+        .nav-svg { width:22px; height:22px; stroke:var(--text-muted); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; transition:stroke 0.2s ease, filter 0.2s ease; }
+        .bottom-nav-item.active .nav-svg-filled { fill:var(--primary-light); stroke:var(--primary-light); }
 
         /* FOOTER */
         footer { background:linear-gradient(180deg,rgba(15,23,42,0.7) 0%,rgba(10,14,26,0.9) 100%); border-top:1px solid var(--border-color); padding:2rem 1.5rem; text-align:center; color:var(--text-muted); font-size:0.8rem; margin-top:3rem; }
+        .footer-links { display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:0.8rem; }
+        .footer-link { color:var(--text-muted); text-decoration:none; font-weight:600; font-size:0.78rem; cursor:pointer; transition:color 0.2s ease; }
+        .footer-link:hover { color:var(--primary-light); }
 
         /* FORMS */
         .form-group { margin-bottom:1.2rem; }
@@ -293,7 +298,6 @@
         .result-badge.win { background:#10b981; }
         .result-badge.loss { background:#ef4444; }
         .result-badge.pending { background:#94a3b8; }
-
         /* ABOUT US */
         .about-container { max-width:860px; margin:0 auto; }
         .about-hero { text-align:center; padding:2.5rem 1rem 2rem; margin-bottom:2rem; background:linear-gradient(135deg,rgba(99,102,241,0.08) 0%,rgba(16,185,129,0.06) 100%); border:1px solid rgba(99,102,241,0.15); border-radius:20px; }
@@ -316,6 +320,15 @@
         .faq-a { color:var(--text-secondary); font-size:0.85rem; line-height:1.7; margin-top:0.8rem; display:none; }
         .faq-item.open .faq-a { display:block; }
         .faq-item.open .faq-icon { transform:rotate(45deg); }
+
+        /* WIN RATE INLINE STRIP */
+        .winrate-strip { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:1.5rem; }
+        .winrate-chip { background:linear-gradient(135deg,rgba(30,41,59,0.7) 0%,rgba(15,23,42,0.9) 100%); border:1px solid var(--border-color); border-radius:14px; padding:1rem 1.2rem; display:flex; align-items:center; justify-content:space-between; gap:0.8rem; }
+        .winrate-chip-label { font-size:0.72rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+        .winrate-chip-value { font-size:1.6rem; font-weight:800; background:linear-gradient(135deg,var(--primary-light) 0%,var(--accent-light) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1; }
+        .winrate-chip-meta { font-size:0.65rem; color:var(--text-muted); margin-top:0.15rem; font-weight:600; }
+        .winrate-chip-left { display:flex; flex-direction:column; gap:0.1rem; }
+        .winrate-chip-icon { font-size:1.4rem; opacity:0.8; }
 
         /* PAGE LAYOUT */
         .page-content { display:none; }
@@ -372,11 +385,33 @@
     <main>
         <!-- HOME PAGE -->
         <div id="homePage" class="page-content active">
-            <div class="section-title">Today's Predictions</div>
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+                <div class="section-title" style="margin-bottom:0;">Today's Picks</div>
+                <span style="font-size:0.72rem; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Win Rate Summary</span>
+            </div>
+
+            <!-- WIN RATE INLINE STRIP -->
+            <div class="winrate-strip">
+                <div class="winrate-chip">
+                    <div class="winrate-chip-left">
+                        <div class="winrate-chip-label">🔒 Hidden Markets</div>
+                        <div class="winrate-chip-value" id="hiddenWinRate">--</div>
+                        <div class="winrate-chip-meta" id="hiddenMarketsCount">-- markets analysed</div>
+                    </div>
+                </div>
+                <div class="winrate-chip">
+                    <div class="winrate-chip-left">
+                        <div class="winrate-chip-label">📌 Familiar Markets</div>
+                        <div class="winrate-chip-value" id="familiarWinRate">--</div>
+                        <div class="winrate-chip-meta" id="familiarMarketsCount">-- markets analysed</div>
+                    </div>
+                </div>
+            </div>
+
             <div id="predictionsContainer" class="predictions-grid">
                 <div class="empty-state">
                     <div class="empty-icon">⏳</div>
-                    <div class="empty-title">Loading Predictions</div>
+                    <div class="empty-title">Loading Picks</div>
                 </div>
             </div>
             <div class="market-insights">
@@ -384,23 +419,7 @@
                 <div class="insights-text">Simply because they don't know where to find them.</div>
                 <a href="https://reffpa.com/L?tag=d_4237102m_1599c_&site=4237102&ad=1599&r=registration" target="_blank" class="btn btn-accent">Find Hidden Markets Now</a>
             </div>
-            <div class="section-title" style="margin-top:2rem;">Win Rate Summary</div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">🔒 Hidden Markets</div>
-                    <div class="stat-number" id="hiddenWinRate">--</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">📌 Familiar Markets</div>
-                    <div class="stat-number" id="familiarWinRate">--</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">⚽ Daily Matches</div>
-                    <div class="stat-number">6-24</div>
-                </div>
-            </div>
         </div>
-
         <!-- RESULTS PAGE -->
         <div id="resultsPage" class="page-content">
             <div class="section-title">Prediction Results</div>
@@ -466,7 +485,10 @@
                                 <div class="detail-item-value" id="expiresIn" style="font-size:0.9rem;">--</div>
                             </div>
                         </div>
-                        <button class="btn btn-primary" style="width:100%;" onclick="makePayment()">💎 Upgrade to Premium</button>
+                        <button class="btn btn-primary" style="width:100%;" id="upgradeBtn" onclick="makePayment()">💎 Upgrade to Premium</button>
+                        <div style="text-align:center; margin-top:0.8rem; font-size:0.72rem; color:var(--text-muted); font-weight:600; line-height:1.6;">
+                            🔒 Secured by Flutterwave &nbsp;·&nbsp; Cards, Bank Transfer, USSD
+                        </div>
                     </div>
                 </div>
             </div>
@@ -546,8 +568,7 @@
                     <h3>✅ Data-Driven, Every Day</h3>
                     <p>We guarantee that our AI analysis is based on pure data and historical patterns. While no prediction is 100% certain, we guarantee to provide you with the highest probability opportunities identified by our system every single day.</p>
                 </div>
-
-                <!-- FAQ -->
+<!-- FAQ -->
                 <div class="about-header">Frequently Asked Questions</div>
                 <div class="about-section-card" style="padding:1rem 1.5rem;">
                     <div class="faq-item">
@@ -596,29 +617,24 @@
             </div>
         </div>
     </main>
-
-    <!-- BOTTOM NAV -->
+        <!-- BOTTOM NAV -->
     <div class="bottom-nav">
         <div class="bottom-nav-content">
             <button class="bottom-nav-item active" onclick="togglePage('home', this)">
-                <div class="nav-icon">🏠</div>
+                <svg class="nav-svg" viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
                 <div>Home</div>
             </button>
             <button class="bottom-nav-item" onclick="togglePage('results', this)">
-                <div class="nav-icon">📈</div>
+                <svg class="nav-svg" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                 <div>Results</div>
             </button>
             <button class="bottom-nav-item" onclick="togglePage('pricing', this)">
-                <div class="nav-icon">💎</div>
+                <svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 <div>Pricing</div>
             </button>
             <button class="bottom-nav-item" id="mobileProfileBtn" onclick="togglePage('profile', this)" style="display:none;">
-                <div class="nav-icon">👤</div>
+                <svg class="nav-svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
                 <div>Profile</div>
-            </button>
-            <button class="bottom-nav-item" onclick="togglePage('about', this)">
-                <div class="nav-icon">ℹ️</div>
-                <div>About Us</div>
             </button>
         </div>
     </div>
@@ -697,11 +713,16 @@
 
     <!-- FOOTER -->
     <footer>
+        <div class="footer-links">
+            <a class="footer-link" onclick="togglePage('about', null)">About Us</a>
+            <a class="footer-link" onclick="togglePage('pricing', null)">Pricing</a>
+            <a class="footer-link" href="https://reffpa.com/L?tag=d_4237102m_1599c_&site=4237102&ad=1599&r=registration" target="_blank">Find Hidden Markets</a>
+        </div>
         <p>© 2026 Predikt AI • Built by Gideon Sylvester</p>
     </footer>
 
     <script>
-        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzVhH8_JJMiBtrc7OBpIAiUkQknvIjMyy0rx8nI6GDBK3jSIhRSElbcfcUF6sQlWUD5Ag/exec';
+        const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyAC2nCnuOvDFbD34e-WrnbHXIrIk8Pmm491p80MJgv_jJKKLIVuWiebxSTObyoRBSFiQ/exec';
         const FLUTTERWAVE_KEY = 'FLWPUBK-ea43f13a75ac4e8a27a5bf196d6a028c-X';
 
         let loggedInUser = JSON.parse(localStorage.getItem('prediktUser')) || null;
@@ -744,9 +765,7 @@
 
             window.scrollTo(0, 0);
 
-            if (page === 'results') {
-                loadResultsByDate();
-            }
+            if (page === 'results') loadResultsByDate();
         }
 
         // ── FAQ TOGGLE ────────────────────────────────────────
@@ -816,7 +835,6 @@
                 select.appendChild(opt);
             }
         }
-
         function loadResultsByDate() {
             const sel = document.getElementById('dateSelect');
             if (!sel || !sel.value) return;
@@ -869,8 +887,15 @@
                     }
                 });
             });
-            document.getElementById('dayHiddenRate').textContent = hT>0 ? Math.round((hW/hT)*100)+'%' : '--';
-            document.getElementById('dayFamiliarRate').textContent = fT>0 ? Math.round((fW/fT)*100)+'%' : '--';
+            const hRate = hT>0 ? Math.round((hW/hT)*100)+'%' : '--';
+            const fRate = fT>0 ? Math.round((fW/fT)*100)+'%' : '--';
+            document.getElementById('dayHiddenRate').textContent = hRate;
+            document.getElementById('dayFamiliarRate').textContent = fRate;
+            // Show market counts in the day summary labels
+            const hLabel = document.querySelector('#dayStats .stat-item:first-child .stat-item-label');
+            const fLabel = document.querySelector('#dayStats .stat-item:last-child .stat-item-label');
+            if (hLabel && hT > 0) hLabel.textContent = 'Hidden Win Rate (' + hT + ' markets)';
+            if (fLabel && fT > 0) fLabel.textContent = 'Familiar Win Rate (' + fT + ' markets)';
             stats.classList.add('show');
         }
 
@@ -1064,8 +1089,7 @@
                         <a class="learn-why" onclick="openAnalysis('${escAttr(matchName)}','${escAttr(m.m)}','${escAttr(m.w||'')}')">Learn why →</a>
                     </div>`).join('')}
                 </div>`:''}`;
-        }
-
+                        }
         function escAttr(str) {
             return String(str||'').replace(/'/g,"&#39;").replace(/"/g,'&quot;');
         }
@@ -1086,6 +1110,11 @@
                 if (data.status === 'success') {
                     document.getElementById('hiddenWinRate').textContent = (data.hiddenWinRate || '80-90') + '%';
                     document.getElementById('familiarWinRate').textContent = (data.familiarWinRate || '50-65') + '%';
+                    // Show total markets analysed
+                    const hTotal = parseInt(data.hiddenTotal) || 0;
+                    const fTotal = parseInt(data.familiarTotal) || 0;
+                    if (hTotal > 0) document.getElementById('hiddenMarketsCount').textContent = hTotal + ' markets analysed';
+                    if (fTotal > 0) document.getElementById('familiarMarketsCount').textContent = fTotal + ' markets analysed';
                 }
             } catch(e) {}
         }
@@ -1125,7 +1154,7 @@
             const mobileProfileBtn = document.getElementById('mobileProfileBtn');
 
             if (loggedInUser) {
-                // Use stored name; fall back to email local part only if name truly absent
+                // Always prefer stored full name — never fall back to email
                 const name = localStorage.getItem('prediktUserName') || '';
                 const displayName = name || loggedInUser.email;
                 welcome.innerHTML = `<span class="welcome-badge">Welcome back, ${displayName}</span>`;
@@ -1142,6 +1171,41 @@
             }
         }
 
+        // ── PROFILE ───────────────────────────────────────────
+        function updateProfileInfo() {
+            if (!loggedInUser) return;
+            const fullName = localStorage.getItem('prediktUserName') || '';
+            document.getElementById('profileName').textContent = fullName || '--';
+            document.getElementById('profileEmail').textContent = loggedInUser.email || '--';
+            document.getElementById('profilePhone').textContent = loggedInUser.phone || '--';
+
+            // Plan type — update display when paid
+            const planType = loggedInUser.planType || 'Trial';
+            const isPremium = planType === 'Paid' || planType === 'Premium';
+            document.getElementById('planType').innerHTML = (isPremium ? '💎 Premium' : 'Trial') + ' <span class="plan-active-badge">Active</span>';
+
+            // Hide upgrade button if already premium
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            if (upgradeBtn && isPremium) {
+                upgradeBtn.textContent = '✅ Premium Active';
+                upgradeBtn.disabled = true;
+                upgradeBtn.style.opacity = '0.6';
+                upgradeBtn.style.cursor = 'default';
+            }
+
+            // Expiry date
+            const expiryStr = localStorage.getItem('prediktUserExpiry') || loggedInUser.expiry;
+            if (expiryStr) {
+                try {
+                    const expDate = new Date(expiryStr);
+                    if (!isNaN(expDate.getTime())) {
+                        const formatted = expDate.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+                        document.getElementById('expiresIn').innerHTML = `<span class="plan-expiry-text">expires: ${formatted}</span>`;
+                    }
+                } catch(e) {}
+            }
+        }
+
         function logout() {
             localStorage.removeItem('prediktUser');
             localStorage.removeItem('prediktUserName');
@@ -1150,6 +1214,8 @@
         }
 
         // ── LOGIN ─────────────────────────────────────────────
+        // NOTE: Update your Apps Script checkMember to return name and expiry:
+        // return jsonResponse(user ? { valid:true, name:user[0], type:user[3], status:user[6], expiry:user[5] } : { valid:false });
         async function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value.toLowerCase().trim();
@@ -1162,9 +1228,7 @@
                 if (data.valid) {
                     loggedInUser = { email, phone, planType: data.type || 'Trial' };
                     localStorage.setItem('prediktUser', JSON.stringify(loggedInUser));
-                    // Store name from backend if available
-                    // NOTE: Update your Apps Script checkMember to return name and expiry:
-                    // { valid:true, name:user[0], type:user[3], status:user[6], expiry:user[5].toISOString() }
+                    // Store name from backend — this populates the welcome message and profile name
                     if (data.name) localStorage.setItem('prediktUserName', data.name);
                     if (data.expiry) localStorage.setItem('prediktUserExpiry', data.expiry);
                     closeLogin();
@@ -1267,8 +1331,7 @@
             el.style.color = s.color;
             el.textContent = text;
         }
-
-        // ── MODALS ────────────────────────────────────────────
+// ── MODALS ────────────────────────────────────────────
         function openLogin()    { document.getElementById('loginModal').style.display='block'; }
         function closeLogin()   { document.getElementById('loginModal').style.display='none'; }
         function openSignup()   { document.getElementById('signupModal').style.display='block'; }
@@ -1303,6 +1366,13 @@
                 callback: function(data) {
                     if (data.status === 'successful') {
                         fetch(APPS_SCRIPT + '?action=paymentSuccess&email=' + encodeURIComponent(loggedInUser.email));
+                        // Update planType in localStorage immediately
+                        loggedInUser.planType = 'Paid';
+                        localStorage.setItem('prediktUser', JSON.stringify(loggedInUser));
+                        // Update expiry to 30 days from now
+                        const exp = new Date();
+                        exp.setDate(exp.getDate() + 30);
+                        localStorage.setItem('prediktUserExpiry', exp.toISOString());
                         alert('Payment successful! Your account has been upgraded to Premium.');
                         location.reload();
                     }
@@ -1353,3 +1423,6 @@
     </script>
 </body>
 </html>
+    
+
+     
