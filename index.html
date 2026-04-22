@@ -468,10 +468,19 @@ footer{background:var(--bg-card2);border-top:1px solid var(--border);padding:1.4
     <button class="close-btn" onclick="closeLogin()">✕</button>
     <h2 style="margin-bottom:1.35rem;font-size:1.08rem;font-weight:800;letter-spacing:-.02em;">Welcome Back</h2>
     <form onsubmit="handleLogin(event)">
-      <div id="loginError" style="display:none;background:var(--red-dim);color:#fca5a5;padding:0.68rem 0.88rem;border-radius:var(--r-sm);font-size:0.77rem;margin-bottom:0.88rem;font-weight:600;border:1px solid var(--red-border);"></div>
-      <div class="form-group"><label class="form-label">Email</label><input type="email" id="loginEmail" class="form-input" placeholder="your@email.com" required></div>
-      <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="loginPhone" class="form-input" placeholder="08012345678" required></div>
-      <button type="submit" class="btn btn-primary" style="width:100%;">Login</button>
+      <div id="loginError" style="display:none;background:var(--red-dim);color:#fca5a5;padding:0.7rem 0.88rem;border-radius:var(--r-sm);font-size:0.77rem;margin-bottom:0.88rem;font-weight:600;border:1px solid var(--red-border);"></div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" id="loginEmail" class="form-input" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="loginPassword" class="form-input" placeholder="Your password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-bottom:0.75rem;">Login</button>
+      <div style="text-align:center;">
+        <button type="button" onclick="openModal('resetModal')" style="background:none;border:none;color:var(--text-muted);font-size:0.74rem;cursor:pointer;font-family:'Outfit';">Forgot password?</button>
+      </div>
     </form>
   </div>
 </div>
@@ -481,26 +490,105 @@ footer{background:var(--bg-card2);border-top:1px solid var(--border);padding:1.4
   <div class="modal-content">
     <button class="close-btn" onclick="closeSignup()">✕</button>
     <h2 style="margin-bottom:0.9rem;font-size:1.08rem;font-weight:800;letter-spacing:-.02em;">Start Your Free Trial</h2>
+
+    <!-- Step 1: Collect details -->
     <div id="signupStep1">
       <form onsubmit="handleSignup(event);return false;">
-        <div id="signupMsg" style="display:none;padding:0.68rem;border-radius:var(--r-sm);margin-bottom:0.88rem;font-weight:600;text-align:center;font-size:0.77rem;"></div>
-        <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="signupName" class="form-input" placeholder="John Doe" required></div>
-        <div class="form-group"><label class="form-label">Email</label><input type="email" id="signupEmail" class="form-input" placeholder="your@email.com" required></div>
-        <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="signupPhone" class="form-input" placeholder="08012345678" required></div>
+        <div id="signupMsg" style="display:none;padding:0.7rem;border-radius:var(--r-sm);margin-bottom:0.88rem;font-weight:600;text-align:center;font-size:0.78rem;"></div>
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="signupName" class="form-input" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="signupEmail" class="form-input" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="signupPassword" class="form-input" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" id="signupPasswordConfirm" class="form-input" placeholder="Repeat your password" minlength="6" required>
+        </div>
         <button type="submit" class="btn btn-primary" style="width:100%;">Activate Trial</button>
       </form>
     </div>
+
+    <!-- Step 2: Enter OTP -->
     <div id="signupStep2" style="display:none;">
       <div style="text-align:center;margin-bottom:1.35rem;">
-        <div style="width:46px;height:46px;background:var(--blue-dim);border-radius:11px;display:flex;align-items:center;justify-content:center;margin:0 auto 0.85rem;"><svg style="width:22px;height:22px;flex-shrink:0;display:inline-block;vertical-align:middle;color:#60a5fa" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div style="width:46px;height:46px;background:var(--blue-dim);border-radius:11px;display:flex;align-items:center;justify-content:center;margin:0 auto 0.85rem;">
+          <svg style="width:22px;height:22px;color:#60a5fa" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
         <h3 style="margin-bottom:0.38rem;font-size:0.96rem;font-weight:800;">Check Your Email</h3>
         <p style="color:var(--text-muted);font-size:0.77rem;">We sent a 6-digit code to<br><strong id="otpEmailDisplay" style="color:var(--text);">example@email.com</strong></p>
       </div>
       <form onsubmit="handleOTPVerify(event);return false;">
-        <div class="form-group"><label class="form-label">Verification Code</label><input type="text" id="otpInput" placeholder="000000" maxlength="6" inputmode="numeric" class="form-input" style="text-align:center;font-size:1.45rem;letter-spacing:.4rem;font-weight:800;" required></div>
+        <div id="signupMsg2" style="display:none;padding:0.7rem;border-radius:var(--r-sm);margin-bottom:0.88rem;font-weight:600;text-align:center;font-size:0.78rem;"></div>
+        <div class="form-group">
+          <label class="form-label">Verification Code</label>
+          <input type="text" id="otpInput" placeholder="000000" maxlength="6"
+                 inputmode="numeric" class="form-input"
+                 style="text-align:center;font-size:1.45rem;letter-spacing:.4rem;font-weight:800;" required>
+        </div>
         <button type="submit" class="btn btn-primary" style="width:100%;margin-bottom:0.85rem;">Verify &amp; Activate</button>
       </form>
-      <div style="text-align:center;"><p style="color:var(--text-muted);font-size:0.71rem;margin-bottom:0.33rem;">Didn't receive the code?</p><button onclick="resendOTP()" style="background:none;border:none;color:var(--blue-light);font-weight:700;cursor:pointer;font-family:'Outfit';font-size:0.77rem;">Resend Code</button></div>
+      <div style="text-align:center;">
+        <p style="color:var(--text-muted);font-size:0.71rem;margin-bottom:0.33rem;">Didn't receive the code?</p>
+        <button onclick="resendOTP()" style="background:none;border:none;color:var(--blue-light);font-weight:700;cursor:pointer;font-family:'Outfit';font-size:0.77rem;">Resend Code</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- PASSWORD RESET MODAL -->
+<div id="resetModal" class="modal" onclick="modalOverlayClose(event,'resetModal')">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal('resetModal')">✕</button>
+    <h2 style="margin-bottom:0.9rem;font-size:1.08rem;font-weight:800;letter-spacing:-.02em;">Reset Password</h2>
+
+    <!-- Step 1: Enter email -->
+    <div id="resetStep1">
+      <form onsubmit="handleSendResetOTP(event);return false;">
+        <div id="resetMsg" style="display:none;padding:0.7rem;border-radius:var(--r-sm);margin-bottom:0.88rem;font-weight:600;text-align:center;font-size:0.78rem;"></div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="resetEmail" class="form-input" placeholder="your@email.com" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Send Reset Code</button>
+      </form>
+    </div>
+
+    <!-- Step 2: Enter OTP -->
+    <div id="resetStep2" style="display:none;">
+      <form onsubmit="handleVerifyResetOTP(event);return false;">
+        <div id="resetMsg2" style="display:none;padding:0.7rem;border-radius:var(--r-sm);margin-bottom:0.88rem;font-weight:600;text-align:center;font-size:0.78rem;"></div>
+        <p style="color:var(--text-muted);font-size:0.78rem;margin-bottom:1rem;">Enter the 6-digit code we sent to <strong id="resetEmailDisplay" style="color:var(--text);"></strong></p>
+        <div class="form-group">
+          <label class="form-label">Reset Code</label>
+          <input type="text" id="resetOTPInput" placeholder="000000" maxlength="6"
+                 inputmode="numeric" class="form-input"
+                 style="text-align:center;font-size:1.45rem;letter-spacing:.4rem;font-weight:800;" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Verify Code</button>
+      </form>
+    </div>
+
+    <!-- Step 3: New password -->
+    <div id="resetStep3" style="display:none;">
+      <form onsubmit="handleUpdatePassword(event);return false;">
+        <div id="resetMsg3" style="display:none;padding:0.7rem;border-radius:var(--r-sm);margin-bottom:0.88rem;font-weight:600;text-align:center;font-size:0.78rem;"></div>
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <input type="password" id="newPassword" class="form-input" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm New Password</label>
+          <input type="password" id="newPasswordConfirm" class="form-input" placeholder="Repeat new password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Update Password</button>
+      </form>
     </div>
   </div>
 </div>
