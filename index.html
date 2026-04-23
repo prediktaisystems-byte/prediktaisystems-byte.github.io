@@ -919,21 +919,81 @@ function renderResultMarkets(markets, type, id) {
   return html.join('');
 }
 
-async function loadTodayPredictions() {
-  const token = localStorage.getItem('prediktUserToken') || '';
-  const url   = APPS_SCRIPT + '?action=getPicks' + (token ? '&token=' + encodeURIComponent(token) : '');
-  const res   = await fetch(url);
-  const data  = await res.json();
+  async function loadTodayPredictions() {
+  try {
+    // ── Build API URL based on login status ────────────────────────
+    // Logged-in: ?action=getPicks&email=user@example.com
+    // Visitor:   ?action=getPicks
+    const url = loggedInUser 
+      ? APPS_SCRIPT + '?action=getPicks&email=' + encodeURIComponent(loggedInUser.email)
+      : APPS_SCRIPT + '?action=getPicks';
 
-  if (data.access === 'limited') {
-    // Show the one preview match + a locked CTA
-    renderPreviewPicks(data.matches, data.total);
-  } else {
-    // Show all picks normally
-    renderPredictions(data.matches);
+    console.log('📊 Fetching predictions from:', url.split('?')[0]);
+
+    var res = await fetch(url, { cache: 'no-store' });
+    var data = await res.json();
+
+    console.log('📊 API Response:', data);
+
+    // ── Check if response has valid structure ──────────────────────
+    if (!data || !data.access) {
+      console.error('❌ Invalid response structure:', data);
+      document.getElementById('predictionsContainer').innerHTML = mkEmpty('mail', 'No predictions for today',
+        "Our analysts haven't published picks yet. Check back soon.");
+      return;
+    }
+
+    // ── Data exists and user has access ────────────────────────────
+    if (data.matches && data.matches.length > 0) {
+      console.log(`✅ Found ${data.matches.length} matches (access: ${data.access})`);
+      renderPredictions(data.matches);
+      return;
+    }
+
+    // ── No matches at all ──────────────────────────────────────────
+    if (data.total === 0) {
+      console.log('⚠️  No matches published yet');
+      document.getElementById('predictionsContainer').innerHTML = mkEmpty('mail', 'No predictions for today',
+        "Our analysts haven't published picks yet. Check back soon.");
+      return;
+    }
+
+    // ── Visitor with locked matches ────────────────────────────────
+    if (data.locked && data.total > 0) {
+      console.log(`⚠️  Visitor viewing: ${data.total} total picks, ${data.matches.length} preview visible`);
+      renderPredictions(data.matches);
+      
+      // Show unlock prompt below preview
+      const container = document.getElementById('predictionsContainer');
+      const msg = document.createElement('div');
+      msg.style.cssText = 'text-align:center;padding:2rem;background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:12px;margin-top:2rem;';
+      msg.innerHTML = `
+        <div style="font-size:0.95rem;font-weight:600;color:#38bdf8;margin-bottom:0.8rem;">
+          🔒 ${data.total - data.matches.length} More Predictions Locked
+        </div>
+        <div style="font-size:0.85rem;color:#9ca3af;margin-bottom:1.2rem;">
+          Sign up to unlock all ${data.total} predictions + full analysis
+        </div>
+        <button onclick="showAuth('signup')" style="padding:0.6rem 1.4rem;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9rem;">
+          Sign Up Free
+        </button>
+      `;
+      container.parentNode.insertBefore(msg, container.nextSibling);
+      return;
+    }
+
+    // ── Fallback (shouldn't reach here) ────────────────────────────
+    console.error('❌ Unexpected response state:', data);
+    document.getElementById('predictionsContainer').innerHTML = mkEmpty('mail', 'No predictions for today',
+      "Our analysts haven't published picks yet. Check back soon.");
+
+  } catch(e) {
+    console.error('❌ loadTodayPredictions error:', e);
+    document.getElementById('predictionsContainer').innerHTML = mkEmpty('mail', 'No predictions for today',
+      "Our analysts haven't published picks yet. Check back soon.");
   }
 }
-
+  
 function renderPredictions(data) {
   var groups = {};
   data.forEach(function(pick) {
