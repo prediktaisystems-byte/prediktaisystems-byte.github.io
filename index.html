@@ -744,14 +744,18 @@ async function init() {
   initDates();
   updateAuthUI();
   await Promise.all([loadResults(), detectRegion(), loadWinRates()]);
+
+  // Always load predictions — loadTodayPredictions handles visitors
+  // and logged-in users identically via the getPicks endpoint.
+  // The old "else → show empty" branch was the root cause of visitors
+  // seeing "No predictions for today" even when matches existed.
+  await loadTodayPredictions();
+
   if (loggedInUser) {
-    await loadTodayPredictions();
     updateProfileInfo();
-  } else {
-    document.getElementById('predictionsContainer').innerHTML = mkEmpty('lock','No predictions for today',"Our analysts haven't published picks yet. Check back soon.");
   }
 }
-
+  
 function mkEmpty(icon, title, sub) {
   var icons = {
     lock: '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
@@ -773,6 +777,26 @@ function confClass(c) {
   if (n >= 80) return 'conf-mid';
   return 'conf-low';
 }
+
+// High-conversion fallback shown when matches are empty or load fails.
+// Never shows the flat "No predictions" message to visitors.
+function mkFallbackCTA() {
+  return [
+    '<div class="match-card" style="text-align:center;padding:2.2rem 1.6rem;',
+      'border:1px solid rgba(56,189,248,0.25);background:linear-gradient(135deg,rgba(37,99,235,0.07),rgba(56,189,248,0.04));">',
+      '<div style="font-size:2rem;margin-bottom:0.75rem;">⚡</div>',
+      '<div style="font-weight:800;font-size:1.05rem;color:#ffffff;margin-bottom:0.55rem;letter-spacing:-0.02em;">',
+        "Don't miss today's opportunities",
+      '</div>',
+      '<div style="color:#9ca3af;font-size:0.82rem;line-height:1.65;margin-bottom:1.4rem;max-width:320px;margin-left:auto;margin-right:auto;">',
+        'Advanced picks and full analysis are available inside. Join now and access all predictions instantly.',
+      '</div>',
+      '<button class="btn btn-accent" onclick="openSignup()" style="padding:0.75rem 1.8rem;font-size:0.88rem;font-weight:800;letter-spacing:0.01em;">',
+        'Get Access Now',
+      '</button>',
+    '</div>'
+  ].join('');
+}      
 
 async function loadResults() {
   try {
@@ -919,56 +943,45 @@ function renderResultMarkets(markets, type, id) {
   return html.join('');
 }
 
-// ── LOAD TODAY'S PREDICTIONS (unified — visitors + members) ──────
-// Replaces your existing loadTodayPredictions function entirely.
-// Uses getPicks as the single endpoint. No more unlockPicks for page load.
 async function loadTodayPredictions() {
-  const container = document.getElementById('predictionsContainer');
+  var container = document.getElementById('predictionsContainer');
 
-  // ── Safely read user from localStorage ───────────────────────
-  // CRITICAL: always guard this — user is null for visitors.
-  let loggedInUser = null;
+  // ── Safely read user — NEVER access .email without this guard ──
+  var storedUser = null;
   try {
-    const stored = localStorage.getItem('prediktUser');
-    if (stored) loggedInUser = JSON.parse(stored);
-  } catch(e) {
-    loggedInUser = null; // malformed JSON — treat as visitor
-  }
+    var raw = localStorage.getItem('prediktUser');
+    if (raw) storedUser = JSON.parse(raw);
+  } catch(e) { storedUser = null; }
 
-  // ── Build request URL ─────────────────────────────────────────
-  // Pass email only when we actually have a logged-in user.
-  // Never access user.email without confirming user is not null first.
-  const email = (loggedInUser && loggedInUser.email) ? loggedInUser.email : '';
-  const url   = APPS_SCRIPT + '?action=getPicks' + (email ? '&email=' + encodeURIComponent(email) : '');
+  var email = (storedUser && storedUser.email) ? storedUser.email : '';
+  var url   = APPS_SCRIPT + '?action=getPicks' + (email ? '&email=' + encodeURIComponent(email) : '');
 
   try {
-    const res  = await fetch(url, { cache: 'no-store' });
-    const data = await res.json();
+    var res  = await fetch(url, { cache: 'no-store' });
+    var data = await res.json();
 
     if (data.access === 'full') {
-      // ── Logged-in member: render all picks ──────────────────
       if (!data.matches || data.matches.length === 0) {
-        container.innerHTML = emptyState('mail', "No predictions for today", "Our analysts haven't published picks yet. Check back soon.");
+        container.innerHTML = mkFallbackCTA();
         return;
       }
       renderPredictions(data.matches);
 
     } else if (data.access === 'limited') {
-      // ── Visitor: render 1 preview match + locked CTA ────────
       if (!data.matches || data.matches.length === 0) {
-        container.innerHTML = emptyState('mail', "No predictions for today", "Our analysts haven't published picks yet. Check back soon.");
+        container.innerHTML = mkFallbackCTA();
         return;
       }
       renderVisitorPreview(data.matches, data.total || 0);
 
     } else {
-      // ── Unexpected response shape — show empty state ─────────
-      container.innerHTML = emptyState('mail', "No predictions for today", "Our analysts haven't published picks yet. Check back soon.");
+      // Unexpected shape — show fallback
+      container.innerHTML = mkFallbackCTA();
     }
 
   } catch(err) {
     console.error('loadTodayPredictions error:', err);
-    container.innerHTML = emptyState('mail', "Could not load predictions", "Please check your connection and try again.");
+    container.innerHTML = mkFallbackCTA();
   }
 }
 
